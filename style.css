@@ -1753,11 +1753,83 @@ p {
 }
 
 
+.contact-cards {
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:12px;
+
+}
+
+
 .contact-item {
 
-    border-top:1px solid var(--border);
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    min-height:116px;
+    padding:20px;
+    background:linear-gradient(135deg,#f8f7f3,#fff);
+    border:1px solid rgba(17,17,17,.1);
+    border-left:3px solid var(--orange);
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+    animation:contactCardIn .55s both;
 
-    padding:25px 0;
+}
+
+
+.contact-item:nth-child(2) {
+    animation-delay:.08s;
+
+}
+
+
+.contact-item:nth-child(3) {
+    animation-delay:.16s;
+
+}
+
+
+.contact-item:nth-child(4) {
+    animation-delay:.24s;
+
+}
+
+
+.contact-item:hover {
+
+    transform:translateY(-4px);
+    border-color:rgba(232,117,34,.55);
+    box-shadow:0 12px 25px rgba(17,17,17,.08);
+
+}
+
+
+.contact-item > .contact-item-icon {
+
+    display:flex;
+    flex:0 0 34px;
+    align-items:center;
+    justify-content:center;
+    width:36px;
+    height:36px;
+    background:var(--orange);
+    border:1px solid var(--orange);
+    color:var(--orange);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:0;
+    transition:transform .3s ease;
+
+}
+
+
+.contact-item:hover .contact-item-icon {
+
+    background:var(--orange);
+    color:#fff;
+    transform:rotate(8deg) scale(1.1);
 
 }
 
@@ -1784,6 +1856,11 @@ p {
 .contact-item strong {
 
     font-size:17px;
+    line-height:1.45;
+    color:var(--black);
+    overflow-wrap:anywhere;
+    transition:color .25s ease;
+    color:var(--orange);
 
 }
 
@@ -1791,6 +1868,25 @@ p {
 .contact-item p {
 
     margin-top:6px;
+    line-height:1.55;
+
+}
+
+
+.contact-item-address {
+
+    grid-column:1 / -1;
+
+}
+
+
+@media(max-width:650px) {
+
+    .contact-item-address {
+
+        grid-column:auto;
+
+    }
 
 }
 
@@ -2119,6 +2215,59 @@ footer {
 }
 
 
+.floating-title,
+.floating-item {
+
+    position:relative;
+    z-index:1;
+
+}
+
+
+.floating-item {
+
+    margin-top:9px;
+    padding:10px 11px;
+    background:#faf9f6;
+    border:1px solid rgba(0,0,0,.07);
+    border-left:3px solid var(--orange);
+    transition:transform .25s ease, background .25s ease, box-shadow .25s ease;
+    animation:floatingItemIn .45s both;
+
+}
+
+
+.floating-item:nth-of-type(2) {
+    animation-delay:.06s;
+}
+
+
+.floating-item:nth-of-type(3) {
+    animation-delay:.12s;
+}
+
+
+.floating-item:nth-of-type(4) {
+    animation-delay:.18s;
+}
+
+
+.floating-item:hover {
+
+    transform:translateX(-4px);
+    background:#fff;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+
+}
+
+
+.floating-item .floating-label {
+
+    margin-top:0;
+
+}
+
+
 .floating-tab {
 
     position:absolute;
@@ -2191,6 +2340,49 @@ footer {
     object-fit:cover;
     visibility:visible;
     opacity:1;
+    border:1px solid rgba(0,0,0,.08);
+    animation:floatingQrPulse 3s ease-in-out infinite;
+
+}
+
+
+@keyframes floatingItemIn {
+
+    from {
+        opacity:0;
+        transform:translateX(14px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateX(0);
+    }
+
+}
+
+
+@keyframes floatingQrPulse {
+
+    0%,
+    100% {
+        box-shadow:0 0 0 0 rgba(232,117,34,.12);
+    }
+
+    50% {
+        box-shadow:0 0 0 7px rgba(232,117,34,0);
+    }
+
+}
+
+
+@media(prefers-reduced-motion:reduce) {
+
+    .floating-contact,
+    .floating-item,
+    .floating-contact img {
+        animation:none;
+        transition:none;
+    }
 
 }
 
@@ -2431,7 +2623,8 @@ html[dir="rtl"] .floating-contact:focus-within {
     .material-grid,
     .feature-grid,
     .process-grid,
-    .industry-grid {
+    .industry-grid,
+    .contact-cards {
 
         grid-template-columns:1fr;
 
@@ -3153,6 +3346,32 @@ p {
         left:-6%;
         top:-6%;
 
+    }
+
+}
+
+
+@keyframes contactCardIn {
+
+    from {
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+@media(prefers-reduced-motion:reduce) {
+
+    .contact-item,
+    .contact-item-icon {
+        animation:none;
+        transition:none;
     }
 
 }
