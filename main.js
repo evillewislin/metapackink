@@ -161,6 +161,13 @@ document.addEventListener("DOMContentLoaded", function () {
             "footer.perfume": "Perfume Packaging",
             "footer.cosmetic": "Cosmetic Packaging",
             "footer.home": "Home",
+            "footer.social": "Social media links",
+            "footer.facebook": "Facebook",
+            "footer.instagram": "Instagram",
+            "footer.youtube": "YouTube",
+            "footer.linkedin": "LinkedIn",
+            "footer.pinterest": "Pinterest",
+            "footer.twitter": "Twitter",
             "products.supportEyebrow": "03 / SUPPORTING PACKAGING",
             "products.supportTitle": "Custom Branded Packaging",
             "products.supportText": "Packaging components and supporting printed materials can be developed as part of a complete packaging project.",
@@ -199,6 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "contact.infoText": "Our team is ready to answer your questions and discuss your custom packaging requirements.",
             "contact.whatsapp": "Whatsapp :",
             "contact.emailLabel": "Email",
+            "floating.contact": "Contact us",
+            "floating.phone": "Phone",
+            "floating.email": "Email",
+            "floating.whatsapp": "WhatsApp",
+            "floating.scan": "Scan to WhatsApp",
+            "floating.qrAlt": "Scan the QR code to contact us on WhatsApp",
             "industry.fragrance": "Perfume & Fragrance",
             "industry.beauty": "Cosmetics & Beauty",
             "industry.jewelry": "Jewelry",
@@ -366,6 +379,13 @@ document.addEventListener("DOMContentLoaded", function () {
             "footer.perfume": "Emballages parfum",
             "footer.cosmetic": "Emballages cosmétiques",
             "footer.home": "Accueil",
+            "footer.social": "Liens vers les réseaux sociaux",
+            "footer.facebook": "Facebook",
+            "footer.instagram": "Instagram",
+            "footer.youtube": "YouTube",
+            "footer.linkedin": "LinkedIn",
+            "footer.pinterest": "Pinterest",
+            "footer.twitter": "Twitter",
             "products.supportEyebrow": "03 / EMBALLAGES COMPLÉMENTAIRES",
             "products.supportTitle": "Emballages de marque sur mesure",
             "products.supportText": "Les composants d'emballage et supports imprimés peuvent être développés dans un projet complet.",
@@ -404,6 +424,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "contact.infoText": "Notre équipe est prête à répondre à vos questions et à discuter de vos exigences.",
             "contact.whatsapp": "Whatsapp :",
             "contact.emailLabel": "E-mail",
+            "floating.contact": "Contactez-nous",
+            "floating.phone": "Téléphone",
+            "floating.email": "E-mail",
+            "floating.whatsapp": "WhatsApp",
+            "floating.scan": "Scanner pour WhatsApp",
+            "floating.qrAlt": "Scannez le code QR pour nous contacter sur WhatsApp",
             "industry.fragrance": "Parfums & fragrances",
             "industry.beauty": "Cosmétiques & beauté",
             "industry.jewelry": "Bijouterie",
@@ -571,6 +597,13 @@ document.addEventListener("DOMContentLoaded", function () {
             "footer.perfume": "Duftverpackungen",
             "footer.cosmetic": "Kosmetikverpackungen",
             "footer.home": "Startseite",
+            "footer.social": "Links zu sozialen Medien",
+            "footer.facebook": "Facebook",
+            "footer.instagram": "Instagram",
+            "footer.youtube": "YouTube",
+            "footer.linkedin": "LinkedIn",
+            "footer.pinterest": "Pinterest",
+            "footer.twitter": "Twitter",
             "products.supportEyebrow": "03 / ERGÄNZENDE VERPACKUNG",
             "products.supportTitle": "Individuelle Markenverpackungen",
             "products.supportText": "Verpackungskomponenten und gedruckte Begleitmaterialien können als Teil eines Gesamtprojekts entwickelt werden.",
@@ -609,6 +642,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "contact.infoText": "Unser Team beantwortet Ihre Fragen und bespricht gern Ihre individuellen Verpackungsanforderungen.",
             "contact.whatsapp": "WhatsApp :",
             "contact.emailLabel": "E-Mail",
+            "floating.contact": "Kontaktieren Sie uns",
+            "floating.phone": "Telefon",
+            "floating.email": "E-Mail",
+            "floating.whatsapp": "WhatsApp",
+            "floating.scan": "Für WhatsApp scannen",
+            "floating.qrAlt": "QR-Code scannen, um uns über WhatsApp zu kontaktieren",
             "industry.fragrance": "Parfüm & Duft",
             "industry.beauty": "Kosmetik & Beauty",
             "industry.jewelry": "Schmuck",
@@ -776,6 +815,13 @@ document.addEventListener("DOMContentLoaded", function () {
             "footer.perfume": "تغليف العطور",
             "footer.cosmetic": "تغليف مستحضرات التجميل",
             "footer.home": "الرئيسية",
+            "footer.social": "روابط التواصل الاجتماعي",
+            "footer.facebook": "فيسبوك",
+            "footer.instagram": "إنستغرام",
+            "footer.youtube": "يوتيوب",
+            "footer.linkedin": "لينكدإن",
+            "footer.pinterest": "بنترست",
+            "footer.twitter": "تويتر",
             "products.supportEyebrow": "03 / التغليف الداعم",
             "products.supportTitle": "تغليف مخصص يحمل العلامة التجارية",
             "products.supportText": "يمكن تطوير مكونات التغليف والمواد المطبوعة الداعمة كجزء من مشروع تغليف متكامل.",
@@ -814,6 +860,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "contact.infoText": "فريقنا مستعد للإجابة عن أسئلتك ومناقشة متطلبات التغليف المخصص.",
             "contact.whatsapp": "واتساب :",
             "contact.emailLabel": "البريد الإلكتروني",
+            "floating.contact": "تواصل معنا",
+            "floating.phone": "الهاتف",
+            "floating.email": "البريد الإلكتروني",
+            "floating.whatsapp": "واتساب",
+            "floating.scan": "امسح للتواصل عبر واتساب",
+            "floating.qrAlt": "امسح رمز QR للتواصل معنا عبر واتساب",
             "industry.fragrance": "العطور والروائح",
             "industry.beauty": "الجمال والعناية",
             "industry.jewelry": "المجوهرات",
@@ -838,6 +890,18 @@ document.addEventListener("DOMContentLoaded", function () {
             if (selected[key]) {
                 element.textContent = selected[key];
             }
+        });
+
+        document.querySelectorAll("[data-i18n-attr]").forEach(function (element) {
+            element.dataset.i18nAttr.split(",").forEach(function (attributePair) {
+                const parts = attributePair.split(":");
+                const attribute = parts[0];
+                const key = parts.slice(1).join(":");
+
+                if (attribute && selected[key]) {
+                    element.setAttribute(attribute, selected[key]);
+                }
+            });
         });
 
         const current = document.querySelector(".lang-current");
