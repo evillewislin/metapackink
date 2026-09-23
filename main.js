@@ -138,6 +138,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*
     --------------------------------
+    SCROLL REVEALS
+    --------------------------------
+    */
+
+    const revealItems = document.querySelectorAll(
+        ".intro-section, .section-heading, .page-hero > .container, .solution-hero > .container, .contact-hero > .container, .contact-info, .contact-form-wrapper, .contact-card, .dark-cta > .container, .category-heading, .timeline-item, .finishing-grid, .industry-grid"
+    );
+
+    const staggerItems = document.querySelectorAll(
+        ".product-grid, .feature-grid, .process-grid, .catalog-grid, .material-grid, .footer-grid"
+    );
+
+    revealItems.forEach(function (item) {
+        item.classList.add("reveal");
+    });
+
+    staggerItems.forEach(function (item) {
+        item.classList.add("reveal-stagger");
+    });
+
+    if ("IntersectionObserver" in window) {
+
+        const observer = new IntersectionObserver(function (entries, revealObserver) {
+
+            entries.forEach(function (entry) {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("is-visible");
+                    revealObserver.unobserve(entry.target);
+
+                }
+
+            });
+
+        }, { threshold:0.12, rootMargin:"0px 0px -40px" });
+
+        document.querySelectorAll(".reveal, .reveal-stagger").forEach(function (item) {
+            observer.observe(item);
+        });
+
+    } else {
+
+        document.querySelectorAll(".reveal, .reveal-stagger").forEach(function (item) {
+            item.classList.add("is-visible");
+        });
+
+    }
+
+
+    /*
+    --------------------------------
     SMOOTH INTERNAL LINKS
     --------------------------------
     */
