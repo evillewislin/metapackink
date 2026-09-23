@@ -22,13 +22,25 @@
         </a>
 
         <nav>
-            <a href="index.html">Home</a>
-            <a href="products.html">Products</a>
-            <a href="packaging-solutions.html">Solutions</a>
-            <a href="contact.html">Contact</a>
+            <a href="index.html" class="active" data-i18n="nav.home">Home</a>
+            <a href="products.html" data-i18n="nav.products">Products</a>
+            <a href="packaging-solutions.html" data-i18n="nav.solutions">Solutions</a>
+            <a href="contact.html" data-i18n="nav.contact">Contact</a>
         </nav>
 
-        <a href="contact.html" class="nav-btn">
+        <div class="lang-switcher" aria-label="Language switcher">
+            <button type="button" class="lang-toggle" aria-expanded="false" aria-label="Select language">
+                <span class="lang-current">EN</span>
+            </button>
+            <div class="lang-menu" role="menu">
+                <button type="button" class="lang-option is-active" data-lang="en" aria-pressed="true">English</button>
+                <button type="button" class="lang-option" data-lang="fr" aria-pressed="false">Français</button>
+                <button type="button" class="lang-option" data-lang="de" aria-pressed="false">Deutsch</button>
+                <button type="button" class="lang-option" data-lang="ar" aria-pressed="false">العربية</button>
+            </div>
+        </div>
+
+        <a href="contact.html" class="nav-btn" data-i18n="nav.quote">
             Get a Quote
         </a>
 
@@ -47,16 +59,17 @@
 
         <div class="hero-content">
 
-            <div class="eyebrow">
+            <div class="eyebrow" data-i18n="hero.eyebrow">
                 CUSTOM PACKAGING MANUFACTURER
             </div>
 
             <h1>
-                Packaging Made
-                <span>For Your Brand.</span>
+                <span style="color: black;" data-i18n="hero.title1">Packaging</span>
+                <span style="color: black;" data-i18n="hero.title1b">Made</span>
+                <span style="color: black;" data-i18n="hero.title2">For Your Brand.</span>
             </h1>
 
-            <p class="hero-text">
+            <p class="hero-text" data-i18n="hero.text">
                 Custom rigid boxes, magnetic boxes, perfume packaging,
                 cosmetic packaging and premium presentation packaging
                 manufactured to your specifications.
@@ -64,11 +77,11 @@
 
             <div class="hero-buttons">
 
-                <a href="contact.html" class="btn btn-primary">
+                <a href="contact.html" class="btn btn-primary" data-i18n="hero.cta1">
                     Get a Custom Quote
                 </a>
 
-                <a href="products.html" class="btn btn-outline">
+                <a href="products.html" class="btn btn-outline" data-i18n="hero.cta2">
                     Explore Products
                 </a>
 
@@ -77,18 +90,18 @@
             <div class="hero-trust">
 
                 <div>
-                    <strong>Custom</strong>
-                    <span>Structural Design</span>
+                    <strong data-i18n="home.custom">Custom</strong>
+                    <span data-i18n="home.structural">Structural Design</span>
                 </div>
 
                 <div>
-                    <strong>Premium</strong>
-                    <span>Finishing Options</span>
+                    <strong data-i18n="home.premium">Premium</strong>
+                    <span data-i18n="home.finishing">Finishing Options</span>
                 </div>
 
                 <div>
-                    <strong>QC</strong>
-                    <span>Production Control</span>
+                    <strong data-i18n="home.qc">QC</strong>
+                    <span data-i18n="home.quality">Production Control</span>
                 </div>
 
             </div>
@@ -124,20 +137,19 @@
 
         <div>
 
-            <div class="eyebrow">
+            <div class="eyebrow" data-i18n="intro.eyebrow">
                 BUILT AROUND YOUR PRODUCT
             </div>
 
-            <h2>
-                From packaging concept
-                to finished product.
+            <h2 data-i18n="intro.title">
+                From packaging concept to finished product.
             </h2>
 
         </div>
 
         <div>
 
-            <p>
+            <p data-i18n="intro.text">
                 Metapackink provides custom packaging manufacturing
                 for brands that need more than a standard box.
                 From structural development and material selection
@@ -145,7 +157,7 @@
                 every project can be developed around your product.
             </p>
 
-            <a href="packaging-solutions.html" class="text-link">
+            <a href="packaging-solutions.html" class="text-link" data-i18n="intro.link">
                 Explore our packaging solutions →
             </a>
 
@@ -166,17 +178,17 @@
 
             <div>
 
-                <div class="eyebrow">
+                <div class="eyebrow" data-i18n="products.eyebrow">
                     OUR PRODUCTS
                 </div>
 
-                <h2>
+                <h2 data-i18n="products.title">
                     Packaging for premium products.
                 </h2>
 
             </div>
 
-            <a href="products.html" class="text-link">
+            <a href="products.html" class="text-link" data-i18n="products.view">
                 View all products →
             </a>
 
@@ -199,14 +211,14 @@
 
                 <div class="product-info">
 
-                    <h3>Premium Rigid Boxes</h3>
+                    <h3 data-i18n="product.rigidTitle">Premium Rigid Boxes</h3>
 
-                    <p>
+                    <p data-i18n="product.rigidText">
                         High-end presentation boxes for luxury,
                         retail and branded products.
                     </p>
 
-                    <span>Explore →</span>
+                    <span data-i18n="product.explore">Explore →</span>
 
                 </div>
 
@@ -226,14 +238,14 @@
 
                 <div class="product-info">
 
-                    <h3>Magnetic Boxes</h3>
+                    <h3 data-i18n="product.magneticTitle">Magnetic Boxes</h3>
 
-                    <p>
+                    <p data-i18n="product.magneticText">
                         Foldable and rigid magnetic closure
                         packaging for premium presentation.
                     </p>
 
-                    <span>Explore →</span>
+                    <span data-i18n="product.explore">Explore →</span>
 
                 </div>
 
@@ -253,14 +265,14 @@
 
                 <div class="product-info">
 
-                    <h3>Perfume Packaging</h3>
+                    <h3 data-i18n="product.perfumeTitle">Perfume Packaging</h3>
 
-                    <p>
+                    <p data-i18n="product.perfumeText">
                         Custom fragrance boxes designed around
                         bottle dimensions and brand identity.
                     </p>
 
-                    <span>Explore →</span>
+                    <span data-i18n="product.explore">Explore →</span>
 
                 </div>
 
@@ -280,14 +292,14 @@
 
                 <div class="product-info">
 
-                    <h3>Cosmetic Packaging</h3>
+                    <h3 data-i18n="product.cosmeticTitle">Cosmetic Packaging</h3>
 
-                    <p>
+                    <p data-i18n="product.cosmeticText">
                         Branded boxes for skincare, beauty and
                         cosmetic products.
                     </p>
 
-                    <span>Explore →</span>
+                    <span data-i18n="product.explore">Explore →</span>
 
                 </div>
 
@@ -307,14 +319,14 @@
 
                 <div class="product-info">
 
-                    <h3>Custom Drawer Boxes</h3>
+                    <h3 data-i18n="product.drawerTitle">Custom Drawer Boxes</h3>
 
-                    <p>
+                    <p data-i18n="product.drawerText">
                         Sliding drawer-style packaging designed
                         for premium presentation and retail display.
                     </p>
 
-                    <span>Explore →</span>
+                    <span data-i18n="product.explore">Explore →</span>
 
                 </div>
 
@@ -333,14 +345,14 @@
 
                 <div class="product-info">
 
-                    <h3>Two-Piece Rigid Boxes</h3>
+                    <h3 data-i18n="product.twoPieceTitle">Two-Piece Rigid Boxes</h3>
 
-                    <p>
+                    <p data-i18n="product.twoPieceText">
                         Classic lid-and-base construction for
                         premium retail packaging.
                     </p>
 
-                    <span>Explore →</span>
+                    <span data-i18n="product.explore">Explore →</span>
 
                 </div>
 
@@ -361,15 +373,15 @@
 
         <div class="section-heading center">
 
-            <div class="eyebrow">
+            <div class="eyebrow" data-i18n="why.eyebrow">
                 WHY METAPACKINK
             </div>
 
-            <h2>
+            <h2 data-i18n="why.title">
                 More than printing a box.
             </h2>
 
-            <p>
+            <p data-i18n="why.subtitle">
                 We help turn packaging requirements into
                 production-ready packaging.
             </p>
@@ -385,9 +397,9 @@
                     01
                 </div>
 
-                <h3>Structural Development</h3>
+                <h3 data-i18n="feature.structural">Structural Development</h3>
 
-                <p>
+                <p data-i18n="feature.structuralText">
                     Packaging structures can be developed around
                     product dimensions, presentation requirements
                     and logistics.
@@ -402,9 +414,9 @@
                     02
                 </div>
 
-                <h3>Material Selection</h3>
+                <h3 data-i18n="feature.material">Material Selection</h3>
 
-                <p>
+                <p data-i18n="feature.materialText">
                     Choose from greyboard, specialty papers,
                     coated papers, fabrics, foams and other
                     packaging materials.
@@ -419,9 +431,9 @@
                     03
                 </div>
 
-                <h3>Premium Finishing</h3>
+                <h3 data-i18n="feature.finishing">Premium Finishing</h3>
 
-                <p>
+                <p data-i18n="feature.finishingText">
                     Foil stamping, embossing, debossing,
                     spot UV, lamination and other finishing
                     options are available.
@@ -436,9 +448,9 @@
                     04
                 </div>
 
-                <h3>Quality Control</h3>
+                <h3 data-i18n="feature.quality">Quality Control</h3>
 
-                <p>
+                <p data-i18n="feature.qualityText">
                     Production checks help verify dimensions,
                     materials, printing, finishing and assembly
                     before shipment.
@@ -463,11 +475,11 @@
 
             <div>
 
-                <div class="eyebrow">
+                <div class="eyebrow" data-i18n="process.eyebrow">
                     HOW IT WORKS
                 </div>
 
-                <h2>
+                <h2 data-i18n="process.title">
                     A simple path from idea to production.
                 </h2>
 
@@ -482,9 +494,9 @@
 
                 <span>01</span>
 
-                <h3>Send Requirements</h3>
+                <h3 data-i18n="process.requirements">Send Requirements</h3>
 
-                <p>
+                <p data-i18n="process.requirementsText">
                     Share your dimensions, quantity,
                     product information and packaging ideas.
                 </p>
@@ -496,9 +508,9 @@
 
                 <span>02</span>
 
-                <h3>Structure & Quote</h3>
+                <h3 data-i18n="process.quote">Structure & Quote</h3>
 
-                <p>
+                <p data-i18n="process.quoteText">
                     We review the project and recommend
                     suitable materials, construction and finishes.
                 </p>
@@ -510,9 +522,9 @@
 
                 <span>03</span>
 
-                <h3>Sample Approval</h3>
+                <h3 data-i18n="process.sample">Sample Approval</h3>
 
-                <p>
+                <p data-i18n="process.sampleText">
                     Confirm the packaging structure,
                     artwork, materials and finishing.
                 </p>
@@ -524,9 +536,9 @@
 
                 <span>04</span>
 
-                <h3>Production & QC</h3>
+                <h3 data-i18n="process.production">Production & QC</h3>
 
-                <p>
+                <p data-i18n="process.productionText">
                     Production follows the approved
                     specifications before final shipment.
                 </p>
@@ -548,22 +560,22 @@
 
         <div>
 
-            <div class="eyebrow">
+            <div class="eyebrow" data-i18n="cta.eyebrow">
                 START YOUR PROJECT
             </div>
 
-            <h2>
+            <h2 style="color: white;" data-i18n="cta.title">
                 Have a packaging idea?
             </h2>
 
-            <p>
+            <p data-i18n="cta.text">
                 Tell us what you need and we'll help you
                 turn it into a production-ready packaging solution.
             </p>
 
         </div>
 
-        <a href="contact.html" class="btn btn-light">
+        <a href="contact.html" class="btn btn-light" data-i18n="cta.button">
             Request a Quote →
         </a>
 
@@ -584,7 +596,7 @@
                 <span>META</span>PACKINK
             </a>
 
-            <p>
+            <p data-i18n="footer.tagline">
                 Custom packaging manufacturing
                 for premium brands.
             </p>
@@ -593,37 +605,58 @@
 
         <div>
 
-            <h4>Products</h4>
+            <h4 data-i18n="footer.products">Products</h4>
 
-            <a href="products.html">Rigid Boxes</a>
-            <a href="products.html">Magnetic Boxes</a>
-            <a href="products.html">Perfume Packaging</a>
-            <a href="products.html">Cosmetic Packaging</a>
-
-        </div>
-
-        <div>
-
-            <h4>Company</h4>
-
-            <a href="index.html">Home</a>
-            <a href="packaging-solutions.html">Solutions</a>
-            <a href="contact.html">Contact</a>
+            <a href="products.html" data-i18n="footer.rigid">Rigid Boxes</a>
+            <a href="products.html" data-i18n="footer.magnetic">Magnetic Boxes</a>
+            <a href="products.html" data-i18n="footer.perfume">Perfume Packaging</a>
+            <a href="products.html" data-i18n="footer.cosmetic">Cosmetic Packaging</a>
 
         </div>
 
         <div>
 
-            <h4>Start a Project</h4>
+            <h4 data-i18n="footer.company">Company</h4>
 
-            <p>
+            <a href="index.html" data-i18n="nav.home">Home</a>
+            <a href="packaging-solutions.html" data-i18n="nav.solutions">Solutions</a>
+            <a href="contact.html" data-i18n="nav.contact">Contact</a>
+
+        </div>
+
+        <div>
+
+            <h4 data-i18n="footer.start">Start a Project</h4>
+
+            <p data-i18n="footer.description">
                 Send your packaging requirements
                 and request a quotation.
             </p>
 
-            <a href="contact.html" class="footer-button">
+            <a href="contact.html" class="footer-button" data-i18n="footer.button">
                 Get a Quote
             </a>
+
+            <div class="social-links" aria-label="Social media links">
+                <a class="social-link" rel="nofollow" target="_blank" href="https://www.facebook.com/people/Guyin-Packaging/pfbid0wWDLE4XMkev7Gqq2qMoJuAzDCw8uBvrZHN8WZmgD1dTwrh8K8uwMjjFaPV5sxbdFl/?utm_source=ig&utm_medium=social&utm_content=link_in_bio">
+                    <img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866117_XMajHVRxku.png" alt="Facebook">
+                </a>
+                <a class="social-link" rel="nofollow" target="_blank" href="https://www.instagram.com/gooinpack_guyin/">
+                    <img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866141_dVGDIuA9lb.png" alt="Instagram">
+                </a>
+                <a class="social-link" rel="nofollow" target="_blank" href="https://www.youtube.com/@GooinPack">
+                    <img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866171_GMyiV2NzHe.png" alt="Youtube">
+                </a>
+                <a class="social-link" rel="nofollow" target="_blank" href="https://www.linkedin.com/in/yin-gu-76a75a39b">
+                    <img src="https://www.gooinpack.com/storage/uploads/images/202606/10/1781061664_bcyAfYCrCN.png" alt="Linkedin">
+                </a>
+                <a class="social-link" rel="nofollow" target="_blank" href="https://au.pinterest.com/yingu312/_profile/">
+                    <img src="https://www.gooinpack.com/storage/uploads/images/202608/19/1787107435_zMzSiCLrRw.png" alt="Pinterest">
+                </a>
+                <a class="social-link" rel="nofollow" target="_blank" href="https://x.com/Gooinpack">
+                    <img src="https://www.gooinpack.com/storage/uploads/images/202608/19/1787107491_Z97hHfoBac.png" alt="Twitter">
+                </a>
+            </div>
 
         </div>
 
@@ -634,7 +667,7 @@
 
         <div class="container">
 
-            © 2026 Metapackink. All rights reserved.
+            <span data-i18n="footer.copy">© 2026 Metapackink. All rights reserved.</span>
 
         </div>
 

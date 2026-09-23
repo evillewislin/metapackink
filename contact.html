@@ -28,14 +28,26 @@ content="Contact Metapackink for custom packaging manufacturing, rigid boxes, ma
 
 <nav>
 
-<a href="index.html">Home</a>
-<a href="products.html">Products</a>
-<a href="packaging-solutions.html">Solutions</a>
-<a href="contact.html" class="active">Contact</a>
+<a href="index.html" data-i18n="nav.home">Home</a>
+<a href="products.html" data-i18n="nav.products">Products</a>
+<a href="packaging-solutions.html" data-i18n="nav.solutions">Solutions</a>
+<a href="contact.html" class="active" data-i18n="nav.contact">Contact</a>
 
 </nav>
 
-<a href="contact.html" class="nav-btn">
+<div class="lang-switcher" aria-label="Language switcher">
+    <button type="button" class="lang-toggle" aria-expanded="false" aria-label="Select language">
+        <span class="lang-current">EN</span>
+    </button>
+    <div class="lang-menu" role="menu">
+        <button type="button" class="lang-option is-active" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" class="lang-option" data-lang="fr" aria-pressed="false">Français</button>
+        <button type="button" class="lang-option" data-lang="de" aria-pressed="false">Deutsch</button>
+        <button type="button" class="lang-option" data-lang="ar" aria-pressed="false">العربية</button>
+    </div>
+</div>
+
+<a href="contact.html" class="nav-btn" data-i18n="nav.quote">
 Get a Quote
 </a>
 
@@ -51,15 +63,15 @@ Get a Quote
 
 <div class="container">
 
-<div class="eyebrow">
+<div class="eyebrow" data-i18n="contact.eyebrow">
 LET'S TALK PACKAGING
 </div>
 
-<h1>
+<h1 data-i18n="contact.title">
 Tell us what you're building.
 </h1>
 
-<p>
+<p data-i18n="contact.text">
 Give us a call, send us a WhatsApp message,
 or email us directly.
 </p>
@@ -77,15 +89,15 @@ or email us directly.
 
 <div class="contact-info">
 
-<div class="eyebrow">
+<div class="eyebrow" data-i18n="contact.infoEyebrow">
 CONTACT METAPACKINK
 </div>
 
-<h2>
+<h2 data-i18n="contact.infoTitle">
 Let's talk about your packaging project.
 </h2>
 
-<p>
+<p data-i18n="contact.infoText">
 Our team is ready to answer your questions and
 discuss your custom packaging requirements.
 </p>
@@ -93,12 +105,12 @@ discuss your custom packaging requirements.
 
 <div class="contact-item">
 
-<span>Give us a call</span>
+<span data-i18n="contact.call">Give us a call</span>
 
-<strong>Tel : <a href="tel:+8613143789995">+86-13143789995</a></strong>
+<strong><span data-i18n="contact.tel">Tel :</span> <a href="tel:+8613143789995">+86-13143789995</a></strong>
 
 <p>
-Whatsapp : <a href="https://web.whatsapp.com/send?phone=+86-13143789995&amp;text=Hello" target="_blank" rel="noopener">+86-13143789995</a>
+<span data-i18n="contact.whatsapp">Whatsapp :</span> <a href="https://web.whatsapp.com/send?phone=+86-13143789995&amp;text=Hello" target="_blank" rel="noopener">+86-13143789995</a>
 </p>
 
 </div>
@@ -106,16 +118,16 @@ Whatsapp : <a href="https://web.whatsapp.com/send?phone=+86-13143789995&amp;text
 
 <div class="contact-item">
 
-<span>Email us</span>
+<span data-i18n="contact.email">Email us</span>
 
-<strong>Email : <a href="mailto:sales@gooinpack.com">sales@gooinpack.com</a></strong>
+<strong><span data-i18n="contact.emailLabel">Email</span> : <a href="mailto:sales@gooinpack.com">sales@gooinpack.com</a></strong>
 
 </div>
 
 
 <div class="contact-item">
 
-<span>Address</span>
+<span data-i18n="contact.address">Address</span>
 
 <p>
 Jiangnan Industrial Zone 2, Nancun Town, Panyu District, Guangzhou
@@ -144,7 +156,7 @@ Jiangnan Industrial Zone 2, Nancun Town, Panyu District, Guangzhou
 <span>META</span>PACKINK
 </a>
 
-<p>
+<p data-i18n="footer.tagline">
 Custom packaging manufacturing
 for premium brands.
 </p>
@@ -153,7 +165,7 @@ for premium brands.
 
 <div>
 
-<h4>Products</h4>
+<h4 data-i18n="footer.products">Products</h4>
 
 <a href="products.html">Rigid Boxes</a>
 <a href="products.html">Magnetic Boxes</a>
@@ -164,21 +176,47 @@ for premium brands.
 
 <div>
 
-<h4>Company</h4>
+<h4 data-i18n="footer.company">Company</h4>
 
-<a href="index.html">Home</a>
-<a href="products.html">Products</a>
-<a href="packaging-solutions.html">Solutions</a>
+<a href="index.html" data-i18n="footer.home">Home</a>
+<a href="products.html" data-i18n="nav.products">Products</a>
+<a href="packaging-solutions.html" data-i18n="nav.solutions">Solutions</a>
 
 </div>
 
 <div>
 
-<h4>Contact</h4>
+<h4 data-i18n="footer.start">Start a Project</h4>
 
-<a href="mailto:sales@gooinpack.com">
-sales@gooinpack.com
+<p data-i18n="footer.description">
+Send your packaging requirements
+and request a quotation.
+</p>
+
+<a href="contact.html" class="footer-button" data-i18n="footer.button">
+Get a Quote
 </a>
+
+<div class="social-links" aria-label="Social media links">
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.facebook.com/people/Guyin-Packaging/pfbid0wWDLE4XMkev7Gqq2qMoJuAzDCw8uBvrZHN8WZmgD1dTwrh8K8uwMjjFaPV5sxbdFl/?utm_source=ig&utm_medium=social&utm_content=link_in_bio">
+<img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866117_XMajHVRxku.png" alt="Facebook">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.instagram.com/gooinpack_guyin/">
+<img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866141_dVGDIuA9lb.png" alt="Instagram">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.youtube.com/@GooinPack">
+<img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866171_GMyiV2NzHe.png" alt="Youtube">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.linkedin.com/in/yin-gu-76a75a39b">
+<img src="https://www.gooinpack.com/storage/uploads/images/202606/10/1781061664_bcyAfYCrCN.png" alt="Linkedin">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://au.pinterest.com/yingu312/_profile/">
+<img src="https://www.gooinpack.com/storage/uploads/images/202608/19/1787107435_zMzSiCLrRw.png" alt="Pinterest">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://x.com/Gooinpack">
+<img src="https://www.gooinpack.com/storage/uploads/images/202608/19/1787107491_Z97hHfoBac.png" alt="Twitter">
+</a>
+</div>
 
 </div>
 
@@ -189,7 +227,7 @@ sales@gooinpack.com
 
 <div class="container">
 
-© 2026 Metapackink. All rights reserved.
+<span data-i18n="footer.copy">© 2026 Metapackink. All rights reserved.</span>
 
 </div>
 

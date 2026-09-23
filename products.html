@@ -28,14 +28,26 @@ content="Explore custom rigid boxes, magnetic boxes, perfume packaging, cosmetic
 
 <nav>
 
-<a href="index.html">Home</a>
-<a href="products.html" class="active">Products</a>
-<a href="packaging-solutions.html">Solutions</a>
-<a href="contact.html">Contact</a>
+<a href="index.html" data-i18n="nav.home">Home</a>
+<a href="products.html" class="active" data-i18n="nav.products">Products</a>
+<a href="packaging-solutions.html" data-i18n="nav.solutions">Solutions</a>
+<a href="contact.html" data-i18n="nav.contact">Contact</a>
 
 </nav>
 
-<a href="contact.html" class="nav-btn">
+<div class="lang-switcher" aria-label="Language switcher">
+    <button type="button" class="lang-toggle" aria-expanded="false" aria-label="Select language">
+        <span class="lang-current">EN</span>
+    </button>
+    <div class="lang-menu" role="menu">
+        <button type="button" class="lang-option is-active" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" class="lang-option" data-lang="fr" aria-pressed="false">Français</button>
+        <button type="button" class="lang-option" data-lang="de" aria-pressed="false">Deutsch</button>
+        <button type="button" class="lang-option" data-lang="ar" aria-pressed="false">العربية</button>
+    </div>
+</div>
+
+<a href="contact.html" class="nav-btn" data-i18n="nav.quote">
 Get a Quote
 </a>
 
@@ -51,16 +63,16 @@ Get a Quote
 
 <div class="container">
 
-<div class="eyebrow">
+<div class="eyebrow" data-i18n="products.pageeyebrow">
 CUSTOM PACKAGING PRODUCTS
 </div>
 
-<h1>
+<h1 data-i18n="products.pagetitle">
 Packaging designed around
 your product.
 </h1>
 
-<p>
+<p data-i18n="products.pageintro">
 Explore custom packaging structures for luxury,
 beauty, fragrance, retail and premium consumer products.
 </p>
@@ -81,20 +93,20 @@ beauty, fragrance, retail and premium consumer products.
 
 <div>
 
-<span class="eyebrow">01 / RIGID PACKAGING</span>
+<span class="eyebrow" data-i18n="products.rigidEyebrow">01 / RIGID PACKAGING</span>
 
-<h2>
+<h2 data-i18n="products.rigidTitle">
 Premium Rigid Boxes
 </h2>
 
-<p>
+<p data-i18n="products.rigidText">
 Rigid board packaging for products that require
 a premium presentation and durable structure.
 </p>
 
 </div>
 
-<a href="contact.html" class="text-link">
+<a href="contact.html" class="text-link" data-i18n="products.requestQuote">
 Request Quote →
 </a>
 
@@ -112,9 +124,9 @@ Request Quote →
 
 </div>
 
-<h3>Premium Rigid Boxes</h3>
+<h3 data-i18n="product.rigidTitle">Premium Rigid Boxes</h3>
 
-<p>
+<p data-i18n="product.rigidCardText">
 Custom sizes, papers, finishes and internal structures.
 </p>
 
@@ -129,9 +141,9 @@ Custom sizes, papers, finishes and internal structures.
 
 </div>
 
-<h3>Magnetic Closure Boxes</h3>
+<h3 data-i18n="product.magneticTitle">Magnetic Closure Boxes</h3>
 
-<p>
+<p data-i18n="product.magneticCardText">
 Premium magnetic boxes for luxury product presentation.
 </p>
 
@@ -146,9 +158,9 @@ Premium magnetic boxes for luxury product presentation.
 
 </div>
 
-<h3>Two-Piece Rigid Boxes</h3>
+<h3 data-i18n="product.twoPieceTitle">Two-Piece Rigid Boxes</h3>
 
-<p>
+<p data-i18n="product.twoPieceCardText">
 Classic lid-and-base construction with custom finishing.
 </p>
 
@@ -167,15 +179,15 @@ Classic lid-and-base construction with custom finishing.
 
 <div>
 
-<span class="eyebrow">
+<span class="eyebrow" data-i18n="products.industryEyebrow">
 02 / INDUSTRY PACKAGING
 </span>
 
-<h2>
+<h2 data-i18n="products.industryTitle">
 Beauty & Fragrance Packaging
 </h2>
 
-<p>
+<p data-i18n="products.industryText">
 Custom packaging developed for beauty, skincare,
 fragrance and premium consumer products.
 </p>
@@ -183,7 +195,7 @@ fragrance and premium consumer products.
 </div>
 
 <a href="packaging-solutions.html"
-class="text-link">
+class="text-link" data-i18n="products.viewSolutions">
 View Solutions →
 </a>
 
@@ -201,9 +213,9 @@ View Solutions →
 
 </div>
 
-<h3>Perfume Packaging</h3>
+<h3 data-i18n="product.perfumeTitle">Perfume Packaging</h3>
 
-<p>
+<p data-i18n="product.perfumeCardText">
 Custom fragrance boxes built around bottle dimensions.
 </p>
 
@@ -218,9 +230,9 @@ Custom fragrance boxes built around bottle dimensions.
 
 </div>
 
-<h3>Cosmetic Packaging</h3>
+<h3 data-i18n="product.cosmeticTitle">Cosmetic Packaging</h3>
 
-<p>
+<p data-i18n="product.cosmeticCardText">
 Branded packaging for skincare and beauty products.
 </p>
 
@@ -235,9 +247,9 @@ Branded packaging for skincare and beauty products.
 
 </div>
 
-<h3>Custom Drawer Boxes</h3>
+<h3 data-i18n="product.drawerTitle">Custom Drawer Boxes</h3>
 
-<p>
+<p data-i18n="product.drawerCardText">
 Elegant pull-out drawer packaging for premium retail and gifting.
 </p>
 
@@ -252,32 +264,16 @@ Elegant pull-out drawer packaging for premium retail and gifting.
 
 </div>
 
-<h3>Premium Gift Packaging</h3>
+<h3 data-i18n="product.giftTitle">Premium Gift Packaging</h3>
 
-<p>
+<p data-i18n="product.giftCardText">
 Luxury presentation boxes designed for gifting and special editions.
 </p>
 
 </article>
 
 
-<article class="catalog-card">
 
-<div class="catalog-image jewelry-image">
-
-<div class="jewelry-box">
-JEWELRY
-</div>
-
-</div>
-
-<h3>Jewelry Packaging</h3>
-
-<p>
-Compact premium packaging for jewelry and accessories.
-</p>
-
-</article>
 
 </div>
 
@@ -291,15 +287,15 @@ Compact premium packaging for jewelry and accessories.
 
 <div>
 
-<span class="eyebrow">
+<span class="eyebrow" data-i18n="products.supportEyebrow">
 03 / SUPPORTING PACKAGING
 </span>
 
-<h2>
+<h2 data-i18n="products.supportTitle">
 Custom Branded Packaging
 </h2>
 
-<p>
+<p data-i18n="products.supportText">
 Packaging components and supporting printed materials
 can be developed as part of a complete packaging project.
 </p>
@@ -311,24 +307,15 @@ can be developed as part of a complete packaging project.
 
 <div class="simple-product-list">
 
+
 <div>
-<strong>Product Inserts</strong>
-<span>Custom-fit presentation and protection</span>
+<strong data-i18n="products.paperBags">Paper Bags</strong>
+<span data-i18n="products.paperBagsText">Retail and gift packaging bags</span>
 </div>
 
 <div>
-<strong>Printed Sleeves</strong>
-<span>Branded sleeves and outer packaging</span>
-</div>
-
-<div>
-<strong>Paper Bags</strong>
-<span>Retail and gift packaging bags</span>
-</div>
-
-<div>
-<strong>Wrapping Paper</strong>
-<span>Custom printed brand packaging materials</span>
+<strong data-i18n="products.wrappingPaper">Wrapping Paper</strong>
+<span data-i18n="products.wrappingPaperText">Custom printed brand packaging materials</span>
 </div>
 
 </div>
@@ -347,15 +334,15 @@ can be developed as part of a complete packaging project.
 
 <div>
 
-<div class="eyebrow">
+<div class="eyebrow" data-i18n="products.customEyebrow">
 CUSTOM PROJECT
 </div>
 
-<h2>
+<h2 data-i18n="products.customTitle">
 Don't see exactly what you need?
 </h2>
 
-<p>
+<p data-i18n="products.customText">
 Tell us your product dimensions, quantity and packaging
 requirements. We can develop a custom solution.
 </p>
@@ -363,7 +350,7 @@ requirements. We can develop a custom solution.
 </div>
 
 <a href="contact.html"
-class="btn btn-light">
+class="btn btn-light" data-i18n="products.customButton">
 Talk to Metapackink →
 </a>
 
@@ -385,7 +372,7 @@ Talk to Metapackink →
 <span>META</span>PACKINK
 </a>
 
-<p>
+<p data-i18n="footer.tagline">
 Custom packaging manufacturing
 for premium brands.
 </p>
@@ -395,34 +382,60 @@ for premium brands.
 
 <div>
 
-<h4>Products</h4>
+<h4 data-i18n="footer.products">Products</h4>
 
-<a href="#rigid-boxes">Rigid Boxes</a>
-<a href="#magnetic-boxes">Magnetic Boxes</a>
-<a href="#perfume">Perfume Packaging</a>
-<a href="#cosmetic">Cosmetic Packaging</a>
-
-</div>
-
-
-<div>
-
-<h4>Company</h4>
-
-<a href="index.html">Home</a>
-<a href="packaging-solutions.html">Solutions</a>
-<a href="contact.html">Contact</a>
+<a href="#rigid-boxes" data-i18n="footer.rigid">Rigid Boxes</a>
+<a href="#magnetic-boxes" data-i18n="footer.magnetic">Magnetic Boxes</a>
+<a href="#perfume" data-i18n="footer.perfume">Perfume Packaging</a>
+<a href="#cosmetic" data-i18n="footer.cosmetic">Cosmetic Packaging</a>
 
 </div>
 
 
 <div>
 
-<h4>Start a Project</h4>
+<h4 data-i18n="footer.company">Company</h4>
 
-<a href="contact.html" class="footer-button">
+<a href="index.html" data-i18n="footer.home">Home</a>
+<a href="packaging-solutions.html" data-i18n="nav.solutions">Solutions</a>
+<a href="contact.html" data-i18n="nav.contact">Contact</a>
+
+</div>
+
+
+<div>
+
+<h4 data-i18n="footer.start">Start a Project</h4>
+
+<p data-i18n="footer.description">
+Send your packaging requirements
+and request a quotation.
+</p>
+
+<a href="contact.html" class="footer-button" data-i18n="footer.button">
 Get a Quote
 </a>
+
+<div class="social-links" aria-label="Social media links">
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.facebook.com/people/Guyin-Packaging/pfbid0wWDLE4XMkev7Gqq2qMoJuAzDCw8uBvrZHN8WZmgD1dTwrh8K8uwMjjFaPV5sxbdFl/?utm_source=ig&utm_medium=social&utm_content=link_in_bio">
+<img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866117_XMajHVRxku.png" alt="Facebook">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.instagram.com/gooinpack_guyin/">
+<img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866141_dVGDIuA9lb.png" alt="Instagram">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.youtube.com/@GooinPack">
+<img src="https://www.gooinpack.com/storage/uploads/images/202507/30/1753866171_GMyiV2NzHe.png" alt="Youtube">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://www.linkedin.com/in/yin-gu-76a75a39b">
+<img src="https://www.gooinpack.com/storage/uploads/images/202606/10/1781061664_bcyAfYCrCN.png" alt="Linkedin">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://au.pinterest.com/yingu312/_profile/">
+<img src="https://www.gooinpack.com/storage/uploads/images/202608/19/1787107435_zMzSiCLrRw.png" alt="Pinterest">
+</a>
+<a class="social-link" rel="nofollow" target="_blank" href="https://x.com/Gooinpack">
+<img src="https://www.gooinpack.com/storage/uploads/images/202608/19/1787107491_Z97hHfoBac.png" alt="Twitter">
+</a>
+</div>
 
 </div>
 
@@ -433,7 +446,7 @@ Get a Quote
 
 <div class="container">
 
-© 2026 Metapackink. All rights reserved.
+<span data-i18n="footer.copy">© 2026 Metapackink. All rights reserved.</span>
 
 </div>
 
