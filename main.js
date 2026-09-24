@@ -922,6 +922,37 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("metapackink-language", language);
     }
 
+    const legacyNav = document.querySelector(".legacy-nav");
+
+    if (legacyNav && !legacyNav.querySelector(".legacy-controls")) {
+        const legacyLogo = legacyNav.querySelector(".logo");
+        if (legacyLogo) {
+            legacyLogo.innerHTML = "<span>META</span>PACKINK";
+            legacyLogo.setAttribute("aria-label", "Home");
+        }
+
+        const contactPath = window.location.pathname.includes("/industries/")
+            ? "../contact.html"
+            : "contact.html";
+
+        legacyNav.insertAdjacentHTML("beforeend", `
+            <div class="legacy-controls">
+                <div class="lang-switcher" aria-label="Language switcher">
+                    <button type="button" class="lang-toggle" aria-expanded="false" aria-label="Select language">
+                        <span class="lang-current">EN</span>
+                    </button>
+                    <div class="lang-menu" role="menu">
+                        <button type="button" class="lang-option is-active" data-lang="en" aria-pressed="true">English</button>
+                        <button type="button" class="lang-option" data-lang="fr" aria-pressed="false">Français</button>
+                        <button type="button" class="lang-option" data-lang="de" aria-pressed="false">Deutsch</button>
+                        <button type="button" class="lang-option" data-lang="ar" aria-pressed="false">العربية</button>
+                    </div>
+                </div>
+                <a href="${contactPath}" class="nav-btn">Get a Quote</a>
+            </div>
+        `);
+    }
+
     const langSwitcher = document.querySelector(".lang-switcher");
 
     if (langSwitcher) {
