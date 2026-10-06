@@ -5,7 +5,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const GA_ID = process.env.GA_MEASUREMENT_ID?.trim() || "G-0M988Y84GV";
+const GA_ID = process.env.GA_MEASUREMENT_ID?.trim() || "G-G4VHR7QHGD";
 const ROOT_DIR = path.join(__dirname, "..");
 
 const snippet = `<!-- Google tag (gtag.js) -->
