@@ -1,7 +1,7 @@
 :root {
 
-    --orange:#e87522;
-    --orange-dark:#c95d12;
+    --orange:#a84300;
+    --orange-dark:#843600;
 
     --black:#111111;
     --dark:#181818;
@@ -1346,7 +1346,7 @@ p {
 
     color:#fff;
 
-    opacity:.8;
+    opacity:1;
 
 }
 
@@ -1362,7 +1362,7 @@ p {
 
     color:#fff;
 
-    opacity:.85;
+    opacity:1;
 
     max-width:650px;
 
@@ -2312,7 +2312,7 @@ footer {
 
     padding:25px 0;
 
-    color:#666;
+    color:#999;
 
     font-size:12px;
 
@@ -2465,7 +2465,7 @@ footer {
 
     display:block;
     margin-top:13px;
-    color:#777;
+    color:#666;
     font-size:11px;
     font-weight:700;
     letter-spacing:.06em;
