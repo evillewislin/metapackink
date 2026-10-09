@@ -1,5 +1,23 @@
 User-agent: *
 Allow: /
+Disallow: /thank-you/
+
+# Block low-value duplicate-parameter URLs
+Disallow: /*?utm_
+Disallow: /*?ref=
+
+# AI crawlers are welcome to read and cite this site.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 # XML Sitemap
 Sitemap: https://www.metapackink.com/sitemap.xml

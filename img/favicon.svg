@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Metapackink">
+  <rect width="64" height="64" rx="12" fill="#181818"/>
+  <path d="M14 44V20h6.4l11.6 15.2L43.6 20H50v24h-6.2V30.6L32.6 45h-1.2L20.2 30.6V44H14z" fill="#f7f6f3"/>
+  <rect x="14" y="47" width="36" height="3.4" rx="1.7" fill="#a84300"/>
+</svg>

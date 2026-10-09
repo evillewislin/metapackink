@@ -1,0 +1,21 @@
+# Cloudflare Pages redirect rules.
+# 301 every legacy / WordPress-era URL to its canonical clean path.
+/index.html  /  301
+/products.html  /products/  301
+/packaging-solutions.html  /packaging-solutions/  301
+/industries.html  /industries/  301
+/industries/cosmetics.html  /industries/cosmetics/  301
+/industries/perfume.html  /industries/perfume/  301
+/industries/premium-consumer-products.html  /industries/premium-consumer-products/  301
+/about.html  /about/  301
+/manufacturing-process.html  /manufacturing-process/  301
+/quality-control.html  /quality-control/  301
+/blog.html  /blog/  301
+/case-studies.html  /case-studies/  301
+/contact.html  /contact/  301
+/industries-cosmetics/  /industries/cosmetics/  301
+/industries-perfume/  /industries/perfume/  301
+/industries-premium-consumer-products/  /industries/premium-consumer-products/  301
+
+# Canonical host: force www (pages.dev preview URLs are left alone).
+https://metapackink.com/*  https://www.metapackink.com/:splat  301
