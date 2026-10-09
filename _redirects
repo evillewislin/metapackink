@@ -18,4 +18,4 @@
 /industries-premium-consumer-products/  /industries/premium-consumer-products/  301
 
 # Canonical host: force www (pages.dev preview URLs are left alone).
-https://metapackink.com/*  https://www.metapackink.com/:splat  301
+/*  /:splat  301
