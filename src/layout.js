@@ -37,10 +37,32 @@ function navHref(target, fromUrl) {
   return rel(target, fromUrl);
 }
 
+/* Version stamped onto stylesheet and script URLs. tools/build.js sets it once
+   per build from a hash of those files' contents; it stays empty when this
+   module is used outside the build, in which case plain paths are emitted. */
+let ASSET_VERSION = '';
+
+function setAssetVersion(v) {
+  ASSET_VERSION = v ? String(v) : '';
+}
+
 function asset(path, fromUrl) {
   const depth = depthOf(fromUrl);
   const prefix = depth === 0 ? './' : '../'.repeat(depth);
-  return prefix + path.replace(/^\//, '');
+  const clean = path.replace(/^\//, '');
+  const out = prefix + clean;
+
+  /* style.css, main.js and friends are served `immutable` for a year. That is
+     the right cache setting, but on its own it means a redeploy hands visitors
+     new HTML together with a stylesheet the browser refuses to re-check — a
+     page that looks half-updated and is very hard to explain. The query string
+     gives every changed file a new URL, so long caching stays safe and a
+     redeploy is picked up on the next load.
+     Images are deliberately left alone: they are not rewritten on every build,
+     and hashing them would only force needless refetches. */
+  return ASSET_VERSION && /\.(css|js)$/.test(clean)
+    ? out + '?v=' + ASSET_VERSION
+    : out;
 }
 
 /* ------------------------------------------------------------------ *
@@ -386,6 +408,7 @@ module.exports = {
   rel,
   navHref,
   asset,
+  setAssetVersion,
   depthOf,
   renderHead,
   renderHeader,
