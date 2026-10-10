@@ -294,7 +294,7 @@ function articleAside(fromUrl) {
 <div class="aside-card">
 <h3>Talk to the factory</h3>
 <p>Send the product dimensions and the quantity. We will come back with a structure and an indicative price, normally within one business day.</p>
-<a class="btn-outline" href="${navHref('/request-a-quote/', fromUrl)}">Request a quote</a>
+<a class="btn btn-primary" href="${navHref('/request-a-quote/', fromUrl)}">Request a quote</a>
 </div>
 
 <div class="aside-card">
