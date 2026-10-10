@@ -967,6 +967,257 @@ function checkLinks(pages) {
 }
 
 /* ------------------------------------------------------------------ *
+ * button contrast
+ * ------------------------------------------------------------------ */
+
+/* A button's own colour is `.btn-primary { color:#fff }`, specificity (0,1,0).
+ * A container rule such as `.aside-card a { color: var(--orange) }` is
+ * (0,1,1) and outranks it, so a button inside `.aside-card` was drawn
+ * white-on-orange as orange-on-orange: an empty orange rectangle. The label
+ * appeared on hover only because `.btn-primary:hover` is (0,2,0) and beats the
+ * container rule again — which is exactly the symptom that got reported.
+ *
+ * Nothing in the build noticed. The two buttons affected are the "Request a
+ * quote" buttons in the article sidebars, so both published articles shipped
+ * with an invisible call to action.
+ *
+ * The fix is `:not(.btn)` on the selector subject, which leaves `.btn-primary`
+ * authoritative. This guard makes that the only way such a rule can be
+ * written: it reads both stylesheets and the built HTML, and fails the build
+ * whenever a rule that sets `color` on a descendant control can still reach a
+ * button.
+ *
+ * Deliberately narrow, so that it never fails on a false positive:
+ *
+ *   - The subject must be the control element itself — `a`, `button` or a bare
+ *     `input`. `.btn-primary { … }` and `.band-cta a.btn { … }` name a class,
+ *     so they are colouring a button on purpose and are not touched.
+ *   - The subject must not already carry `:not(.btn)`.
+ *   - A pseudo-element subject (`a::before`) is skipped: it colours the
+ *     generated box, not the element's own text.
+ *   - `a { color: inherit }` is skipped. With no ancestor part it is (0,0,1)
+ *     and cannot outrank (0,1,0) whatever the source order, which is why the
+ *     buttons in the nav and the breadcrumbs render correctly.
+ *
+ * `:not()` is evaluated properly rather than pattern-matched, because
+ * `.footer-grid a:not(.logo)` must not be read as requiring a `.logo`
+ * ancestor. `:hover` and the other state pseudo-classes are ignored: a rule
+ * that hides a label while hovered is the same defect as one that hides it at
+ * rest.
+ */
+
+/* Every `selector { declarations }` pair, comments removed, including rules
+   nested in @media blocks. At-rule preludes are dropped; their bodies are not. */
+function cssRules(css) {
+  const src = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const out = [];
+  const stack = [];
+  let buf = '';
+  for (const ch of src) {
+    if (ch === '{') { stack.push(buf.trim()); buf = ''; continue; }
+    if (ch === '}') {
+      const sel = stack.pop();
+      if (sel !== undefined && !sel.startsWith('@')) out.push({ sel, decl: buf });
+      buf = '';
+      continue;
+    }
+    buf += ch;
+  }
+  return out;
+}
+
+/* A selector list split on the commas that are not inside () or []. */
+function splitSelectorList(sel) {
+  const out = [];
+  let depth = 0;
+  let cur = '';
+  for (const ch of sel) {
+    if ('(['.includes(ch)) depth++;
+    if (')]'.includes(ch)) depth--;
+    if (ch === ',' && depth === 0) { out.push(cur.trim()); cur = ''; continue; }
+    cur += ch;
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+
+/* One complex selector as compounds, each remembering the combinator that
+   precedes it: `nav a:hover` -> [{c:'nav',k:' '}, {c:'a:hover',k:' '}]. */
+function selectorCompounds(sel) {
+  const parts = [];
+  let cur = '';
+  let pending = ' ';
+  const flush = () => {
+    if (!cur.trim()) return;
+    parts.push({ compound: cur.trim(), combinator: pending });
+    cur = '';
+    pending = ' ';
+  };
+  for (const ch of sel) {
+    if (ch === '>' || ch === '+' || ch === '~') { flush(); pending = ch; continue; }
+    if (/\s/.test(ch)) { flush(); continue; }
+    cur += ch;
+  }
+  flush();
+  return parts;
+}
+
+/* Does one compound match one element? `node` is { tag, classes }. */
+function compoundMatches(compound, node) {
+  let rest = compound;
+  const negations = [];
+  rest = rest.replace(/:not\(\s*([^)]*?)\s*\)/g, (_, inner) => { negations.push(inner); return ''; });
+
+  if (/^[a-zA-Z]/.test(rest)) {
+    const tag = rest.match(/^[a-zA-Z][\w-]*/)[0].toLowerCase();
+    if (node.tag !== tag) return false;
+    rest = rest.slice(tag.length);
+  } else if (rest.startsWith('*')) {
+    rest = rest.slice(1);
+  }
+  for (const m of rest.matchAll(/\.([\w-]+)/g)) {
+    if (!node.classes.includes(m[1])) return false;
+  }
+  /* Every :not() must fail against this node, or the compound does not match. */
+  for (const inner of negations) if (compoundMatches(inner, node)) return false;
+  return true;
+}
+
+/* Walk the compounds right to left against [<button node>, ...ancestors].
+   `>` is honoured; the sibling combinators are treated as descendant, which
+   can only over-report — and a rule that over-reports is one the maintainer
+   should mark `:not(.btn)` anyway. */
+function selectorReachesButton(parts, nodes) {
+  const subject = parts[parts.length - 1];
+  if (!compoundMatches(subject.compound, nodes[nodes.length - 1])) return false;
+
+  let idx = nodes.length - 2;
+  for (let k = parts.length - 2; k >= 0; k--) {
+    const { compound, combinator } = parts[k];
+    if (combinator === '>') {
+      if (idx < 0 || !compoundMatches(compound, nodes[idx])) return false;
+      idx--;
+      continue;
+    }
+    let found = false;
+    while (idx >= 0) {
+      if (compoundMatches(compound, nodes[idx])) { found = true; idx--; break; }
+      idx--;
+    }
+    if (!found) return false;
+  }
+  return true;
+}
+
+const CSS_VOID_ELEMENTS = new Set([
+  'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta',
+  'path', 'polygon', 'polyline', 'rect', 'circle', 'line', 'source', 'track',
+  'use', 'wbr'
+]);
+
+/* Every `<a class="… btn …">` in one built page, as the node chain from the
+   root down to the anchor itself. A tag stack rather than a nesting regex,
+   because a stray `</div>` must not be able to close the wrong element. */
+function buttonsIn(html) {
+  const out = [];
+  const stack = [];
+  const src = html.replace(/<!--[\s\S]*?-->/g, '');
+  for (const m of src.matchAll(/<(\/?)([a-zA-Z][\w-]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g)) {
+    const [, closing, rawTag, attrs] = m;
+    const tag = rawTag.toLowerCase();
+    if (closing) {
+      for (let i = stack.length - 1; i >= 0; i--) {
+        if (stack[i].tag === tag) { stack.length = i; break; }
+      }
+      continue;
+    }
+    if (CSS_VOID_ELEMENTS.has(tag) || attrs.trimEnd().endsWith('/')) continue;
+
+    const classAttr = /\bclass\s*=\s*"([^"]*)"/i.exec(attrs);
+    const classes = classAttr ? classAttr[1].trim().split(/\s+/).filter(Boolean) : [];
+    const node = { tag, classes };
+    if (classes.includes('btn')) out.push(stack.concat(node));
+    stack.push(node);
+  }
+  return out;
+}
+
+function checkButtonContrast(pages) {
+  const stylesheets = ['style.css', 'css/style-additions.css'];
+
+  /* Buttons first: if there are none in the output, nothing can be hidden and
+     the whole check is moot. */
+  const buttons = [];
+  for (const p of pages) {
+    const file = path.join(DIST, urlToFile(p.url));
+    if (!fs.existsSync(file)) continue;
+    for (const chain of buttonsIn(fs.readFileSync(file, 'utf8'))) {
+      buttons.push({ url: p.url, chain });
+    }
+  }
+  if (!buttons.length) return;
+
+  const problems = [];
+  for (const rel of stylesheets) {
+    const file = path.join(ROOT, rel);
+    if (!fs.existsSync(file)) continue;
+
+    for (const { sel, decl } of cssRules(fs.readFileSync(file, 'utf8'))) {
+      /* Only `color:` — `border-color`, `background-color` and `outline-color`
+         do not touch a label. */
+      if (!/(^|;)\s*color\s*:/i.test(decl)) continue;
+
+      for (const one of splitSelectorList(sel)) {
+        const parts = selectorCompounds(one);
+        const subject = parts[parts.length - 1];
+        if (!subject) continue;
+        /* The subject must be the control element itself, not a class: the
+           class is what carries .btn-primary, and it is the element underneath
+           that gets outranked. `<button class="btn btn-primary">` is the same
+           hazard as `<a class="btn btn-primary">`, and 15 of the 95 buttons on
+           this site are submits, so both shapes are covered. A bare `input` is
+           included because a hidden label there is the same defect;
+           `input[type="text"]` and `select` are deliberately not, since those
+           are the form-field rules and cannot carry .btn here. */
+        if (!/^(?:a|button|input)(?![-\w])/.test(subject.compound)) continue;
+        if (subject.compound.includes('[')) continue;          /* input[type=…] */
+        if (parts.length < 2) continue;                        /* `a { }` — (0,0,1) */
+        if (/::/.test(subject.compound)) continue;             /* a::before colours the marker  */
+        if (/:not\(\s*\.btn\s*\)/.test(subject.compound)) continue;
+
+        const hits = buttons.filter((b) => selectorReachesButton(parts, b.chain));
+        if (!hits.length) continue;
+
+        /* Rebuild the selector with the fix applied, so the message is a
+           selection to copy rather than a description of one. The subject is
+           the tail of the string, because that is where it was parsed from. */
+        const fixed = one.slice(0, one.length - subject.compound.length) +
+          subject.compound.replace(/^(a|button|input)/, '$1:not(.btn)');
+
+        const shown = [...new Set(hits.map((h) => h.url))];
+        const sample = shown.slice(0, 3).join(', ') +
+          (shown.length > 3 ? `, +${shown.length - 3} more` : '');
+        problems.push(
+          `${one}  (${rel})\n` +
+          `      colours the label of ${hits.length} button(s): ${sample}\n` +
+          `      fix: ${fixed}`
+        );
+      }
+    }
+  }
+
+  if (problems.length) {
+    throw new Error(
+      'button contrast — a container rule is setting `color` on a descendant ' +
+      'control that is a button, so the label is drawn in the background\'s own ' +
+      'colour and the button reads as a bare rectangle (until :hover outranks ' +
+      'the rule again):\n\n    ' +
+      [...new Set(problems)].join('\n\n    ')
+    );
+  }
+}
+
+/* ------------------------------------------------------------------ *
  * published facts
  * ------------------------------------------------------------------ */
 
@@ -1264,6 +1515,9 @@ function build() {
      told the route is broken. */
   checkArticles(pages);
   checkLinks(pages);
+  /* Reads the built HTML for the buttons and the source stylesheets for the
+     rules that might colour them, so it has to run after both exist. */
+  checkButtonContrast(pages);
   checkPublishedFacts(pages);
   checkSchema(pages);
   checkTradeLanguage(pages);
