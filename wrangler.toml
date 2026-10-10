@@ -10,3 +10,15 @@ compatibility_date = "2024-09-23"
 # Run `node tools/build.js` before deploying, so dist/ is current.
 [assets]
 directory = "./dist"
+
+# Serve dist/404.html for any request that matches no file, with a real 404
+# status. Without this line Workers Static Assets answers the request itself
+# with an empty body: the branded 404 page is deployed, is reachable at /404,
+# and is never actually shown to anyone who mistypes a URL.
+not_found_handling = "404-page"
+
+# The default, stated so it is visible rather than assumed. It suits this
+# output: a folder index (about/index.html) is served at /about/ and a bare
+# file (thank-you.html) at /thank-you, which is exactly how the pages are
+# linked. Changing it would move every canonical URL on the site.
+html_handling = "auto-trailing-slash"

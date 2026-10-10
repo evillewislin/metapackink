@@ -481,6 +481,94 @@ function checkDistIsClean() {
   }
 }
 
+/* Read the [assets] table out of wrangler.toml.
+ *
+ * Deliberately a narrow reader rather than a TOML parser: it recognises
+ * `[section]` headers and `key = value` lines inside the section it wants, and
+ * ignores everything else. Comments are stripped before parsing, and quoted
+ * values are unquoted. Good enough for the four keys this file can contain,
+ * and it needs no dependency — the project has none, by design. */
+function readWranglerAssets() {
+  const file = path.join(ROOT, 'wrangler.toml');
+  if (!fs.existsSync(file)) return null;
+
+  const values = {};
+  let section = null;
+
+  for (const raw of fs.readFileSync(file, 'utf8').split('\n')) {
+    const line = raw.replace(/#.*$/, '').trim();
+    if (!line) continue;
+
+    const head = line.match(/^\[([^\]]+)\]$/);
+    if (head) { section = head[1].trim(); continue; }
+    if (section !== 'assets') continue;
+
+    const kv = line.match(/^([A-Za-z0-9_.-]+)\s*=\s*(.+)$/);
+    if (kv) values[kv[1]] = kv[2].trim().replace(/^["']|["']$/g, '');
+  }
+
+  return values;
+}
+
+/* How the deployment must be configured.
+ *
+ * Two of these have bitten this site already, which is why the build checks
+ * them rather than trusting a file nobody reads until something breaks:
+ *
+ *   directory          `"."` once published the whole repository.
+ *   not_found_handling Unset, Workers Static Assets answers an unmatched
+ *                      request itself with an empty 404 body. The branded
+ *                      dist/404.html is then deployed but never seen — the
+ *                      file looks present, the live site ignores it, and
+ *                      nothing in the build output hints at why.
+ *
+ * This deploys through `npx wrangler deploy`, so these keys — not a
+ * "output directory" field in a dashboard — decide what is published and how
+ * a miss is handled. */
+function checkWranglerConfig() {
+  const problems = [];
+  const assets = readWranglerAssets();
+
+  if (!assets) {
+    problems.push('wrangler.toml is missing, so the deploy has no asset directory');
+  } else {
+    const dir = assets.directory;
+    if (!dir) {
+      problems.push('[assets] sets no directory');
+    } else if (dir.replace(/^\.\//, '').replace(/\/+$/, '') !== 'dist') {
+      problems.push(
+        `[assets] directory is "${dir}". It has to be ./dist — pointing it at the ` +
+        `repository root is what put /src, /tools and /.git on the public internet`
+      );
+    }
+
+    if (assets.not_found_handling !== '404-page') {
+      const shown = assets.not_found_handling === undefined
+        ? 'unset'
+        : `"${assets.not_found_handling}"`;
+      problems.push(
+        `[assets] not_found_handling is ${shown}, so an unmatched request gets an ` +
+        `empty 404 from the platform instead of dist/404.html`
+      );
+    }
+
+    const html = assets.html_handling;
+    const allowed = ['auto-trailing-slash', 'force-trailing-slash', 'drop-trailing-slash', 'none'];
+    if (html !== undefined && !allowed.includes(html)) {
+      problems.push(`[assets] html_handling is "${html}", which is not a documented value`);
+    }
+  }
+
+  /* not_found_handling has nothing to serve without this file. */
+  if (!fs.existsSync(path.join(DIST, '404.html'))) {
+    problems.push('dist/404.html is missing, so not_found_handling would serve nothing');
+  }
+
+  if (problems.length) {
+    throw new Error('deployment configuration:\n    - ' + problems.join('\n    - '));
+  }
+}
+
 /* Warn about rendered HTML sitting outside dist/.
  *
  * The build only writes to dist/, so any generated page found next to the
@@ -709,6 +797,7 @@ function build() {
   if (fs.existsSync(llms)) fs.copyFileSync(llms, path.join(DIST, 'llms.txt'));
 
   checkDistIsClean();
+  checkWranglerConfig();
   checkRedirects(pages);
   checkLegacyHtmlRules(pages);
   checkHeaders(pages);

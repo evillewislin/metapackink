@@ -22,7 +22,7 @@ the pages and conversion paths the site was missing.
 | **No OG/Twitter/JSON-LD** | None anywhere | Per-page OG + Twitter cards, Organization / BreadcrumbList / FAQPage JSON-LD |
 | **Two industries dead-ended** | "Gift & Presentation" and "Retail & Branded" cards linked to nothing | Both now have real pages |
 | **Broken in-page anchors** | `products.html#gift-packaging` and footer `#rigid-boxes` resolved to nothing | 7 product anchors became 7 real product pages |
-| **No 404 page** | Default host error | Branded `/404` with recovery links, served for every unmatched path |
+| **No 404 page** | Default host error | Branded `/404` with recovery links, served for every unmatched path. Requires `not_found_handling = "404-page"` — the file alone does nothing. See §3 |
 | **Site unreachable — redirect loop** | `_redirects` used an apex→`www` rule that Cloudflare Pages read as a path pattern (it cannot match hostnames), so every request answered `Location: /` → `ERR_TOO_MANY_REDIRECTS` | Rule removed; no `.html` rules either, since Cloudflare handles those itself. Build fails if either returns. See §3 |
 | **Whole source tree published** | `[assets] directory = "."` uploaded the repo: `/src/config.js`, `/tools/build.js`, `/README-DEPLOY.md` and **`/.git/HEAD`** were all downloadable | Deploy `./dist`; build fails if `src/`, `tools/`, `.git/`, `.wrangler/` or any `.md`/`.toml` reaches it. See §3 |
 
@@ -164,13 +164,31 @@ node tools/build.js --serve          # http://127.0.0.1:4173
 
 If you deploy through the Cloudflare dashboard Git integration rather than
 from your machine, the settings matter more, because the build runs inside a
-clone of the repo:
+clone of the repo.
+
+**This project runs in Workers Builds mode** (a `wrangler.toml` is present, so
+Cloudflare configures it as a Worker). That matters for one reason: **there is
+no "Output directory" field to fill in.** In Workers Builds the deploy
+directory comes from `wrangler.toml`'s `[assets] directory`, and the form has
+these fields instead:
 
 | Setting | Value |
 |---|---|
 | Build command | `node tools/build.js` |
-| Output directory | `dist` |
+| Deploy command | `npx wrangler deploy` |
 | Root directory | `/` (leave default) |
+| Build watch paths → Include paths | leave **empty** |
+
+Two things that have gone wrong here before, both worth knowing:
+
+- **Do not clear the Deploy command.** It has to stay `npx wrangler deploy`.
+  An empty value is rejected, and the earlier "Invalid request body" error came
+  from a half-filled form, not from this field.
+- **An empty chip in "Include paths" fails the save,** because an empty string
+  is submitted as a path. Remove the chip rather than leaving it blank.
+
+If your project is instead configured in **Pages** mode, the third field is
+named "Output directory" and its value is `dist` — same result, different form.
 
 The build command you had — `node scripts/inject-ga.js` — is from the **old**
 WordPress/Elementor setup and does nothing on this codebase (`共注入 0 个
@@ -187,10 +205,41 @@ Pages are emitted as **directory-style output**. Cloudflare Pages serves
 | `/about/` | `about/index.html` |
 | `/industries/cosmetics/` | `industries/cosmetics/index.html` |
 | `/products/rigid-boxes/` | `products/rigid-boxes/index.html` |
-| anything unmatched | `404.html` (at the root, by convention) |
+| anything unmatched | `404.html` — and only because `not_found_handling` is set |
 
 Every internal link uses the clean trailing-slash form, which matches the
 `rel="canonical"` and the sitemap entry on the same page.
+
+### The `[assets]` keys in `wrangler.toml`
+
+This deploys through `npx wrangler deploy`, so what gets published and how a
+miss is handled come from `wrangler.toml` — there is no "output directory"
+field in the dashboard to set.
+
+```toml
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
+html_handling = "auto-trailing-slash"
+```
+
+**`not_found_handling` is the one that is easy to leave out.** Its default is
+`"none"`, and with `"none"` Workers Static Assets answers an unmatched request
+itself, with an empty body. `dist/404.html` is still built, still uploaded and
+still reachable at `/404`, so nothing looks wrong — but no visitor who mistypes
+a URL ever sees it. Setting `"404-page"` makes the platform serve the nearest
+`404.html` with a real `404 Not Found` status.
+
+**`html_handling` is stated rather than left to default** because every
+canonical URL on the site depends on it. `auto-trailing-slash` serves a folder
+index (`about/index.html`) at `/about/` and a bare file (`thank-you.html`) at
+`/thank-you` — exactly how the pages are linked. Changing this value moves
+every URL and every canonical tag with it.
+
+`tools/build.js` (`checkWranglerConfig()`) fails the build if `directory` stops
+being `./dist`, if `not_found_handling` is missing or not `"404-page"`, if
+`html_handling` is set to an undocumented value, or if `dist/404.html` is not
+there to serve.
 
 Old `.html` links keep working **without any rule in `_redirects`** —
 Cloudflare Pages redirects `/about.html` to `/about` on its own, precisely
