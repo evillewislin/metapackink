@@ -268,7 +268,7 @@ function buildHeaders() {
 # About the Content-Security-Policy                                   #
 # ------------------------------------------------------------------ #
 # This replaces a rule that was configured in the Cloudflare dashboard and
-# never worked. Its header name was misspelled "ontent-Security-Policy", which
+# never worked. Its header name was misspelled "Content-Security-Policy", which
 # is a valid header name that no browser recognises — so the policy was sent on
 # every response and enforced on none. Keeping it in this file means it is
 # versioned, reviewed and checked by the build.
@@ -497,7 +497,7 @@ function checkHeaders(pages) {
      A typo there produces a header that is syntactically valid and that no
      browser recognises, so the policy ships on every response and enforces
      nothing. That is not hypothetical here: this site served
-     "ontent-Security-Policy" for months, and nothing — not the build, not the
+     "Content-Security-Policy" for months, and nothing — not the build, not the
      logs, not the console — ever said a word about it. */
   for (const b of blocks) {
     for (const name of b.headers) {
