@@ -7,7 +7,7 @@
 # NOTE: no apex -> www rule lives here on purpose.
 #
 # A rule whose source is the bare host, such as
-#     https://example.com/*   https://www.example.com/:splat   301
+#     /*   /:splat   301
 # cannot work in this file. Cloudflare Pages matches the PATH only, never the
 # hostname, so the pattern is read as "/*": it fires on www as well as on the
 # apex, :splat resolves to nothing, and every request is answered with a
@@ -19,4 +19,4 @@
 #
 # Force the canonical host from the dashboard instead:
 #   Rules -> Redirect Rules -> if hostname equals "metapackink.com"
-#   then dynamic redirect to concat("https://www.metapackink.com", http.request.uri.path)
+#   then dynamic redirect to concat("www.metapackink.com", http.request.uri.path)
