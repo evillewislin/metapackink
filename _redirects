@@ -5,10 +5,18 @@
 /industries-premium-consumer-products/  /industries/premium-consumer-products/  301
 
 # NOTE: no apex -> www rule lives here on purpose.
-# A rule like
-#     /*  /:splat  301
-# does NOT work: Cloudflare Pages matches only the path, never the host, so
-# the rule fires on www.metapackink.com too and :splat comes out empty. The
-# result is www -> www with a bare path as the target — an infinite loop.
-# Force the canonical host with a Redirect Rule in the Cloudflare dashboard
-# instead (Rules -> Redirect Rules -> "if hostname equals metapackink.com").
+#
+# A rule whose source is the bare host, such as
+#     https://example.com/*   https://www.example.com/:splat   301
+# cannot work in this file. Cloudflare Pages matches the PATH only, never the
+# hostname, so the pattern is read as "/*": it fires on www as well as on the
+# apex, :splat resolves to nothing, and every request is answered with a
+# redirect to a bare "/". That is an infinite loop, reported by browsers as
+# ERR_TOO_MANY_REDIRECTS. It was live on this site once; hence the warning.
+#
+# Rules in this file are also followed BEFORE static files are considered, so
+# a path rule here can shadow a page that exists.
+#
+# Force the canonical host from the dashboard instead:
+#   Rules -> Redirect Rules -> if hostname equals "metapackink.com"
+#   then dynamic redirect to concat("https://www.metapackink.com", http.request.uri.path)

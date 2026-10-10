@@ -122,15 +122,54 @@ function collectPages() {
  * generated files
  * ------------------------------------------------------------------ */
 
+/* lastmod describes when a page's *content* last changed.
+ *
+ * Stamping every URL with build time is the common shortcut and it is a bad
+ * one: the sitemap is regenerated on every deploy, and CI deploys on every
+ * push, so every page claims to have changed every single time. Crawlers
+ * learn to distrust the signal, and an unchanged page that really did change
+ * gets no credibility bump either.
+ *
+ * Source of truth is the page module's own mtime — that is the file a human
+ * edits when the copy changes. src/bodies/*.html feed carried pages, so those
+ * are folded in too. Anything unaccounted for falls back to today rather than
+ * to a stale guess, which is the safe direction (a wrong-but-recent date
+ * costs a recrawl; a wrong-but-old date risks the page never being revisited).
+ *
+ * Override per page with `lastmod: 'YYYY-MM-DD'` when you need it exact —
+ * the legal pages use this so a copy tweak does not imply the terms changed. */
+function lastmodFor(page) {
+  if (page.lastmod) return page.lastmod;
+
+  const stamp = (f) => {
+    try { return fs.statSync(f).mtime; } catch { return null; }
+  };
+
+  const candidates = [];
+  if (page.__file) {
+    const p = path.join(ROOT, 'src', 'pages', page.__file);
+    const m = stamp(p);
+    if (m) candidates.push(m);
+  }
+  /* A carried page's prose lives in src/bodies/<slug>.html, not in the module
+     that merely wires it up. Prefer the body when we can identify it. */
+  if (page.body) {
+    const m = stamp(path.join(ROOT, 'src', 'bodies', page.body));
+    if (m) candidates.push(m);
+  }
+
+  const newest = candidates.reduce((a, b) => (a && a > b ? a : b), null);
+  return (newest || new Date()).toISOString().slice(0, 10);
+}
+
 function buildSitemap(pages) {
-  const today = new Date().toISOString().slice(0, 10);
   const urls = pages
     .filter((p) => !p.noindex)
     .map((p) => {
       const loc = site.domain + (p.url === '/' ? '/' : p.url);
       const priority = p.url === '/' ? '1.0' : p.priority || '0.7';
       const freq = p.url === '/' ? 'weekly' : 'monthly';
-      return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${freq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+      return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmodFor(p)}</lastmod>\n    <changefreq>${freq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
     })
     .join('\n');
 
@@ -171,13 +210,21 @@ function buildRedirects() {
 ${lines}
 
 # NOTE: no apex -> www rule lives here on purpose.
-# A rule like
-#     https://metapackink.com/*  https://www.metapackink.com/:splat  301
-# does NOT work: Cloudflare Pages matches only the path, never the host, so
-# the rule fires on www.metapackink.com too and :splat comes out empty. The
-# result is www -> www with a bare path as the target — an infinite loop.
-# Force the canonical host with a Redirect Rule in the Cloudflare dashboard
-# instead (Rules -> Redirect Rules -> "if hostname equals metapackink.com").
+#
+# A rule whose source is the bare host, such as
+#     https://example.com/*   https://www.example.com/:splat   301
+# cannot work in this file. Cloudflare Pages matches the PATH only, never the
+# hostname, so the pattern is read as "/*": it fires on www as well as on the
+# apex, :splat resolves to nothing, and every request is answered with a
+# redirect to a bare "/". That is an infinite loop, reported by browsers as
+# ERR_TOO_MANY_REDIRECTS. It was live on this site once; hence the warning.
+#
+# Rules in this file are also followed BEFORE static files are considered, so
+# a path rule here can shadow a page that exists.
+#
+# Force the canonical host from the dashboard instead:
+#   Rules -> Redirect Rules -> if hostname equals "metapackink.com"
+#   then dynamic redirect to concat("https://www.metapackink.com", http.request.uri.path)
 `;
 }
 
