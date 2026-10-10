@@ -23,6 +23,7 @@ the pages and conversion paths the site was missing.
 | **Two industries dead-ended** | "Gift & Presentation" and "Retail & Branded" cards linked to nothing | Both now have real pages |
 | **Broken in-page anchors** | `products.html#gift-packaging` and footer `#rigid-boxes` resolved to nothing | 7 product anchors became 7 real product pages |
 | **No 404 page** | Default host error | Branded `/404` with recovery links, served for every unmatched path |
+| **Site unreachable — redirect loop** | `_redirects` used an apex→`www` rule that Cloudflare Pages read as a path pattern (it cannot match hostnames), so every request answered `Location: /` → `ERR_TOO_MANY_REDIRECTS` | Rule removed; no `.html` rules either, since Cloudflare handles those itself. Build fails if either returns. See §3 |
 
 ### Added
 
@@ -35,7 +36,9 @@ the pages and conversion paths the site was missing.
 - **Support pages** — `/faq/` (~24 questions in 6 groups), `/sitemap/` (generated from
   the real page list, so it cannot go stale)
 - **Legal pages** — `/privacy-policy/`, `/terms/`, `/cookie-policy/` (with a cookie table)
-- **`_redirects`** — 16 real 301s for every legacy URL, plus an apex→`www` canonical host rule
+- **`_redirects`** — 3 real 301s for the legacy industry URLs Cloudflare cannot infer
+  on its own. There is deliberately **no** apex→`www` rule (see §3) and **no**
+  `.html` rule (Cloudflare already redirects those).
 - **`_headers`** — security headers and immutable caching for CSS/JS/images
 - **`_routes.json`**, refreshed **`robots.txt`** (including AI crawler allowances) and **`sitemap.xml`**
 
@@ -102,21 +105,79 @@ npx wrangler pages deploy .
 Or connect the Git repository in the Cloudflare dashboard:
 build command **none**, output directory **`/`** (the files are pre-built and committed).
 
+> **Upload the whole directory, and delete what was there before.** The
+> previous deploy went out with a broken `_redirects` still sitting next to
+> the files; if you upload on top of an existing deployment, make sure the
+> old files are gone. Cloudflare Pages replaces the deployment atomically on
+> `wrangler pages deploy`, so a fresh deploy is enough — do not merge folders.
+
 ### How the routing works
 
-Cloudflare Pages serves clean URLs from flat `.html` files, so:
+Pages are emitted as **directory-style output**. Cloudflare Pages serves
+`/about/` from `about/index.html`:
 
 | URL | File |
 |---|---|
 | `/` | `index.html` |
-| `/about/` | `about.html` |
-| `/industries/cosmetics/` | `industries/cosmetics.html` |
-| `/products/rigid-boxes/` | `products/rigid-boxes.html` |
-| anything unmatched | `404.html` |
+| `/about/` | `about/index.html` |
+| `/industries/cosmetics/` | `industries/cosmetics/index.html` |
+| `/products/rigid-boxes/` | `products/rigid-boxes/index.html` |
+| anything unmatched | `404.html` (at the root, by convention) |
 
 Every internal link uses the clean trailing-slash form, which matches the
-`rel="canonical"` and the sitemap entry on the same page. The legacy `.html`
-URLs are 301'd by `_redirects`, so existing links and search results keep working.
+`rel="canonical"` and the sitemap entry on the same page.
+
+Old `.html` links keep working **without any rule in `_redirects`** —
+Cloudflare Pages redirects `/about.html` to `/about` on its own, precisely
+because the output is directory-style and there is no `about.html` at the
+root to serve. That is intentional: see the warning below.
+
+### Do not put these rules back in `_redirects`
+
+Two rules that look sensible caused a full outage
+(`ERR_TOO_MANY_REDIRECTS`) and are deliberately absent. The build now fails
+if either is reintroduced.
+
+**1. No apex → www redirect.** Cloudflare Pages `_redirects` **cannot match
+on hostname** — domain-level redirects are unsupported. A rule written as
+
+```
+https://metapackink.com/*   https://www.metapackink.com/:splat   301
+```
+
+is parsed as a plain *path* pattern that also matches `www.metapackink.com`,
+with `:splat` resolving to the empty string. Every request to the site then
+answered `Location: /`, looping forever.
+
+To force the canonical host, use a **Redirect Rule in the Cloudflare
+dashboard** (Rules → Redirect Rules), which *does* match on hostname:
+
+- **If** hostname equals `metapackink.com`
+- **Then** dynamic redirect to `concat("https://www.metapackink.com", http.request.uri.path)`
+- Status **301**
+
+**2. No `/foo.html → /foo/` redirects.** Cloudflare already does this
+redirect (to the extension-less form, `/foo`, not `/foo/`). Writing your own
+rule for the same path means two rules acting on one URL, which is how the
+loop started. `_redirects` now contains only the three rules that Cloudflare
+cannot infer on its own:
+
+```
+/industries-cosmetics/  /industries/cosmetics/  301
+/industries-perfume/  /industries/perfume/  301
+/industries-premium-consumer-products/  /industries/premium-consumer-products/  301
+```
+
+### Verify before you walk away
+
+After deploying, check the actual headers — a 200 with no `Location` header
+means you are clear:
+
+```bash
+curl -sI https://www.metapackink.com/ | head -3
+curl -sI https://www.metapackink.com/about/ | head -3
+curl -sI https://metapackink.com/ | head -3
+```
 
 ---
 
@@ -126,14 +187,28 @@ The site is generated by a small Node script with **no dependencies** — no
 framework, no bundler, no `node_modules`.
 
 ```bash
-node tools/build.js          # write every page to ./dist
-node tools/build.js --check  # build, then verify links and JSON-LD (fails loudly)
+node tools/build.js          # regenerate every page in place
+node tools/build.js --check  # build, then verify links, redirects and JSON-LD
 node tools/build.js --serve  # build, then preview at http://127.0.0.1:4173
 ```
 
-`--check` fails the build on any unresolvable internal link or unparseable
-JSON-LD, so the guards run on every build rather than being something you
-remember to do.
+`--check` **fails the build** on any unresolvable internal link, unparseable
+JSON-LD, or redirect rule that could loop, so the guards run on every build
+rather than being something you remember to do.
+
+### This directory is both the source and the deploy root
+
+There is no `dist/` to upload. `tools/build.js` writes each page straight to
+its final path — `src/pages/10-existing.js` becomes `about/index.html` right
+here in this directory. `dist/` is a scratch directory only; you never copy
+from it.
+
+`wrangler.toml` points at `.`, so `npx wrangler pages deploy .` publishes
+exactly what you see here.
+
+Three files are read at build time and stood next to the output:
+`style.css`, `main.js` and `llms.txt`. They are both source and output —
+edit them directly.
 
 ### Where things live
 
@@ -155,6 +230,27 @@ tools/build.js      the generator
 css/style-additions.css  new components only — adds to style.css, never overrides it
 js/forms.js         progressive enhancement for the forms
 ```
+
+### Converting sitemap.html to sitemap.xml
+
+`sitemap.xml` is written by the build. If you only have the rendered
+`sitemap.html` — for example after editing it by hand — `tools/sitemap-xml.js`
+does the conversion on its own, with no build step and no dependencies:
+
+```bash
+node tools/sitemap-xml.js                      # sitemap.html -> sitemap.xml
+node tools/sitemap-xml.js in.html out.xml      # explicit paths
+```
+
+It reads the same structure the page uses (`<h2>` group headings and
+`<ul class="sitemap-list">` lists), takes the domain from the page's
+`<link rel="canonical">`, canonicalises `../products/foo.html` to
+`/products/foo/`, drops `/404/`, `/thank-you/` and the sitemap itself, and
+assigns `<priority>` and `<changefreq>` to match the build pipeline — so
+either route produces the same file.
+
+The generated `sitemap.xml` lists **29 URLs**, which is the 28 the HTML page
+shows **plus `/sitemap/` itself** (the page does not link to itself).
 
 ### Important: the source files are the originals
 

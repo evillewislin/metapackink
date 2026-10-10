@@ -42,11 +42,25 @@ function write(rel, contents) {
   return rel;
 }
 
-/* '/about/' -> 'about.html';  '/industries/cosmetics/' -> 'industries/cosmetics.html';
-   '/' -> 'index.html'  — the layout Cloudflare Pages expects for clean URLs. */
+/* URLs map to directory-style output: '/about/' -> 'about/index.html',
+   '/industries/cosmetics/' -> 'industries/cosmetics/index.html', '/' -> 'index.html'.
+
+   Directory-style matters, do not "simplify" this back to about.html at the
+   root. If about.html sits at the root, Cloudflare Pages serves /about/ from
+   it *and* redirects /about.html to /about — two different rules acting on
+   the same file, which is what let the site end up in a redirect loop. With
+   about/index.html there is exactly one way to reach the page, so the
+   platform's automatic extension-less redirect has nothing to collide with.
+
+   /thank-you/ and /404/ stay flat as thank-you.html and 404.html because
+   Cloudflare needs them at the root to find them by convention. */
+const FLAT = new Set(['/404/', '/thank-you/']);
+
 function urlToFile(url) {
   if (url === '/') return 'index.html';
-  return url.replace(/^\//, '').replace(/\/$/, '') + '.html';
+  const clean = url.replace(/^\//, '').replace(/\/$/, '');
+  if (FLAT.has(url)) return clean + '.html';
+  return clean + '/index.html';
 }
 
 function copyDir(from, to) {
@@ -155,8 +169,14 @@ function buildRedirects() {
 # 301 every legacy / WordPress-era URL to its canonical clean path.
 ${lines}
 
-# Canonical host: force www (pages.dev preview URLs are left alone).
-https://metapackink.com/*  https://www.metapackink.com/:splat  301
+# NOTE: no apex -> www rule lives here on purpose.
+# A rule like
+#     https://metapackink.com/*  https://www.metapackink.com/:splat  301
+# does NOT work: Cloudflare Pages matches only the path, never the host, so
+# the rule fires on www.metapackink.com too and :splat comes out empty. The
+# result is www -> www with a bare path as the target — an infinite loop.
+# Force the canonical host with a Redirect Rule in the Cloudflare dashboard
+# instead (Rules -> Redirect Rules -> "if hostname equals metapackink.com").
 `;
 }
 
@@ -186,6 +206,80 @@ function buildRoutesJson() {
  * verification
  * ------------------------------------------------------------------ */
 
+/* A redirect rule whose source equals its destination is an infinite loop.
+   The visitor gets ERR_TOO_MANY_REDIRECTS and the whole site is unreachable,
+   so this is a hard build failure, not a warning — it has happened once. */
+function checkRedirects(pages) {
+  const pageUrls = new Set(pages.map((p) => p.url));
+  pageUrls.add('/');
+  const problems = [];
+  const seen = new Set();
+
+  const norm = (u) => (u === '/' ? '/' : u.replace(/\/+$/, '') + '/');
+
+  for (const [from, to] of redirects) {
+    const f = norm(from);
+    const t = norm(to);
+
+    if (f === t) {
+      problems.push(`redirect loops onto itself: ${from} -> ${to}`);
+      continue;
+    }
+    if (seen.has(f)) {
+      problems.push(`duplicate redirect source: ${from}`);
+      continue;
+    }
+    seen.add(f);
+
+    /* A 301 on a path that is also a real generated page would shadow that
+       page forever, so the page could never render. */
+    if (pageUrls.has(f)) {
+      problems.push(`redirect shadows a live page: ${from} -> ${to}`);
+    }
+    /* Redirecting to something that does not exist is a soft 404. */
+    const targetFile = path.join(DIST, t.replace(/^\//, ''));
+    const targetExists =
+      pageUrls.has(t) ||
+      fs.existsSync(path.join(targetFile, 'index.html')) ||
+      fs.existsSync(targetFile + '.html');
+    if (!targetExists) {
+      problems.push(`redirect target does not exist: ${from} -> ${to}`);
+    }
+  }
+
+  if (problems.length) {
+    throw new Error('redirect rules:\n    - ' + problems.join('\n    - '));
+  }
+}
+
+/* Guard against the exact shape that caused the outage: a redirect whose
+   source and destination resolve to the same place. Cloudflare follows
+   _redirects before it looks at static assets, so a rule like
+   `/about/  /about/  301` would bounce forever regardless of the file
+   layout. checkRedirects covers equality; this covers the case where the
+   source is a legacy .html path whose clean form is the destination AND
+   Cloudflare is already going to do that redirect itself, which is what
+   makes the two fight. */
+function checkLegacyHtmlRules(pages) {
+  const pageUrls = new Set(pages.map((p) => p.url));
+  const offenders = [];
+
+  for (const [from, to] of redirects) {
+    if (!/\.html$/.test(from)) continue;
+    const clean = '/' + from.replace(/^\//, '').replace(/\.html$/, '') + '/';
+    if (pageUrls.has(clean) || pageUrls.has(clean.replace(/\/$/, ''))) {
+      offenders.push(`${from} -> ${to}  (Cloudflare already redirects ${from} to ${clean.slice(0, -1)})`);
+    }
+  }
+
+  if (offenders.length) {
+    throw new Error(
+      'redundant .html redirect rules — Cloudflare Pages already redirects these ' +
+      'because the output is directory-style:\n    - ' + offenders.join('\n    - ')
+    );
+  }
+}
+
 function checkLinks(pages) {
   const pageUrls = new Set(pages.map((p) => p.url));
   const broken = [];
@@ -195,7 +289,9 @@ function checkLinks(pages) {
     if (pageUrls.has(abs + '/')) return true;
     const direct = path.join(DIST, abs.replace(/^\//, ''));
     if (fs.existsSync(direct) && fs.statSync(direct).isFile()) return true;
-    /* /foo/ served from foo.html */
+    /* /foo/ served from foo/index.html (directory style) … */
+    if (fs.existsSync(path.join(direct, 'index.html'))) return true;
+    /* … or from foo.html (the "/" and flat-page case) */
     if (fs.existsSync(direct + '.html')) return true;
     return false;
   };
@@ -278,6 +374,8 @@ function build() {
   const llms = path.join(ROOT, 'llms.txt');
   if (fs.existsSync(llms)) fs.copyFileSync(llms, path.join(DIST, 'llms.txt'));
 
+  checkRedirects(pages);
+  checkLegacyHtmlRules(pages);
   checkLinks(pages);
   checkSchema(pages);
 
@@ -319,16 +417,19 @@ if (require.main === module) {
     };
     const server = http.createServer((req, res) => {
       const url = decodeURIComponent(req.url.split('?')[0]);
-      /* Mimic Cloudflare Pages: a clean trailing-slash URL is served from the
-         matching .html file, so /products/rigid-boxes/ -> products/rigid-boxes.html.
+      /* Mimic Cloudflare Pages' resolution order for the directory-style
+         output this build produces:
+           /products/rigid-boxes/  -> products/rigid-boxes/index.html
+           /about                  -> about/index.html  (extension-less too)
+           /                        -> index.html
          The trailing slash has to be stripped before the .html candidate is
-         tried, otherwise the path resolves to a directory that does not exist. */
+         tried, otherwise the path resolves to a directory that is not a file. */
       const trimmed = url.replace(/\/+$/, '');
       const candidates = [
-        path.join(DIST, url, 'index.html'),
-        path.join(DIST, trimmed + '.html'),
+        path.join(DIST, url, 'index.html'),        /* /about/ -> about/index.html */
+        path.join(DIST, trimmed, 'index.html'),    /* /about  -> about/index.html */
+        path.join(DIST, trimmed + '.html'),        /* flat pages: 404.html, thank-you.html */
         path.join(DIST, url),
-        path.join(DIST, trimmed, 'index.html'),
         path.join(DIST, trimmed)
       ];
 

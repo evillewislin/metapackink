@@ -100,23 +100,26 @@ const legalLinks = [
   { label: 'Cookie Policy', href: '/cookie-policy/' }
 ];
 
-/* Legacy and WordPress/Elementor-era URLs -> canonical clean paths.
-   Written to _redirects so Cloudflare Pages issues a real 301. */
+/* Legacy URLs -> canonical clean paths, written to _redirects.
+
+   Two things are deliberately NOT in this list, and both used to cause an
+   infinite redirect loop (ERR_TOO_MANY_REDIRECTS):
+
+   1. No apex -> www rule. Cloudflare Pages _redirects cannot match on
+      hostname — domain-level redirects are unsupported. A rule written as
+        https://metapackink.com/*   https://www.metapackink.com/:splat
+      is parsed as a plain path pattern that also matches www, with :splat
+      resolving to the empty string. The result was `Location: /` on every
+      request. Canonicalise the host in the Cloudflare dashboard instead
+      (Rules -> Redirect Rules), not here.
+
+   2. No /foo.html -> /foo/ rules. This site is deployed as directory-style
+      output (about/index.html, with no about.html at the root), and
+      Cloudflare Pages already redirects /about.html to /about on its own.
+      Adding our own rule for the same path risks the two fighting. */
 const redirects = [
-  ['/index.html', '/'],
-  ['/products.html', '/products/'],
-  ['/packaging-solutions.html', '/packaging-solutions/'],
-  ['/industries.html', '/industries/'],
-  ['/industries/cosmetics.html', '/industries/cosmetics/'],
-  ['/industries/perfume.html', '/industries/perfume/'],
-  ['/industries/premium-consumer-products.html', '/industries/premium-consumer-products/'],
-  ['/about.html', '/about/'],
-  ['/manufacturing-process.html', '/manufacturing-process/'],
-  ['/quality-control.html', '/quality-control/'],
-  ['/blog.html', '/blog/'],
-  ['/case-studies.html', '/case-studies/'],
-  ['/contact.html', '/contact/'],
-  /* the previous sitemap advertised these bare premium-consumer URLs */
+  /* The previous sitemap advertised these bare URLs — fold them into the
+     nested industry paths. These are real 404s otherwise. */
   ['/industries-cosmetics/', '/industries/cosmetics/'],
   ['/industries-perfume/', '/industries/perfume/'],
   ['/industries-premium-consumer-products/', '/industries/premium-consumer-products/']
