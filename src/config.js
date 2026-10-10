@@ -76,6 +76,36 @@ const site = {
   ]
 };
 
+/* Commercial terms we publish to buyers.
+
+   These figures were previously repeated as prose in several places — the
+   product FAQs, the sample page, the FAQ page, the terms — and by the time
+   they were audited one of them had drifted: a draft article quoted a 15 to
+   25 working day production time against the 12 to 20 the rest of the site
+   states. A buyer comparing two pages of the same site is exactly the reader
+   who notices that, so the numbers live here now and every page that
+   publishes one reads it from this object.
+
+   tools/build.js checks the built output against these values
+   (checkTradeLanguage), so a page that hard-codes its own range fails the
+   build rather than quietly contradicting the rest of the site. */
+const trade = {
+  /* Incoterms named in the terms and in every quotation. */
+  terms: 'EXW, FOB, CIF or DDP',
+
+  couriers: 'DHL, UPS or FedEx',
+
+  /* Working days counted from approved artwork, not from the enquiry. */
+  sampleLead: '5 – 8 working days',
+
+  /* Working days from the later of the cleared deposit or written sample
+     approval — the same trigger the terms and conditions state. Keep the
+     trigger wording in step if either changes. */
+  productionLead: '12 – 20 working days',
+
+  courierLead: '3 – 6 days'
+};
+
 /* Primary navigation.
    `key` is an existing key in main.js so the language switcher keeps working. */
 const nav = [
@@ -163,4 +193,4 @@ const redirects = [
   ['/industries-premium-consumer-products/', '/industries/premium-consumer-products/']
 ];
 
-module.exports = { site, nav, footerGroups, legalLinks, redirects };
+module.exports = { site, trade, nav, footerGroups, legalLinks, redirects };

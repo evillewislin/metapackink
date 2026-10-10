@@ -294,6 +294,29 @@ function mapSection(page) {
 </section>`;
 }
 
+/** Table of contents for a long document.
+ *
+ *  Lifted out of src/pages/30-support-legal.js when the article pages arrived,
+ *  so a legal document and a blog post cannot drift into two different
+ *  "On this page" designs. `items` is [{ id, label }] and each id must match an
+ *  element id in the document it heads. */
+function toc(items, title) {
+  return `<section class="section section-toc">
+
+<div class="container narrow">
+
+<nav class="toc" aria-label="On this page">
+<h2 class="toc-title">${title || 'On this page'}</h2>
+<ol class="toc-list">
+${items.map((it) => `<li><a href="#${it.id}">${it.label}</a></li>`).join('\n')}
+</ol>
+</nav>
+
+</div>
+
+</section>`;
+}
+
 /** Dark CTA band — matches the existing .dark-cta styling. */
 function darkCta(href, heading, text, buttonLabel) {
   return `<section class="dark-cta">
@@ -338,7 +361,7 @@ ${items
 }
 
 module.exports = {
-  rfqForm, sampleForm, contactForm, mapSection, darkCta, relatedSection,
+  rfqForm, sampleForm, contactForm, mapSection, darkCta, relatedSection, toc,
   field, options, FORM_ENDPOINT, FORM_CONFIGURED,
   STRUCTURE_OPTIONS, QUANTITY_OPTIONS, TIMELINE_OPTIONS
 };

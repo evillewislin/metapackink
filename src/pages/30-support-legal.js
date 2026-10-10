@@ -14,7 +14,7 @@
    export sales from China — which makes them a good draft, not legal advice. */
 
 const { navHref } = require('../layout');
-const { relatedSection, darkCta } = require('../partials');
+const { relatedSection, darkCta, toc } = require('../partials');
 const { site } = require('../config');
 
 const HOME = { label: 'Home', href: '/' };
@@ -56,24 +56,6 @@ ${g.items
 
 function flatten(groups) {
   return groups.reduce((acc, g) => acc.concat(g.items), []);
-}
-
-/* Table of contents for a long legal document. */
-function toc(items) {
-  return `<section class="section section-toc">
-
-<div class="container narrow">
-
-<nav class="toc" aria-label="On this page">
-<h2 class="toc-title">On this page</h2>
-<ol class="toc-list">
-${items.map((it) => `<li><a href="#${it.id}">${it.label}</a></li>`).join('\n')}
-</ol>
-</nav>
-
-</div>
-
-</section>`;
 }
 
 /* Long-form legal body: each block is a heading + paragraphs + optional list. */

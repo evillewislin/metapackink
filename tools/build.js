@@ -908,6 +908,31 @@ function checkLegacyHtmlRules(pages) {
   }
 }
 
+/* Every internal href and src on a page, resolved to an absolute path.
+ *
+ * Shared by checkLinks() and checkArticles(): both need to know where a page
+ * actually points, and a page writes its links relatively (../../request-a-
+ * quote/), so the string in the HTML is not the route. `raw` is kept so an
+ * error message can quote what the page really says rather than the rewrite.
+ */
+function internalTargets(pageUrl, html) {
+  const depth = pageUrl === '/' ? 0 : pageUrl.replace(/\/$/, '').split('/').filter(Boolean).length;
+  const base = depth === 0 ? '/' : pageUrl.replace(/[^/]*$/, '');
+  const out = [];
+
+  for (const m of html.matchAll(/\s(?:href|src)\s*=\s*"([^"]+)"/g)) {
+    const v = m[1];
+    if (/^(https?:|mailto:|tel:|data:|javascript:|#|\/\/)/i.test(v)) continue;
+    const clean = v.split('#')[0].split('?')[0];
+    if (!clean) continue;
+    out.push({
+      raw: v,
+      abs: clean.startsWith('/') ? clean : path.posix.normalize(base + clean)
+    });
+  }
+  return out;
+}
+
 function checkLinks(pages) {
   const pageUrls = new Set(pages.map((p) => p.url));
   const broken = [];
@@ -928,16 +953,9 @@ function checkLinks(pages) {
     const file = path.join(DIST, urlToFile(p.url));
     if (!fs.existsSync(file)) continue;
     const html = fs.readFileSync(file, 'utf8');
-    const depth = p.url === '/' ? 0 : p.url.replace(/\/$/, '').split('/').filter(Boolean).length;
-    const base = depth === 0 ? '/' : p.url.replace(/[^/]*$/, '');
 
-    for (const m of html.matchAll(/\s(?:href|src)\s*=\s*"([^"]+)"/g)) {
-      const v = m[1];
-      if (/^(https?:|mailto:|tel:|data:|javascript:|#|\/\/)/i.test(v)) continue;
-      const clean = v.split('#')[0].split('?')[0];
-      if (!clean) continue;
-      const abs = clean.startsWith('/') ? clean : path.posix.normalize(base + clean);
-      if (!resolves(abs)) broken.push({ from: p.url, href: v });
+    for (const { raw, abs } of internalTargets(p.url, html)) {
+      if (!resolves(abs)) broken.push({ from: p.url, href: raw });
     }
   }
 
@@ -1025,6 +1043,171 @@ function checkSchema(pages) {
 }
 
 /* ------------------------------------------------------------------ *
+ * article catalogue
+ * ------------------------------------------------------------------ */
+
+/* The article catalogue is the one place where a title, a date, a body file
+ * and a thumbnail are named separately and have to agree — so it is where
+ * mismatches are cheapest to make and quietest to ship.
+ *
+ * Four of those mismatches are already hard errors inside the article builders
+ * in src/articles/index.js, because the builders cannot do their job without
+ * the answer:
+ *
+ *   body file missing      loadBody()      throws; it has to read the file
+ *   <h2> with no id        extractToc()    throws; the id is the anchor
+ *   unknown related slug   relatedEntries() throws, for published entries
+ *   duplicate slug         build()         the duplicate-URL guard sees the page
+ *
+ * Those are deliberately NOT repeated below. A guard that cannot be reached is
+ * worse than no guard: it reads like coverage that is not there, and it is one
+ * more thing to keep true. What is checked here is the set the builders never
+ * look at, because every one of them concerns either an entry that produces no
+ * page or a page that no builder writes:
+ *
+ *   a planned entry's date, thumbnail and related slugs — never read at all
+ *   a duplicate slug between two planned entries — produces no pages, so the
+ *     duplicate-URL guard cannot see it
+ *   an empty body — loadBody() returns "" rather than failing, so a published
+ *     article can currently be built with no words in it
+ *   a link to a planned entry — the mistake that makes `planned: true` unsafe
+ *   a published article that its own list does not link to — in the sitemap
+ *     and reachable from nowhere
+ */
+function checkArticles(pages) {
+  const { allCollections, isPublished, articleUrl } = require('../src/articles');
+
+  const problems = [];
+  const IMG = path.join(ROOT, 'img');
+  const planned = new Map();     /* absolute url -> the entry that declared it */
+  const published = [];          /* { url, list } */
+
+  for (const { col, entries } of allCollections()) {
+    const slugs = new Set();
+
+    for (const entry of entries) {
+      const label = entry.slug || '(no slug)';
+
+      if (!entry.slug) { problems.push(`${col.key}: an entry has no slug`); continue; }
+      if (slugs.has(entry.slug)) problems.push(`${col.key}/${label} is a duplicate slug`);
+      slugs.add(entry.slug);
+
+      /* formatDate() throws on a bad date, but only for the entries it is
+         called for, which are the published ones. A typo in a planned entry's
+         date is not caught by anything else until the day it is published. */
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(entry.date || ''))) {
+        problems.push(`${col.key}/${label}: date "${entry.date}" is not YYYY-MM-DD`);
+      }
+      if (entry.updated && !/^\d{4}-\d{2}-\d{2}$/.test(String(entry.updated))) {
+        problems.push(`${col.key}/${label}: updated "${entry.updated}" is not YYYY-MM-DD`);
+      }
+
+      /* Card media falls back to a plate when there is no image, so a name
+         that does not resolve is not an error — it is a broken <img> inside a
+         card that otherwise looks finished. */
+      if (entry.img && !fs.existsSync(path.join(IMG, entry.img))) {
+        problems.push(`${col.key}/${label} names thumbnail img/${entry.img}, which does not exist`);
+      }
+
+      const url = articleUrl(entry, col);
+
+      if (isPublished(entry)) {
+        published.push({ url, list: col.url });
+        const body = path.join(ROOT, 'src', 'articles', 'bodies', (entry.body || entry.slug) + '.html');
+        if (fs.existsSync(body) && !fs.readFileSync(body, 'utf8').trim()) {
+          problems.push(`${col.key}/${label} is published with an empty body`);
+        }
+        continue;
+      }
+
+      planned.set(url, label);
+
+      /* Nothing reads a planned entry, so an unresolvable `related` sits there
+         until the article is written — at which point it becomes a hard error
+         in relatedEntries() against a catalogue that has moved on. */
+      for (const rel of entry.related || []) {
+        if (!entries.some((e) => e.slug === rel)) {
+          problems.push(`${col.key}/${label}: related article "${rel}" is not in ${col.key}`);
+        }
+      }
+    }
+  }
+
+  for (const p of pages) {
+    const file = path.join(DIST, urlToFile(p.url));
+    if (!fs.existsSync(file)) continue;
+    const targets = internalTargets(p.url, fs.readFileSync(file, 'utf8'));
+
+    for (const t of targets) {
+      if (planned.has(t.abs)) {
+        problems.push(
+          `${p.url} links to ${t.abs} ("${t.raw}"), which is planned but not written. ` +
+          `Write the article or remove the link`
+        );
+      }
+    }
+
+    /* Reachability is checked list page by list page, against the list the
+       article says it belongs to. Matching on a URL prefix instead would drag
+       the home page in — every path starts with "/" — and report it for not
+       linking to every article on the site. */
+    for (const { url } of published.filter((e) => e.list === p.url)) {
+      if (!targets.some((t) => t.abs === url)) problems.push(`${p.url} does not link to ${url}`);
+    }
+  }
+
+  if (problems.length) {
+    throw new Error('article catalogue:\n    - ' + [...new Set(problems)].join('\n    - '));
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * trade figures
+ * ------------------------------------------------------------------ */
+
+/* Every published lead time has to be one of the ranges in src/config.js.
+ *
+ * The site had already drifted once: a draft article quoted "15 to 25 working
+ * days" while the product pages and the terms said "12 to 20". A buyer
+ * comparing two pages of the same site is exactly the reader who notices, and
+ * the mistake is invisible to everyone else. So rather than trusting every
+ * future page to copy the numbers correctly, this reads them back out of the
+ * built HTML and compares them with the approved set.
+ *
+ * Only "working days" is matched. "1 – 2 days" for a requirements review is a
+ * service-level nicety rather than a contracted lead time, and pinning every
+ * such phrase to a config value would make the guard noisy enough to disable —
+ * which is the failure mode a guard cannot recover from. */
+function checkTradeLanguage(pages) {
+  const { trade } = require('../src/config');
+  const approved = new Set(
+    [trade.sampleLead, trade.productionLead].map((v) => String(v).replace(/\s+/g, ' ').trim())
+  );
+
+  const problems = [];
+  for (const p of pages) {
+    const file = path.join(DIST, urlToFile(p.url));
+    if (!fs.existsSync(file)) continue;
+    /* Entities would otherwise split a range across the pattern. */
+    const text = fs.readFileSync(file, 'utf8').replace(/&nbsp;|&#8209;|&ndash;/g, ' ');
+
+    for (const m of text.matchAll(/(\d+)\s*(?:–|—|-|\bto\b)\s*(\d+)\s*working days/gi)) {
+      const found = `${m[1]} – ${m[2]} working days`;
+      if (!approved.has(found)) {
+        problems.push(
+          `${p.url} says "${m[0].replace(/\s+/g, ' ').trim()}". The approved ` +
+          `ranges are ${[...approved].join(' and ')} — change it there rather than here`
+        );
+      }
+    }
+  }
+
+  if (problems.length) {
+    throw new Error('lead times:\n    - ' + [...new Set(problems)].join('\n    - '));
+  }
+}
+
+/* ------------------------------------------------------------------ *
  * main
  * ------------------------------------------------------------------ */
 
@@ -1075,9 +1258,15 @@ function build() {
   checkRedirects(pages);
   checkLegacyHtmlRules(pages);
   checkHeaders(pages);
+  /* Before checkLinks(): a link to an article that is planned but not written
+     fails both checks, and this one says so in those words. Running it first
+     means the maintainer is told the article is scheduled rather than being
+     told the route is broken. */
+  checkArticles(pages);
   checkLinks(pages);
   checkPublishedFacts(pages);
   checkSchema(pages);
+  checkTradeLanguage(pages);
   warnAboutStaleRootHtml();
 
   const bySection = {};

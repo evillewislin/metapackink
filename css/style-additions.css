@@ -564,10 +564,367 @@
   color: var(--gray);
 }
 
+/* ---------- product page: attribute strip ---------- */
+/* Five name/value pairs directly under the product image. A buyer scanning a
+   product page wants these before any prose, so they sit above the fold and
+   read as a summary rather than as content.
+
+   The 1px grid gap over a border-coloured background is what draws the
+   hairlines between cells: the gap is the divider, so there are no double
+   borders where two cells meet and no edge cases at the wrap. */
+.product-attributes { padding: 0 0 8px; }
+.attr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.attr-cell { background: var(--white); padding: 18px 20px; }
+.attr-cell dt {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin: 0 0 7px;
+}
+.attr-cell dd {
+  margin: 0;
+  font-size: .93rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--dark);
+}
+
+/* ---------- product page: alternating detail blocks ---------- */
+.product-detail-blocks { border-top: 1px solid var(--border); }
+.detail-block {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: 44px;
+  align-items: center;
+  padding: 44px 0 0;
+}
+/* The divider sits between blocks, not above the first one, so the intro
+   paragraph above is not cut off from the block it introduces. */
+.detail-block + .detail-block {
+  margin-top: 44px;
+  padding-top: 44px;
+  border-top: 1px solid var(--border);
+}
+/* Alternate which side the media sits on. The column widths swap with it so
+   the media cell is the narrow column on both sides. */
+.detail-block-flip { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }
+.detail-block-flip .detail-media { order: 2; }
+.detail-block-flip .detail-body { order: 1; }
+
+/* The media cell, in its no-photograph state: an ordinal and the product
+   family, on the tinted panel. Same fallback idea as .post-card-plate in the
+   article cards — a designed plate beats a stock photo that says nothing. */
+.detail-media {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-height: 210px;
+  padding: 30px 32px;
+  border-radius: var(--radius);
+  /* Logical, so the rule follows the leading edge when the page reads right
+     to left and needs no [dir="rtl"] override. The rules added below use the
+     same properties for the same reason; the older contact and check-list
+     rules above predate them and are still written physically. */
+  border-inline-start: 3px solid var(--orange);
+  background: var(--light);
+}
+.detail-ord {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--orange);
+}
+.detail-ord-label {
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+/* The photograph takes over the plate's panel. The min-height belongs to the
+   plate, which has no intrinsic height of its own; on a photo it would letterbox
+   a short image against empty panel, so it is reset rather than inherited. */
+.detail-media-photo {
+  padding: 0;
+  min-height: 0;
+  border-inline-start: 0;
+  background: transparent;
+  overflow: hidden;
+}
+.detail-media-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.detail-body h3 { font-size: 1.26rem; margin: 0 0 14px; color: var(--dark); }
+.detail-body p {
+  font-size: .97rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  margin: 0 0 22px;
+  max-width: 62ch;
+}
+
+/* Sits inside a detail block rather than at the foot of the page, so it must
+   not carry the full-page button weight. */
+.btn-small { min-height: 42px; padding: 0 20px; font-size: 13px; }
+
+/* The button that closes a service band. */
+.band-cta { margin: 26px 0 0; }
+
+/* ---------- product page: capability matrix ---------- */
+.capability-matrix { border-top: 1px solid var(--border); }
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(228px, 1fr));
+  gap: 30px 34px;
+  margin-top: 2.2rem;
+}
+.capability-group h3 {
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.chip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip-list li {
+  font-size: .81rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 13px;
+}
+.section-alt .chip-list li { background: var(--white); }
+
+/* ---------- article list (blog, case studies) ---------- */
+/* Cards, not a table of contents: each one has to carry a thumbnail, a
+   category, a date, a title, a summary and a way in, because that is what a
+   reader uses to choose between twelve of them. */
+.post-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+.post-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.post-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+
+.post-card-media {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--light);
+  overflow: hidden;
+}
+.post-card-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* The no-photograph state. A card with a grey rectangle in it looks broken; a
+   card with the category set in the brand's eyebrow type on a tinted panel
+   looks deliberate, so a list is presentable before the photography exists. */
+.post-card-plate {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px 22px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--orange);
+  background:
+    repeating-linear-gradient(135deg, rgba(168, 67, 0, .07) 0 9px, transparent 9px 18px),
+    var(--light);
+}
+
+.post-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 24px 26px;
+}
+.post-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 0 13px;
+  font-size: .76rem;
+  color: var(--gray);
+}
+/* The divider between category and date is a border on the category rather
+   than a separator element, and it is logical, so it follows the text
+   direction without an RTL override. */
+.post-card-category {
+  margin-inline-end: 10px;
+  padding-inline-end: 10px;
+  border-inline-end: 1px solid var(--border);
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.post-card-title { font-size: 1.14rem; line-height: 1.4; margin: 0 0 12px; }
+.post-card-title a { color: var(--dark); text-decoration: none; }
+/* Makes the whole card a target rather than only the headline, without
+   nesting the excerpt inside the link. The media tile is a link too, but it
+   is aria-hidden and untabbable, so this is the one a keyboard reaches. */
+.post-card-title a::after { content: ""; position: absolute; inset: 0; }
+.post-card:hover .post-card-title a { color: var(--orange); }
+.post-card-excerpt {
+  font-size: .93rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin: 0 0 18px;
+}
+.post-card-more {
+  margin-top: auto;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--orange);
+}
+.post-empty {
+  font-size: .96rem;
+  line-height: 1.75;
+  color: var(--gray);
+  max-width: 62ch;
+}
+
+/* The count beside the list heading. .section-heading is a flex row, so this
+   sits inline with the h2 rather than on its own line. */
+.section-count {
+  margin-inline-start: 12px;
+  padding: 3px 11px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--gray);
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* ---------- article page ---------- */
+.article-hero { padding-bottom: 40px; }
+.article-hero h1 { max-width: 26ch; }
+.article-byline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 0;
+  font-size: .88rem;
+  color: var(--gray);
+}
+.byline-sep { color: var(--border); }
+
+/* The image sits above the standfirst rather than in the hero, so a 16:9
+   photograph does not push the byline off the fold. */
+.article-opening { padding: 40px 0 0; }
+.article-figure {
+  margin: 0 0 30px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--light);
+}
+.article-figure img { display: block; width: 100%; height: auto; }
+.article-lead {
+  font-size: 1.1rem;
+  line-height: 1.78;
+  color: var(--ink-soft);
+  margin: 0 0 2.4rem;
+}
+
+/* Body and enquiry rail side by side. The rail is sticky because long-form
+   content is where a reader is most convinced and furthest from a form. */
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+  gap: 60px;
+  align-items: start;
+}
+.article-main { min-width: 0; }
+.article-prose { max-width: 74ch; }
+.article-aside { position: sticky; top: 96px; display: grid; gap: 16px; }
+.aside-link {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--orange);
+  text-decoration: none;
+}
+.aside-link:hover { text-decoration: underline; }
+
+.article-faq { margin-top: 3rem; }
+.article-faq h2 { font-size: 1.4rem; margin: 0 0 1.4rem; }
+.article-updated {
+  margin: 2.6rem 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: .84rem;
+  line-height: 1.7;
+  color: var(--gray);
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .form-layout { grid-template-columns: 1fr; }
   .section { padding: 56px 0; }
+}
+
+/* The enquiry rail stops being a rail once the body column would be squeezed
+   below a readable measure. It becomes a row of cards underneath the article
+   instead of a column beside it. */
+@media (max-width: 1040px) {
+  .article-layout { grid-template-columns: 1fr; gap: 44px; }
+  .article-aside {
+    position: static;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+/* Below this the alternating detail blocks stop being side by side: two
+   columns of body text at this width wrap to three words a line. The flip
+   rule is undone as well, so every block reads media-then-text once stacked
+   rather than alternating for no visible reason. */
+@media (max-width: 860px) {
+  .detail-block,
+  .detail-block-flip { grid-template-columns: 1fr; gap: 22px; }
+  .detail-block-flip .detail-media { order: 1; }
+  .detail-block-flip .detail-body { order: 2; }
+  .detail-block { padding-top: 34px; }
+  .detail-block + .detail-block { margin-top: 34px; padding-top: 34px; }
+  .detail-media { min-height: 0; padding: 24px 26px; }
+  .detail-ord { font-size: 2.6rem; }
 }
 
 @media (max-width: 680px) {
@@ -581,6 +938,12 @@
   .contact-map { padding-bottom: 56px; }
   .contact-map .map-head { padding: 48px 0 22px; }
   .contact-hours { margin-top: 18px; }
+  .attr-cell { padding: 15px 16px; }
+  .detail-body h3 { font-size: 1.15rem; }
+  .capability-grid { gap: 24px; }
+  .post-card-body { padding: 20px 20px 22px; }
+  .article-hero h1 { max-width: none; }
+  .article-prose { max-width: none; }
 }
 
 /* ---------- RTL (Arabic) ---------- */
@@ -608,5 +971,28 @@
   /* An interactive map is useless on paper, and the address is printed in
      ordinary text underneath it anyway. */
   .map-frame, .map-actions { display: none !important; }
+  /* A printed product page is a specification sheet. Collapse the alternating
+     blocks to one column, drop the ornamental plate and the enquiry buttons —
+     the same reasoning that removes the forms — and stop the chips inking the
+     page with a background. */
+  .detail-block,
+  .detail-block-flip { grid-template-columns: 1fr; gap: 8px; }
+  .detail-media { display: none !important; }
+  .detail-body .btn-small, .band-cta { display: none !important; }
+  .product-attributes, .detail-block, .capability-group { break-inside: avoid; }
+  .chip-list li { background: transparent; }
+  /* A printed article is something to read on paper: the thumbnails and the
+     enquiry rail go, and the cards collapse into a list. */
+  .post-list { display: block; }
+  .post-card {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 16px;
+    break-inside: avoid;
+  }
+  .post-card-media, .post-card-more, .article-aside, .section-count { display: none !important; }
+  .post-card-body { padding: 0 0 16px; }
+  .article-layout { grid-template-columns: 1fr; gap: 0; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .8em; color: #666; }
 }

@@ -119,6 +119,34 @@ function renderHead(page) {
     });
   }
 
+  /* Articles. BlogPosting for the blog, Article for a case study — the two
+     differ only in how a search engine files them, but saying "BlogPosting"
+     about a project note is simply wrong. `image` is omitted rather than
+     pointed at a default, because a shared placeholder logo as an article's
+     image is worse than no image at all: it is what gets shown in the rich
+     result. */
+  if (page.article) {
+    const a = page.article;
+    const node = {
+      '@context': 'https://schema.org',
+      '@type': a.type || 'BlogPosting',
+      headline: a.headline,
+      description: a.description,
+      datePublished: a.datePublished,
+      dateModified: a.dateModified || a.datePublished,
+      author: { '@type': 'Organization', name: site.legalName, url: site.domain + '/' },
+      publisher: {
+        '@type': 'Organization',
+        name: site.legalName,
+        logo: { '@type': 'ImageObject', url: site.domain + '/img/hero-box.webp' }
+      },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': site.domain + page.url }
+    };
+    if (a.section) node.articleSection = a.section;
+    if (a.image) node.image = [site.domain + '/img/' + a.image];
+    jsonLd.push(node);
+  }
+
   return `<!DOCTYPE html>
 <html lang="${site.lang}">
 <head>

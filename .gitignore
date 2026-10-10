@@ -8,6 +8,13 @@ dist/
 .DS_Store
 Thumbs.db
 
+# The full-resolution originals the images in img/ are cropped and resized
+# from, kept so a different crop or aspect ratio can be cut later without
+# paying to generate them again. They are about 1.7 MB each, which is not
+# worth carrying in the repository, and nothing in the build reads them —
+# tools/prepare-images.py is the only consumer, and it is run by hand.
+img-staging/
+
 # Editor / OS
 *.swp
 *~

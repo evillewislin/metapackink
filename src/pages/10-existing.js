@@ -129,36 +129,11 @@ module.exports = [
     heroHeading: 'What gets checked, and when',
     heroLead:
       'Quality is decided by the specification, not by the final inspection. These are the points we check, from the approved sample through to the pre-shipment audit.'
-  }),
-
-  carriedPage({
-    url: '/blog/',
-    body: 'blog',
-    title: 'Packaging Insights | Guides for Packaging Buyers | Metapackink',
-    description:
-      'Buyer-focused guides on packaging manufacturing, rigid and magnetic box structures, perfume and cosmetic packaging, quality control and sourcing from China.',
-    ogImage: 'hero-box.webp',
-    priority: '0.7',
-    breadcrumbs: [HOME, { label: 'Blog', href: '/blog/' }],
-    heroEyebrow: 'PACKAGING INSIGHTS',
-    heroHeading: 'Guides for people buying packaging',
-    heroLead:
-      'Practical writing on structures, materials, sampling, quality control and sourcing custom packaging from China — written for buyers rather than for designers.'
-  }),
-
-  carriedPage({
-    url: '/case-studies/',
-    body: 'case-studies',
-    title: 'Packaging Case Studies | Project Examples | Metapackink',
-    description:
-      'How custom packaging projects are specified and produced: structure, dimensions, materials, printing, finishing, interior configuration, sampling and quality control.',
-    ogImage: 'magnetic-boxes-600.webp',
-    priority: '0.7',
-    breadcrumbs: [HOME, { label: 'Case Studies', href: '/case-studies/' }],
-    heroEyebrow: 'CASE STUDIES',
-    heroHeading: 'How packaging projects come together',
-    heroLead:
-      'What a real packaging brief contains, how the structure is decided, and what gets specified before a production run is approved.'
   })
+
+  /* /blog/ and /case-studies/ used to be here as carried bodies. Both are now
+     article lists, built in src/pages/45-articles.js from the catalogues in
+     src/articles/ — a list of cards that link somewhere needs the pages it
+     links to to exist, which a hand-written body cannot know about. */
 
 ];
