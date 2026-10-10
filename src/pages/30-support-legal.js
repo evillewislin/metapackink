@@ -749,7 +749,7 @@ ${REVIEW_NOTE}
 
 <div class="container">
 
-<div class="table-wrap">
+<div class="table-wrap" tabindex="0" role="region" aria-label="Cookies set by this website">
 <table class="spec-table">
 <thead><tr><th>Name</th><th>Type</th><th>Purpose</th><th>Duration</th></tr></thead>
 <tbody>
@@ -776,6 +776,11 @@ ${REVIEW_NOTE}
       breadcrumbs: [HOME, { label: 'Cookie Policy', href: '/cookie-policy/' }]
     };
 
+    /* Everything below except 'short-version' and 'what-we-store' renders from
+       this list. 'what-we-store' is placed by hand above the cookie table: its
+       copy says "the table below", so it has to sit above it. Leaving it out of
+       `order` is what broke it — the contents listed it, but no section ever
+       carried that id, so the first entry pointed at nothing. */
     const order = ['short-version', 'categories', 'control', 'third-parties', 'changes'];
 
     page.content = `
@@ -804,6 +809,8 @@ ${toc([
 ])}
 
 ${legalBlock(blocks.find((b) => b.id === 'short-version'))}
+
+${legalBlock(blocks.find((b) => b.id === 'what-we-store'))}
 
 ${cookieTable}
 

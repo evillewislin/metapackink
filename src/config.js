@@ -193,4 +193,17 @@ const redirects = [
   ['/industries-premium-consumer-products/', '/industries/premium-consumer-products/']
 ];
 
-module.exports = { site, trade, nav, footerGroups, legalLinks, redirects };
+/* Pages written as a bare `name.html` at the deploy root rather than as
+   `name/index.html`. Cloudflare needs 404.html there to find it by convention,
+   and thank-you.html because the forms redirect straight to it.
+ *
+ * Consequences flow from this in two places, which is why it lives here and not
+ * in tools/build.js: `tools/build.js` decides which file to write, and
+ * `src/layout.js` decides what each page declares as its canonical URL. With
+ * `html_handling = "auto-trailing-slash"` the platform serves these WITHOUT a
+ * trailing slash — /thank-you/ answers 307 to /thank-you. A canonical name that
+ * ends in a slash therefore points at a redirect rather than at the page, so
+ * both files must agree about which URLs are flat. */
+const flatRoutes = ['/404/', '/thank-you/'];
+
+module.exports = { site, trade, nav, footerGroups, legalLinks, redirects, flatRoutes };

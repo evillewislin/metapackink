@@ -31,7 +31,7 @@
 const { navHref } = require('../layout');
 const { relatedSection, rfqForm } = require('../partials');
 const {
-  attributeStrip, detailBlocks, serviceBands, capabilityMatrix
+  attributeStrip, productGallery, detailBlocks, serviceBands, capabilityMatrix
 } = require('../product-blocks');
 
 const HOME = { label: 'Home', href: '/' };
@@ -47,7 +47,7 @@ function specTable(rows, note) {
 
 <div class="container">
 
-<div class="table-wrap">
+<div class="table-wrap" tabindex="0" role="region" aria-label="Specifications">
 <table class="spec-table">
 <tbody>
 ${rows.map((r) => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join('\n')}
@@ -175,6 +175,8 @@ const PRODUCTS = [
     },
     spec: [
       ['Structure', 'Rigid lid-and-base, book-style, magnetic closure, drawer or custom'],
+      ['Colour', 'Any Pantone, CMYK or metallic shade on the wrap; matched to the approved sample under standard lighting'],
+      ['Printing', 'Offset CMYK or Pantone spot colour, with foil, emboss, deboss or spot UV over it'],
       ['Board', 'Greyboard 1.5 mm – 3 mm, selected against product weight and box size'],
       ['Wrap materials', 'Coated paper, specialty and textured paper, fabric, printed paper'],
       ['Internal fitment', 'Die-cut paperboard, foam or EVA cavity, ribbon pull, compartmented tray'],
@@ -231,6 +233,19 @@ const PRODUCTS = [
       assurance: 'Rigid boxes are warranted against the approved sample for corner and wrap defects, which are the two failure modes specific to hand-built rigid construction.'
     },
 
+    /* `when` is the decision — is this the right structure? `applications` is
+       the concrete answer to what it gets used for. Both were asked for and
+       they are not the same question. */
+    applications: {
+      heading: 'Where premium rigid boxes are used',
+      items: [
+        { title: 'Luxury retail', text: 'Beauty, fragrance and accessories sold at a price where the box is part of what the customer is paying for.' },
+        { title: 'Gift sets and limited editions', text: 'Multi-piece sets that need one engineered interior rather than several boxes inside a sleeve.' },
+        { title: 'Jewellery and watches', text: 'Small, high-value items where the box is kept and reused long after the purchase.' },
+        { title: 'Corporate and client gifting', text: 'Presentation sets where the outer box carries the brand and the interior carries the product.' }
+      ]
+    },
+
     capabilities: {
       noun: 'premium rigid boxes',
       industries: ['Luxury retail', 'Gifting and gift sets', 'Beauty and personal care', 'Jewellery', 'Premium consumer products', 'Subscription boxes'],
@@ -284,6 +299,8 @@ const PRODUCTS = [
     },
     spec: [
       ['Structure', 'Rigid box with concealed magnetic closure, full or half flap'],
+      ['Colour', 'Any Pantone, CMYK or metallic shade on the wrap; matched to the approved sample under standard lighting'],
+      ['Printing', 'Offset CMYK or Pantone spot colour, with foil, emboss, deboss or spot UV over it'],
       ['Board', 'Greyboard 1.5 mm – 3 mm'],
       ['Magnet', 'Size and grade specified against lid dimensions and required holding force'],
       ['Magnet placement', 'Concealed between board and wrap, recessed so the surface stays flat'],
@@ -338,6 +355,16 @@ const PRODUCTS = [
       assurance: 'Magnetic closures are warranted against the approved sample for holding force and lid alignment after repeated opening, the two faults that only surface once the customer has the box.'
     },
 
+    applications: {
+      heading: 'Where magnetic closure boxes are used',
+      items: [
+        { title: 'Beauty and skincare sets', text: 'Gift sets that are opened and closed repeatedly, where the closure has to keep its feel.' },
+        { title: 'Fragrance and cosmetics launches', text: 'Limited runs where the box is the launch and the closure is part of the reveal.' },
+        { title: 'Premium electronics accessories', text: 'Cables, chargers and small devices presented rather than simply packed.' },
+        { title: 'Corporate presentation boxes', text: 'Client gifts and awards where the lid has to open flat and stay flat.' }
+      ]
+    },
+
     capabilities: {
       noun: 'magnetic closure boxes',
       industries: ['Gift and presentation sets', 'Beauty and skincare', 'Fragrance', 'Jewellery', 'Corporate gifting', 'Electronics accessories'],
@@ -390,6 +417,8 @@ const PRODUCTS = [
     },
     spec: [
       ['Structure', 'Separate lid and base, held by friction — no hinge or closure mechanism'],
+      ['Colour', 'Any Pantone, CMYK or metallic shade, or a deliberate contrast between lid and base'],
+      ['Printing', 'Offset CMYK or Pantone spot colour, with foil, emboss, deboss or spot UV over it'],
       ['Board', 'Greyboard 1.5 mm – 2.5 mm'],
       ['Lid depth', 'Full-depth or shallow, as a design decision'],
       ['Lid fit', 'Clearance set so the lid holds securely but releases without force'],
@@ -440,6 +469,16 @@ const PRODUCTS = [
       oemIntro: 'We offer complete OEM and ODM services for two-piece lid-and-base boxes. ODM means running one of our existing lid-and-base tools at your size; OEM means developing the clearance from your dimensions.',
       sampling: 'a two-piece sample is fitted with the product in the base and then opened and closed repeatedly, because a lid that holds empty can behave differently once it is carrying weight.',
       assurance: 'Two-piece boxes are warranted against the approved sample for lid fit, including the lid still seating correctly after the box has been through repeated open-and-close cycles.'
+    },
+
+    applications: {
+      heading: 'Where two-piece rigid boxes are used',
+      items: [
+        { title: 'Apparel and accessories', text: 'Shirts, scarves and leather goods where a lift-off lid suits how the product is taken out.' },
+        { title: 'Jewellery', text: 'Rings and necklaces presented with a lift, and a base deep enough to hold a padded fitment.' },
+        { title: 'Confectionery and hampers', text: 'Wide, shallow sets laid out to be seen at once rather than unpacked piece by piece.' },
+        { title: 'Archival and keepsake packaging', text: 'Photographs, prints and documents kept in the box after the purchase.' }
+      ]
     },
 
     capabilities: {
@@ -495,6 +534,8 @@ const PRODUCTS = [
     },
     spec: [
       ['Structure', 'Rigid outer sleeve with sliding inner tray'],
+      ['Colour', 'Any Pantone, CMYK or metallic shade; sleeve and tray can be specified separately'],
+      ['Printing', 'Offset CMYK or Pantone spot colour, with foil, emboss, deboss or spot UV over it'],
       ['Board', 'Greyboard 1.5 mm – 2.5 mm'],
       ['Pull', 'Ribbon pull, die-cut finger hole, or formed tab'],
       ['Stop', 'Internal stop to limit tray travel, if required'],
@@ -545,6 +586,16 @@ const PRODUCTS = [
       oemIntro: 'We offer complete OEM and ODM services for drawer boxes. ODM means adapting an existing sleeve-and-tray tool to your footprint; OEM means developing the stop and the travel from your drawing.',
       sampling: 'a drawer sample is checked for tray travel with the product loaded, and for the internal stop holding under withdrawal, which is the failure that only shows up after repeated use.',
       assurance: 'Drawer boxes are warranted against the approved sample for tray travel and stop performance, since those are what degrade first on a box that is opened daily.'
+    },
+
+    applications: {
+      heading: 'Where drawer boxes are used',
+      items: [
+        { title: 'Watches and jewellery', text: 'Single high-value items revealed by a pull rather than by lifting a lid off.' },
+        { title: 'Subscription and curated sets', text: 'Repeated shipments where the sleeve stays branded and the tray changes.' },
+        { title: 'Beauty and fragrance', text: 'Bottles and palettes seated in a cavity that presents them upright.' },
+        { title: 'Premium stationery', text: 'Flat products such as notebooks and cards that slide out rather than tip out.' }
+      ]
     },
 
     capabilities: {
@@ -600,6 +651,8 @@ const PRODUCTS = [
     },
     spec: [
       ['Structures', 'Rigid lid-and-base, magnetic closure, drawer'],
+      ['Colour', 'Any Pantone, CMYK or metallic shade; metallised and pearlescent boards available'],
+      ['Printing', 'Offset CMYK or Pantone spot colour, with foil, emboss, deboss or spot UV over it'],
       ['Bottle sizes', 'From travel-size 10 ml up to large-format flacons'],
       ['Board', 'Greyboard 1.5 mm – 3 mm, specified against bottle weight'],
       ['Fitment', 'Die-cut paperboard collar, foam or EVA cavity, moulded insert'],
@@ -651,6 +704,16 @@ const PRODUCTS = [
       oemIntro: 'We offer complete OEM and ODM services for fragrance packaging. ODM means fitting an existing fragrance structure to your flacon; OEM means developing the cavity and the cradle from your bottle.',
       sampling: 'a fragrance sample is produced and checked with the actual bottle fitted, filled to its working weight, so the cavity is proved with glass in it rather than empty.',
       assurance: 'Fragrance packaging is warranted against the approved sample with the bottle fitted, covering cavity clearance and cap support, which is where a fit problem shows up first.'
+    },
+
+    applications: {
+      heading: 'Where perfume packaging is used',
+      items: [
+        { title: 'Retail fragrance', text: 'Single bottles from 30 ml to 200 ml, sized against the glass rather than a stock box.' },
+        { title: 'Coffrets and gift sets', text: 'A bottle with a miniature or a body product, held in one cavity at one height.' },
+        { title: 'Discovery and sample sets', text: 'Several vials presented together, where the fitment is the whole design.' },
+        { title: 'Launch and press editions', text: 'Short runs where the structure carries the launch and is not repeated.' }
+      ]
     },
 
     capabilities: {
@@ -707,6 +770,8 @@ const PRODUCTS = [
     },
     spec: [
       ['Structures', 'Rigid lid-and-base, magnetic closure, drawer, folding carton'],
+      ['Colour', 'Any Pantone, CMYK or metallic shade; soft-touch and matte finishes available'],
+      ['Printing', 'Offset CMYK or Pantone spot colour, with foil, emboss, deboss or spot UV over it'],
       ['Products covered', 'Cream jars, serum bottles, droppers, tubes, pumps, compacts, sets'],
       ['Board', 'Greyboard 1.5 mm – 2.5 mm for rigid structures'],
       ['Fitment', 'Individual cavities, compartmented trays, foam or EVA where needed'],
@@ -758,6 +823,16 @@ const PRODUCTS = [
       oemIntro: 'We offer complete OEM and ODM services for cosmetic and skincare packaging. ODM means fitting our existing jars-and-bottles structures to your range; OEM means developing every cavity from your containers.',
       sampling: 'where the order is a set, the sample is checked with every container fitted and filled to its working weight, so nothing is approved on an empty mock-up.',
       assurance: 'Cosmetic packaging is warranted against the approved sample for fitment clearance and interior facing, covering the two faults specific to this category: interior oil staining and cap or actuator stress.'
+    },
+
+    applications: {
+      heading: 'Where cosmetic packaging is used',
+      items: [
+        { title: 'Skincare sets and regimens', text: 'Several products of different heights presented as one routine.' },
+        { title: 'Colour cosmetics', text: 'Palettes and compacts where the box has to survive being opened on a counter.' },
+        { title: 'Clinic and treatment packaging', text: 'Professional ranges sold at the point of treatment rather than on a shelf.' },
+        { title: 'Subscription and refills', text: 'Repeated orders where the structure stays constant and the artwork changes.' }
+      ]
     },
 
     capabilities: {
@@ -814,6 +889,8 @@ const PRODUCTS = [
     },
     spec: [
       ['Structures', 'Rigid lid-and-base, magnetic closure, drawer, lidded hamper'],
+      ['Colour', 'Any Pantone, CMYK or metallic shade, including seasonal and occasion-led palettes'],
+      ['Printing', 'Offset CMYK or Pantone spot colour, with foil, emboss, deboss or spot UV over it'],
       ['Sizes', 'Small jewellery formats through to large multi-item hampers'],
       ['Board', 'Greyboard 1.5 mm – 3 mm'],
       ['Wrap materials', 'Coated paper, specialty and textured paper, fabric, printed paper'],
@@ -866,6 +943,16 @@ const PRODUCTS = [
       assurance: 'Gift packaging is warranted against the approved sample for wrap appearance and finish adhesion, the two faults a fabric or heavily textured stock can develop.'
     },
 
+    applications: {
+      heading: 'Where premium gift packaging is used',
+      items: [
+        { title: 'Seasonal and occasion gifting', text: 'Christmas, wedding and celebration ranges produced once and not repeated.' },
+        { title: 'Corporate gifting', text: 'Client and staff gifts where the box carries the sender as much as the contents.' },
+        { title: 'Confectionery and hampers', text: 'Mixed contents laid out in one compartmented interior.' },
+        { title: 'Limited and collector editions', text: 'Runs short enough that the structure is part of the edition rather than a container for it.' }
+      ]
+    },
+
     capabilities: {
       noun: 'premium gift packaging',
       industries: ['Gifting and presentation', 'Corporate and client gifting', 'Beauty and fragrance', 'Confectionery', 'Jewellery and watches', 'Limited and seasonal editions'],
@@ -884,13 +971,34 @@ module.exports = PRODUCTS.map((p) => {
   const breadcrumb = crumb(p.name, url);
 
   /* detailBlocks() in src/product-blocks.js resolves no URLs of its own — it
-     has no idea what page it is being rendered into. So the one photograph a
-     product has is resolved here, where the depth is known, and a block with
-     no image keeps the typographic plate. */
+     has no idea what page it is being rendered into. So the photographs a
+     product has are resolved here, where the depth is known.
+
+     The wide detail shot moves out of its detail block and becomes the first
+     slide of the gallery, because a buyer expects to see more than one view of
+     a product and the alternative was showing the same photograph twice on one
+     page. That block falls back to the typographic plate it uses anyway. */
+  const galleryImages = [];
   const detail = Object.assign({}, p.detail, {
-    blocks: p.detail.blocks.map((b) =>
-      b.img ? Object.assign({}, b, { img: navHref('/img/' + b.img, url) }) : b
-    )
+    blocks: p.detail.blocks.map((b) => {
+      if (!b.img) return b;
+      galleryImages.push({
+        src: navHref('/img/' + b.img, url),
+        alt: b.imgAlt || b.title,
+        w: 1600,
+        h: 900
+      });
+      return Object.assign({}, b, { img: '' });
+    })
+  });
+
+  /* The catalogue shot is a different photograph of the same product, not a
+     smaller copy of the one above — which is why it earns a slide. */
+  galleryImages.push({
+    src: navHref('/img/' + p.img, url),
+    alt: `${p.name} custom packaging by Metapackink`,
+    w: 600,
+    h: 600
   });
 
   return {
@@ -926,9 +1034,7 @@ module.exports = PRODUCTS.map((p) => {
 
 <div class="container">
 
-<figure class="product-figure">
-<img src="${navHref('/img/' + p.img, url)}" alt="${p.name} custom packaging by Metapackink" width="600" height="600" loading="eager" decoding="async">
-</figure>
+${productGallery(galleryImages, p.slug)}
 
 <div class="prose">
 ${p.intro.map((t) => `<p>${t}</p>`).join('\n')}
@@ -941,6 +1047,8 @@ ${p.intro.map((t) => `<p>${t}</p>`).join('\n')}
 ${attributeStrip(p.attributes)}
 
 ${featureGrid({ heading: p.when.heading, items: p.when.items })}
+
+${featureGrid({ heading: p.applications.heading, items: p.applications.items, alt: true })}
 
 ${detailBlocks(detail, navHref('/request-a-quote/', url))}
 

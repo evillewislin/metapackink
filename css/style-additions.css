@@ -903,6 +903,255 @@
   color: var(--gray);
 }
 
+/* ---------- product catalogue cards (src/bodies/products.html) ---------- */
+/* The seven cards on /products/ were <article> elements with an image, a
+   heading and a paragraph — and no link anywhere. The only route to a product
+   page was the footer, so the page that exists to sell seven structures was
+   the one page that could not reach any of them.
+
+   The heading is now the link and it is stretched over the whole card, so the
+   image is clickable too, which is what a grid of cards promises. The heading
+   stays the accessible name, so a screen reader hears "Premium Rigid Boxes"
+   rather than "View details" seven times. */
+.catalog-card { position: relative; }
+.catalog-card-link { color: inherit; text-decoration: none; }
+.catalog-card-link::after { content: ""; position: absolute; inset: 0; }
+.catalog-card:hover .catalog-card-link { color: var(--orange); }
+/* focus-visible is used rather than :focus so a mouse click does not leave a
+   ring behind, but a keyboard user can still see where they are. */
+.catalog-card-link:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+/* Selected with two classes because style.css sets `.catalog-card p`, which is
+   one class more specific and would otherwise win on padding. The negative
+   margin pulls this line back under the description above it, which already
+   contributes 25px of bottom padding. */
+.catalog-card .catalog-card-more {
+  margin: -22px 0 0;
+  padding: 0 25px 25px;
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--gray);
+  transition: color .25s ease;
+}
+.catalog-card:hover .catalog-card-more { color: var(--orange); }
+
+/* ---------- product gallery (src/product-blocks.js) ---------- */
+/* One stage and a strip of thumbnails, switched by radio inputs rather than by
+   script — see the comment on productGallery() for why. The inputs sit first so
+   a sibling selector can reach both the stage and the strip.
+
+   The switch rules are listed one per slot rather than generated, because this
+   is static CSS: six is more than any product carries today, and adding a
+   seventh is a copy of the same three lines. */
+.product-gallery { position: relative; }
+/* The container here is block, so without a cap the stage would run the full
+   1240px and stand almost a screen tall before any copy begins. */
+.section-media .product-gallery { max-width: 720px; }
+
+.gallery-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gallery-stage {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--light);
+}
+.gallery-item { display: none; margin: 0; height: 100%; }
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* The photographs are not the same shape — one is a 16:9 scene, one a square
+     catalogue shot — so the stage fixes one ratio and crops to it, rather than
+     the page jumping every time a slide changes. */
+  object-fit: cover;
+  object-position: center;
+}
+
+.product-gallery > input:nth-of-type(1):checked ~ .gallery-stage .gallery-item:nth-of-type(1),
+.product-gallery > input:nth-of-type(2):checked ~ .gallery-stage .gallery-item:nth-of-type(2),
+.product-gallery > input:nth-of-type(3):checked ~ .gallery-stage .gallery-item:nth-of-type(3),
+.product-gallery > input:nth-of-type(4):checked ~ .gallery-stage .gallery-item:nth-of-type(4),
+.product-gallery > input:nth-of-type(5):checked ~ .gallery-stage .gallery-item:nth-of-type(5),
+.product-gallery > input:nth-of-type(6):checked ~ .gallery-stage .gallery-item:nth-of-type(6) {
+  display: block;
+}
+
+.gallery-thumbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.gallery-thumb {
+  flex: 0 0 84px;
+  height: 63px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: var(--light);
+  cursor: pointer;
+  transition: border-color .25s ease;
+}
+.gallery-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Which slide is showing, and where keyboard focus is: two separate states that
+   must not be confused, or a keyboard user cannot tell what they are on. */
+.product-gallery > input:nth-of-type(1):checked ~ .gallery-thumbs .gallery-thumb:nth-child(1),
+.product-gallery > input:nth-of-type(2):checked ~ .gallery-thumbs .gallery-thumb:nth-child(2),
+.product-gallery > input:nth-of-type(3):checked ~ .gallery-thumbs .gallery-thumb:nth-child(3),
+.product-gallery > input:nth-of-type(4):checked ~ .gallery-thumbs .gallery-thumb:nth-child(4),
+.product-gallery > input:nth-of-type(5):checked ~ .gallery-thumbs .gallery-thumb:nth-child(5),
+.product-gallery > input:nth-of-type(6):checked ~ .gallery-thumbs .gallery-thumb:nth-child(6) {
+  border-color: var(--orange);
+}
+.product-gallery > input:nth-of-type(1):focus-visible ~ .gallery-thumbs .gallery-thumb:nth-child(1),
+.product-gallery > input:nth-of-type(2):focus-visible ~ .gallery-thumbs .gallery-thumb:nth-child(2),
+.product-gallery > input:nth-of-type(3):focus-visible ~ .gallery-thumbs .gallery-thumb:nth-child(3),
+.product-gallery > input:nth-of-type(4):focus-visible ~ .gallery-thumbs .gallery-thumb:nth-child(4),
+.product-gallery > input:nth-of-type(5):focus-visible ~ .gallery-thumbs .gallery-thumb:nth-child(5),
+.product-gallery > input:nth-of-type(6):focus-visible ~ .gallery-thumbs .gallery-thumb:nth-child(6) {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+/* Nothing to choose between, so no strip. */
+.product-gallery-single .gallery-thumbs { display: none; }
+
+/* ---------- visibility and focus defects carried in style.css ---------- */
+
+/* style.css paints this badge `color: var(--orange)` on top of
+   `background: var(--orange)` — a 1:1 contrast pair, so the 01–04 numbers on
+   /contact/ are invisible until the card is hovered, exactly the defect that
+   .aside-card had for the quote button. White is what the hover state uses. */
+.contact-item > .contact-item-icon { color: #fff; }
+
+/* js/forms.js disables the submit control while the request is in flight. There
+   was no visual for that state, so the button looked exactly as clickable as
+   before — the visitor's first instinct on seeing no change is to press it
+   again. Reduced opacity and `not-allowed` say what disabled means; the
+   orange-dark keeps it legible against the orange it normally is. */
+.btn:disabled,
+.btn:disabled:hover {
+  cursor: not-allowed;
+  opacity: .72;
+  color: #fff;
+  background: var(--orange-dark);
+  border-color: var(--orange-dark);
+  transform: none;
+  box-shadow: none;
+}
+
+/* style.css removes the outline from every input, select and textarea and
+   replaces it with a 1px border colour change — too weak to find, and it only
+   survived because every control happened to sit inside .form-row, which this
+   stylesheet re-outlined. That is an implicit contract waiting to break, so the
+   focus ring is restored for the elements themselves, wherever they are. */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 1px;
+}
+
+/* The FAQ accordion is the densest interactive component on the site (23 items
+   on /faq/). style.css removes the native disclosure triangle and replaces it
+   with a +/- glyph whose only state change is bound to :hover — so there was
+   nothing to indicate focus for a keyboard user. */
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -2px;
+}
+.faq-item summary:hover,
+.faq-item summary:focus-visible { color: var(--orange); }
+
+/* Same component, seen right to left. style.css writes padding and the glyph
+   position in physical properties, so in Arabic the +/- marker sits on top of
+   the first word of the question and the space reserved for it is on the wrong
+   side. Logical properties make the rule direction-aware without a second
+   [dir="rtl"] block. */
+.faq-item summary {
+  padding: 18px 22px;
+  padding-inline-end: 50px;
+}
+/* `left: auto` has to come first: in RTL `inset-inline-end` resolves to `left`,
+   and within a declaration block the later property wins, so writing it after
+   would reset the override back to auto. */
+.faq-item summary::after { left: auto; inset-inline-end: 22px; }
+
+/* ---------- layout and motion defects carried in style.css ---------- */
+
+/* Three trust figures in a row with no wrap: below about 650px they are
+   squeezed into ~83px columns of stacked characters. */
+.hero-trust { flex-wrap: wrap; }
+
+/* Transitions on padding-left and on left/right move layout on every frame,
+   which reflows the surrounding text and cannot be composited. They also run
+   the wrong way in RTL. Transform and logical border move the same visual
+   distance without touching layout. */
+.text-link,
+.footer-grid a:not(.logo):not(.footer-button):not(.social-link) {
+  transition: color .25s ease, transform .25s ease;
+}
+.text-link:hover,
+.footer-grid a:not(.logo):not(.footer-button):not(.social-link):hover,
+.product-card:hover .product-info span { transform: translateX(5px); }
+/* `[dir="rtl"]` flips the axis `translateX` runs along, so nothing further is
+   needed here. */
+
+/* style.css shifts these on hover with padding-left. That reflows the row's own
+   text on every frame — noticeable because /packaging-solutions/ stacks six of
+   them — and it runs the wrong way in RTL. transform would shift the row's
+   bottom border too, which is not what the layout here wants, so the shift
+   becomes direction-aware rather than composite. */
+/* style.css shifts these on hover with a physical `padding-left: 12px`, which
+   reflows the row's own text every frame — noticeable because
+   /packaging-solutions/ stacks six of them — and still pushes to the left edge
+   in RTL. The shift becomes direction-aware. Order matters: `padding-left: 0`
+   has to come first so the logical declaration after it can win in LTR while
+   also cancelling style.css's physical value in RTL. */
+.timeline-item:hover {
+  padding-left: 0;
+  padding-inline-start: 12px;
+}
+
+/* The reduced-motion block in style.css zeroes transition-duration but not
+   transition-delay, so the staggered reveal keeps delays of up to .40s — the
+   delays were the part of the motion those users need least. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-delay: 0s !important; animation-delay: 0s !important; }
+}
+
+/* The sticky header covers the top of anything scrolled to from an in-page
+   link. style-additions already clears the space for prose headings and one
+   form card; #enquiry and #sample are the two remaining section targets. The
+   TOC points at those prose headings, so it is covered by the same rule. */
+/* These tables scroll sideways on narrow screens. A scrolling container can
+   only be scrolled from the keyboard if it can take focus, which the worklist
+   above now gives it — so it needs a visible focus ring of its own. */
+.table-wrap { scrollbar-width: thin; }
+.table-wrap:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+#enquiry, #sample { scroll-margin-top: 96px; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 960px) {
   .form-layout { grid-template-columns: 1fr; }
@@ -1000,6 +1249,10 @@
     break-inside: avoid;
   }
   .post-card-media, .post-card-more, .article-aside, .section-count { display: none !important; }
+  /* Only the first slide can print: the others are display:none and a radio
+     cannot be checked from paper. */
+  .gallery-thumbs { display: none; }
+  .product-gallery .gallery-item:nth-of-type(1) { display: block; }
   .post-card-body { padding: 0 0 16px; }
   .article-layout { grid-template-columns: 1fr; gap: 0; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .8em; color: #666; }

@@ -43,7 +43,7 @@ function specTable(rows, note, alt) {
 
 <div class="container">
 
-<div class="table-wrap">
+<div class="table-wrap" tabindex="0" role="region" aria-label="Specifications">
 <table class="spec-table">
 <tbody>
 ${rows.map((r) => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join('\n')}
@@ -117,7 +117,7 @@ function comparisonTable(head, cols, rows, note, alt) {
 
 <h2>${head}</h2>
 
-<div class="table-wrap">
+<div class="table-wrap" tabindex="0" role="region" aria-label="Comparison">
 <table class="spec-table">
 <thead>
 <tr>${cols.map((c) => `<th>${c}</th>`).join('')}</tr>

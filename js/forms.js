@@ -221,6 +221,19 @@
         status.textContent = 'Sending…';
       }
 
+      /* Lock the submit control for the duration of the request. Until now the
+         button stayed fully live, so a second click sent a second copy of the
+         same enquiry — which looks like two leads, costs two places in a
+         monthly submission quota, and cannot be told apart from a genuine
+         second enquiry by anyone reading the mailbox. Restore it in the error
+         branch below: a failed send has to leave the visitor somewhere they can
+         retry, not staring at a dead button. */
+      var submit = form.querySelector('[type="submit"], .form-foot button');
+      if (submit) {
+        submit.disabled = true;
+        submit.setAttribute('aria-busy', 'true');
+      }
+
       /* No endpoint configured. Rather than bounce the visitor straight into
          a mail client they may not have — which looks like the form doing
          nothing at all — tell them what is about to happen and give them the
@@ -255,11 +268,15 @@
             });
           }
 
-          var thanks = form.getAttribute('data-thank-you') || '/thank-you/';
+          var thanks = form.getAttribute('data-thank-you') || '/thank-you';
           if (status) status.textContent = 'Thank you — redirecting…';
           window.location.href = thanks;
         })
         .catch(function () {
+          if (submit) {
+            submit.disabled = false;
+            submit.removeAttribute('aria-busy');
+          }
           if (status) {
             status.textContent =
               'Something went wrong. Please try again, or email sales@metapackink.com directly.';

@@ -89,7 +89,7 @@ function rfqForm(page) {
 <form class="form-card" data-rfq data-form-name="rfq"
       data-endpoint-configured="${FORM_CONFIGURED}"
       action="${FORM_ENDPOINT}" method="POST"
-      data-thank-you="${navHref('/thank-you/', u)}" novalidate>
+      data-thank-you="${navHref('/thank-you', u)}" novalidate>
 <h2>Tell us about your packaging project</h2>
 <p class="section-intro">The more detail you share, the more specific our recommendation and quotation will be. Only the fields marked with an asterisk are required.</p>
 
@@ -172,7 +172,7 @@ function sampleForm(page) {
 <form class="form-card" data-rfq data-form-name="sample"
       data-endpoint-configured="${FORM_CONFIGURED}"
       action="${FORM_ENDPOINT}" method="POST"
-      data-thank-you="${navHref('/thank-you/', u)}" novalidate>
+      data-thank-you="${navHref('/thank-you', u)}" novalidate>
 <h2>Request a sample or swatch book</h2>
 <p class="section-intro">Not ready to commit to a full specification? Send us your product type and we will advise what to sample first.</p>
 
@@ -235,7 +235,7 @@ function contactForm(page) {
 <form data-rfq data-form-name="contact"
       data-endpoint-configured="${FORM_CONFIGURED}"
       action="${FORM_ENDPOINT}" method="POST"
-      data-thank-you="${navHref('/thank-you/', u)}" novalidate>
+      data-thank-you="${navHref('/thank-you', u)}" novalidate>
 <div class="form-grid">
 ${countryFields()}
 ${field({ name: 'email', label: 'Business email', type: 'email', required: true })}

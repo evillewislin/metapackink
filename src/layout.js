@@ -6,7 +6,7 @@
    every data-i18n key is one that main.js already defines — otherwise the
    language switcher would blank the label out. */
 
-const { site, nav, footerGroups, legalLinks } = require('./config');
+const { site, nav, footerGroups, legalLinks, flatRoutes } = require('./config');
 
 const esc = (s) =>
   String(s).replace(/&(?!amp;|lt;|gt;|quot;|#)/g, '&amp;').replace(/"/g, '&quot;');
@@ -70,7 +70,11 @@ function asset(path, fromUrl) {
  * ------------------------------------------------------------------ */
 function renderHead(page) {
   const u = page.url;
-  const canonical = site.domain + (u === '/' ? '/' : u);
+  /* The two flat routes are served by Cloudflare without their trailing slash
+     (see flatRoutes in src/config.js), so labelling them with one would make
+     every page declare a canonical URL that is really a redirect. */
+  const canonical = site.domain +
+    (u === '/' ? '/' : (flatRoutes.includes(u) ? u.replace(/\/+$/, '') : u));
   const ogImage = site.domain + '/img/' + (page.ogImage || 'hero-box.webp');
   const desc = page.description || '';
 

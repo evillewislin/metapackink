@@ -177,7 +177,13 @@ function detailBlocks(s, quoteHref) {
     .map((b, i) => {
       const ord = String(i + 1).padStart(2, '0');
       const media = b.img
-        ? `<img src="${b.img}" alt="${b.imgAlt || ''}" width="1600" height="900" loading="lazy" decoding="async">`
+        /* Falls back to the block's own title rather than to an empty string.
+           An empty alt marks the image decorative, which tells a screen reader
+           to skip it — wrong for a photograph that carries part of the
+           argument. All seven products set imgAlt today, so this only matters
+           the next time a block is added, which is exactly when nobody is
+           looking for it. */
+        ? `<img src="${b.img}" alt="${b.imgAlt || b.title}" width="1600" height="900" loading="lazy" decoding="async">`
         : `<span class="detail-ord" aria-hidden="true">${ord}</span>
 <span class="detail-ord-label">${s.plateLabel}</span>`;
 
@@ -288,6 +294,70 @@ ${g.items.map((i) => `<li>${i}</li>`).join('\n')}
 </section>`;
 }
 
+/* The product gallery: one large stage plus a strip of thumbnails.
+ *
+ * It is built from radio inputs and a sibling selector rather than from
+ * JavaScript, for three reasons that all matter on a page whose job is to be
+ * found and read: it works with scripting disabled, it costs nothing to
+ * download, and the thumbnails are real focusable controls — arrow keys move
+ * between them, which is what a keyboard user expects from an image set.
+ *
+ * `images` is [{ src, alt, w, h, eager }] with every src already resolved —
+ * this module resolves no URLs of its own (see the header).
+ *
+ * `id` has to be unique per page: every gallery on a page shares a radio group
+ * name, and two galleries sharing a group would switch each other. */
+function productGallery(images, id) {
+  if (!images.length) return '';
+
+  const group = 'gallery-' + id;
+  const single = images.length < 2;
+
+  const inputs = images
+    .map(
+      (_, i) => `<input class="gallery-input" type="radio" name="${group}" id="${group}-${i}"${
+        i === 0 ? ' checked' : ''
+      }>`
+    )
+    .join('\n');
+
+  const stage = images
+    .map(
+      (im, i) => `<figure class="gallery-item">
+<img src="${im.src}" alt="${im.alt}" width="${im.w}" height="${im.h}"${
+        i === 0 ? ' loading="eager" decoding="async"' : ' loading="lazy" decoding="async"'
+      }>
+</figure>`
+    )
+    .join('\n');
+
+  const thumbs = images
+    .map(
+      /* The thumbnail's alt is what names the radio it is a label for, so it
+         cannot be empty here — an empty alt would leave the control with no
+         accessible name at all. */
+      (im, i) => `<label class="gallery-thumb" for="${group}-${i}">
+<img src="${im.src}" alt="${im.alt}" width="${im.w}" height="${im.h}" loading="lazy" decoding="async">
+</label>`
+    )
+    .join('\n');
+
+  /* With one photograph there is nothing to choose between, so the strip is
+     dropped rather than rendered as a single dead thumbnail. */
+  return `<div class="product-gallery${single ? ' product-gallery-single' : ''}">
+${inputs}
+
+<div class="gallery-stage">
+${stage}
+</div>
+
+<div class="gallery-thumbs" role="group" aria-label="${images.length} photographs of this product">
+${thumbs}
+</div>
+
+</div>`;
+}
+
 module.exports = {
-  attributeStrip, detailBlocks, serviceBands, capabilityMatrix
+  attributeStrip, productGallery, detailBlocks, serviceBands, capabilityMatrix
 };

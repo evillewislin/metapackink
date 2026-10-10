@@ -23,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const { site, redirects } = require('../src/config');
+const { site, redirects, flatRoutes } = require('../src/config');
 const { renderPage, setAssetVersion } = require('../src/layout');
 const { FORM_CONFIGURED, FORM_ENDPOINT } = require('../src/partials');
 
@@ -65,7 +65,11 @@ function write(rel, contents) {
 
    /thank-you/ and /404/ stay flat as thank-you.html and 404.html because
    Cloudflare needs them at the root to find them by convention. */
-const FLAT = new Set(['/404/', '/thank-you/']);
+/* Kept in src/config.js because src/layout.js needs it too, to get the
+   canonical URL right for the same two routes. It used to be declared only
+   here, which is how the flat pages ended up declaring themselves canonical at
+   a URL the platform serves as a redirect. */
+const FLAT = new Set(flatRoutes);
 
 function urlToFile(url) {
   if (url === '/') return 'index.html';
@@ -1142,6 +1146,72 @@ function buttonsIn(html) {
   return out;
 }
 
+/* In-page anchors: every `#fragment` must land on an element that carries it.
+ *
+ * checkLinks() strips the fragment before resolving a route — correctly, since
+ * the fragment is not part of the path — so a href pointing at nothing on a
+ * page that does exist is invisible to it. That is exactly how this site
+ * shipped a contents list whose first entry went nowhere: /cookie-policy/
+ * advertised "What we store, and why", but the section holding that id was
+ * never rendered, so the link was dead from the day it was written and no
+ * guard in this file could see it.
+ *
+ * It is not a routing failure — the page loads, nothing errors, clicking the
+ * entry simply does nothing. */
+function idSetOf(html) {
+  const ids = new Set();
+  for (const m of html.matchAll(/\sid\s*=\s*"([^"]+)"/g)) ids.add(m[1]);
+  return ids;
+}
+
+function checkAnchors(pages) {
+  const html = new Map();
+  const ids = new Map();
+  for (const p of pages) {
+    const file = path.join(DIST, urlToFile(p.url));
+    if (!fs.existsSync(file)) continue;
+    const text = fs.readFileSync(file, 'utf8');
+    html.set(p.url, text);
+    ids.set(p.url, idSetOf(text));
+  }
+
+  const broken = [];
+  for (const [url, text] of html) {
+    const depth = url === '/' ? 0 : url.replace(/\/$/, '').split('/').filter(Boolean).length;
+    const base = depth === 0 ? '/' : url.replace(/[^/]*$/, '');
+
+    for (const m of text.matchAll(/\shref\s*=\s*"([^"]+)"/g)) {
+      const v = m[1];
+      if (/^(https?:|mailto:|tel:|data:|javascript:|\/\/)/i.test(v)) continue;
+      const hash = v.indexOf('#');
+      if (hash < 0) continue;
+      const frag = decodeURIComponent(v.slice(hash + 1));
+      if (!frag) continue;                        /* `#` alone scrolls to the top */
+
+      /* Nothing before the `#` means this page; anything else is resolved the
+         same way checkLinks() resolves a route. */
+      const before = v.slice(0, hash);
+      let targetUrl = url;
+      if (before) {
+        const abs = before.startsWith('/') ? before : path.posix.normalize(base + before);
+        targetUrl = abs.endsWith('/') ? abs : abs + '/';
+      }
+      /* A fragment aimed at a route this build does not produce is somebody
+         else's problem — checkLinks() reports it. */
+      const targetIds = ids.get(targetUrl);
+      if (!targetIds) continue;
+      if (!targetIds.has(frag)) broken.push(`${url} -> ${v}`);
+    }
+  }
+
+  if (broken.length) {
+    throw new Error(
+      'broken in-page anchor(s) — no element on the page carries the id:\n    ' +
+      [...new Set(broken)].join('\n    ')
+    );
+  }
+}
+
 function checkButtonContrast(pages) {
   const stylesheets = ['style.css', 'css/style-additions.css'];
 
@@ -1515,6 +1585,9 @@ function build() {
      told the route is broken. */
   checkArticles(pages);
   checkLinks(pages);
+  /* After checkLinks(): both read the same hrefs, but this one keeps the
+     fragment the Route check discards, so it can say what is missing. */
+  checkAnchors(pages);
   /* Reads the built HTML for the buttons and the source stylesheets for the
      rules that might colour them, so it has to run after both exist. */
   checkButtonContrast(pages);
