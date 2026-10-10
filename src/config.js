@@ -22,7 +22,6 @@ const site = {
     emailHref: 'mailto:sales@metapackink.com',
     addressLine1: 'Jiangnan Industrial Zone 2, Nancun Town',
     addressLine2: 'Panyu District, Guangzhou, China',
-    hours: 'Monday to Saturday, 09:00 - 18:00 (GMT+8)',
 
     /* The factory pin, copied verbatim from the Maps "Share -> Embed a map"
        dialog. The pb= parameter encodes the pin and the !2d/!3d pair inside it

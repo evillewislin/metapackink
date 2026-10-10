@@ -291,12 +291,6 @@ function mapSection(page) {
         referrerpolicy="no-referrer-when-downgrade"
         allowfullscreen></iframe>
 </div>
-<div class="container">
-<p class="map-actions">
-<a class="btn btn-outline" href="${mapLink}" target="_blank" rel="noopener" data-i18n="contact.mapLink">Open in Google Maps</a>
-</p>
-<p class="map-address">${site.contact.addressLine1}, ${site.contact.addressLine2}</p>
-</div>
 </section>`;
 }
 
