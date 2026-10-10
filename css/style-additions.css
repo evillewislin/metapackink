@@ -402,7 +402,15 @@
   line-height: 1.75;
 }
 .aside-list li { margin-bottom: 8px; }
-.aside-card a { color: var(--orange); }
+/* Not :not(.btn) as decoration. This selector is a class more specific than
+   .btn-primary, so an ordinary `a` here is harmless but a button is not: the
+   rule would win, the button would take var(--orange) as its text colour on
+   top of its own var(--orange) background, and it would read as a plain
+   orange rectangle with nothing in it. Excluding buttons here is what keeps
+   .btn-primary's own colour authoritative. checkButtonContrast() in
+   tools/build.js fails the build if any rule that colours a descendant `a`
+   can still reach a button. */
+.aside-card a:not(.btn) { color: var(--orange); }
 
 /* ---------- related links ---------- */
 .related-section { padding: 64px 0; background: var(--light); }
