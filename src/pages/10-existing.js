@@ -79,50 +79,12 @@ module.exports = [
       'Different sectors buy packaging for different reasons. Cosmetics has to survive travel and read well on a shelf, fragrance has to hold a bottle precisely, and gifting has to be kept rather than thrown away. These pages cover what changes in each case.'
   }),
 
-  carriedPage({
-    url: '/industries/cosmetics/',
-    body: 'ind-cosmetics',
-    title: 'Custom Cosmetic Packaging for Beauty Brands | Metapackink',
-    description:
-      'Custom cosmetic packaging for beauty, skincare, makeup and personal-care brands: rigid boxes, magnetic boxes, drawer boxes, materials and premium finishing.',
-    ogImage: 'cosmetic-packaging-600.webp',
-    priority: '0.7',
-    breadcrumbs: [HOME, { label: 'Industries', href: '/industries/' }, { label: 'Cosmetics & Beauty', href: '/industries/cosmetics/' }],
-    heroEyebrow: 'COSMETICS & BEAUTY',
-    heroHeading: 'Custom cosmetic packaging for beauty brands',
-    heroLead:
-      'Packaging for skincare, makeup, personal-care and beauty gift sets — developed around the product it holds, the shelf it sits on and the journey it has to survive.'
-  }),
-
-  carriedPage({
-    url: '/industries/perfume/',
-    body: 'ind-perfume',
-    title: 'Custom Perfume & Fragrance Packaging | Metapackink',
-    description:
-      'Custom perfume packaging built around bottle dimensions and brand presentation: rigid and magnetic fragrance boxes, inserts, materials and premium finishing.',
-    ogImage: 'perfume-packaging-600.webp',
-    priority: '0.7',
-    breadcrumbs: [HOME, { label: 'Industries', href: '/industries/' }, { label: 'Perfume & Fragrance', href: '/industries/perfume/' }],
-    heroEyebrow: 'PERFUME & FRAGRANCE',
-    heroHeading: 'Custom perfume and fragrance packaging',
-    heroLead:
-      'Fragrance packaging starts from the bottle. Dimensions, weight and where the cap sits determine the structure, the insert and the clearance long before artwork is considered.'
-  }),
-
-  carriedPage({
-    url: '/industries/premium-consumer-products/',
-    body: 'ind-premium-consumer-products',
-    title: 'Premium Consumer Product Packaging | Metapackink',
-    description:
-      'Premium packaging for consumer products that need a stronger presentation experience, including branded retail products, premium gifts and specialty products.',
-    ogImage: 'rigid-boxes-600.webp',
-    priority: '0.7',
-    breadcrumbs: [HOME, { label: 'Industries', href: '/industries/' }, { label: 'Premium Consumer Products', href: '/industries/premium-consumer-products/' }],
-    heroEyebrow: 'PREMIUM CONSUMER PRODUCTS',
-    heroHeading: 'Packaging for premium consumer products',
-    heroLead:
-      'For products where a standard retail carton would undersell what is inside it — specialty goods, premium retail ranges and branded collections.'
-  }),
+  /* The five /industries/<sector>/ pages are deliberately NOT here. They used
+     to be: three were carried verbatim from the previous site and two were
+     generated from a shared five-card template, which made
+     /industries/retail-branded/ and /industries/gift-presentation/ 67%
+     identical to each other. All five now live in src/pages/50-industries.js
+     with sector-specific content. See that file for the reasoning. */
 
   carriedPage({
     url: '/about/',

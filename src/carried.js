@@ -27,6 +27,8 @@ const LINK_MAP = [
   ['industries/cosmetics.html', '/industries/cosmetics/'],
   ['industries/perfume.html', '/industries/perfume/'],
   ['industries/premium-consumer-products.html', '/industries/premium-consumer-products/'],
+  ['industries/gift-presentation.html', '/industries/gift-presentation/'],
+  ['industries/retail-branded.html', '/industries/retail-branded/'],
   ['about.html', '/about/'],
   ['manufacturing-process.html', '/manufacturing-process/'],
   ['quality-control.html', '/quality-control/'],
