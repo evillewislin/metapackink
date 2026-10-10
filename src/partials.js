@@ -221,11 +221,14 @@ ${field({ name: 'notes', label: 'Product details', type: 'textarea', rows: 4, fu
 </section>`;
 }
 
-/** Short contact form. */
+/** Short contact form.
+
+    Returns a grid child rather than a self-contained section: on /contact/ the
+    form sits in the right-hand column of .contact-grid, level with the contact
+    cards, so it must not bring its own container or section padding. */
 function contactForm(page) {
   const u = page.url;
-  return `<section class="section" id="message">
-<div class="container narrow">
+  return `<div class="contact-form-col">
 <div class="form-card">
 <h2>Send us a message</h2>
 <p class="section-intro">For quotations with specifications, the <a href="${navHref('/request-a-quote/', u)}">request a quote</a> form collects everything we need in one go. Use this form for everything else.</p>
@@ -253,6 +256,46 @@ ${field({ name: 'message', label: 'Message', type: 'textarea', required: true, f
 </div>
 </form>
 </div>
+</div>`;
+}
+
+/** The factory on a map, as a full-bleed band under the contact columns.
+
+    Two things this markup has to get right:
+
+     1. The iframe host must be named in frame-src (see buildHeaders() in
+        tools/build.js). A policy that omits it does not break the build, the
+        page or the console — the frame simply renders as an empty rectangle.
+        checkHeaders() reads this element back out of the built HTML so the
+        two cannot drift apart.
+     2. Google Maps is not reachable from mainland China, where the factory is.
+        A visitor on a Chinese network therefore sees an empty frame, which is
+        why the address and an outbound link are rendered underneath it in
+        ordinary text rather than overlaid on the map. */
+function mapSection(page) {
+  const { mapEmbed, mapLink } = site.contact;
+  const title = `${site.legalName} — ${site.contact.addressLine1}, ${site.contact.addressLine2}`;
+
+  return `<section class="contact-map">
+<div class="container">
+<div class="map-head">
+<div class="eyebrow" data-i18n="contact.mapEyebrow">FIND US</div>
+<h2 data-i18n="contact.mapTitle">Our factory, in Panyu District, Guangzhou.</h2>
+<p class="section-intro" data-i18n="contact.mapText">Visits are by appointment. Tell us who is coming and we will arrange factory access, and we support third-party inspections and audits.</p>
+</div>
+</div>
+<div class="map-frame">
+<iframe title="${title}"
+        src="${mapEmbed}"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
+</div>
+<div class="container">
+<p class="map-actions">
+<a class="btn btn-outline" href="${mapLink}" target="_blank" rel="noopener" data-i18n="contact.mapLink">Open in Google Maps</a>
+</p>
+<p class="map-address">${site.contact.addressLine1}, ${site.contact.addressLine2}</p>
 </div>
 </section>`;
 }
@@ -301,7 +344,7 @@ ${items
 }
 
 module.exports = {
-  rfqForm, sampleForm, contactForm, darkCta, relatedSection,
+  rfqForm, sampleForm, contactForm, mapSection, darkCta, relatedSection,
   field, options, FORM_ENDPOINT, FORM_CONFIGURED,
   STRUCTURE_OPTIONS, QUANTITY_OPTIONS, TIMELINE_OPTIONS
 };

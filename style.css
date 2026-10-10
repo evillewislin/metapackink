@@ -1873,11 +1873,15 @@ p {
 
     display:grid;
 
-    grid-template-columns:minmax(0, 780px);
+    /* Contact details on the left, the message form on the right. The form
+       column is fractionally wider because a form field needs more room than
+       a line of contact text before it starts looking cramped. The list
+       collapses to one column at 1000px; see the media query below. */
+    grid-template-columns:minmax(0, 1fr) minmax(0, 1.08fr);
 
-    justify-content:center;
+    align-items:start;
 
-    gap:100px;
+    gap:64px;
 
 }
 
@@ -3536,7 +3540,14 @@ p {
     padding:34px 0 42px;
 }
 
+/* The cards sit in the left-hand column of .contact-grid, which is only about
+   560px wide on a full desktop. Two cards side by side there leaves roughly
+   200px of text width each, which turns the address into four wrapped lines,
+   so the column drives the number of cards instead of the other way round:
+   one column while the space is narrow, two once the grid has stacked and the
+   row is full width again. */
 .contact-page .contact-cards {
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
     gap:10px;
     margin-top:0;
 }

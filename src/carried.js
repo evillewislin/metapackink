@@ -139,8 +139,11 @@ function rewriteLinks(html, url, navHref) {
     out = out.split(`href="../../${from}"`).join(`href="${navHref(to, url)}"`);
   }
 
-  /* the old brand email */
-  out = out.split('sales@gooinpack.com').join('sales@metapackink.com');
+  /* The old brand's address used to be rewritten here. It is not any more:
+     rewriting it meant a body file could carry a dead address and the build
+     would silently paper over it. checkPublishedFacts() in tools/build.js now
+     fails on any published address that is not site.contact.email, which only
+     works while this function leaves addresses alone. */
 
   return out;
 }

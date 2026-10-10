@@ -22,7 +22,25 @@ const site = {
     emailHref: 'mailto:sales@metapackink.com',
     addressLine1: 'Jiangnan Industrial Zone 2, Nancun Town',
     addressLine2: 'Panyu District, Guangzhou, China',
-    hours: 'Monday to Saturday, 09:00 - 18:00 (GMT+8)'
+    hours: 'Monday to Saturday, 09:00 - 18:00 (GMT+8)',
+
+    /* The factory pin, copied verbatim from the Maps "Share -> Embed a map"
+       dialog. The pb= parameter encodes the pin and the !2d/!3d pair inside it
+       is the longitude and latitude, so it is not something to hand-edit;
+       re-copy it from Maps if the pin ever moves.
+
+       Changing the host here means changing the frame-src directive in
+       tools/build.js as well — checkHeaders() fails the build if a page
+       embeds a host the policy does not name, because a blocked iframe
+       renders as an empty box and reports nothing. */
+    mapEmbed:
+      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.1401347050731!2d113.38071920715167!3d23.003182204353838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3403ab464802670b%3A0x85357009563a1c41!2sNancunzhen%2C%20Panyu%20District%2C%20Guangzhou%2C%20Guangdong%20Province%2C%20China%2C%20511442!5e0!3m2!1sen!2shk!4v1784278227500!5m2!1sen!2shk',
+
+    /* The link under the map. It is the way out for anyone whose network
+       cannot reach Google — which includes mainland China, where this factory
+       is — and it doubles as directions for a buyer planning a visit. */
+    mapLink:
+      'https://www.google.com/maps/search/?api=1&query=23.003182204353838,113.38071920715167'
   },
 
   /* One GA4 property, not two. See README-DEPLOY.md. */

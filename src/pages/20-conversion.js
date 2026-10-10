@@ -13,10 +13,16 @@
    /thank-you/  is the post-submit destination, noindexed. */
 
 const { carriedPage } = require('../carried');
-const { rfqForm, sampleForm, contactForm, darkCta, relatedSection } = require('../partials');
+const { rfqForm, sampleForm, contactForm, mapSection, darkCta, relatedSection } = require('../partials');
 const { navHref } = require('../layout');
 
 const HOME = { label: 'Home', href: '/' };
+
+/* src/bodies/contact.html leaves this marker inside .contact-grid so the form
+   lands in the right-hand column, level with the contact cards. If it is ever
+   removed the form would still be emitted, just in the wrong place, and
+   nothing else would notice — so its absence stops the build instead. */
+const FORM_MARKER = '<!--contact-form-->';
 
 module.exports = [
 
@@ -50,7 +56,19 @@ module.exports = [
       ]
     });
 
-    page.content = page.content + '\n\n' + contactForm(page);
+    if (!page.content.includes(FORM_MARKER)) {
+      throw new Error(
+        'src/bodies/contact.html no longer contains ' + FORM_MARKER + '. The ' +
+        'message form is placed by that marker so it shares a row with the ' +
+        'contact cards; without it the form would be appended below the ' +
+        'section instead, which is not the layout this page is designed for.'
+      );
+    }
+
+    page.content =
+      page.content.replace(FORM_MARKER, contactForm(page).trim()) +
+      '\n\n' +
+      mapSection(page);
     return page;
   })(),
 
