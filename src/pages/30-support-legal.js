@@ -18,7 +18,13 @@ const { relatedSection, darkCta } = require('../partials');
 const { site } = require('../config');
 
 const HOME = { label: 'Home', href: '/' };
+
+/* The three legal pages were drafted together. They no longer change together:
+   the privacy policy gained a description of the country that is derived from
+   a visitor's IP address, and the terms and cookie policy did not. Sharing one
+   date would drag those two forward and claim a revision that never happened. */
 const UPDATED = '9 October 2026';
+const PRIVACY_UPDATED = '10 October 2026';
 
 /* Render a grouped FAQ block that also feeds FAQPage JSON-LD. */
 function faqSection(groups) {
@@ -97,7 +103,7 @@ function legalFooterContact() {
     paras: [
       `If you have a question about this policy, want a copy of the personal data we hold about you, or want us to correct or delete it, contact us at <a href="${site.contact.emailHref}">${site.contact.email}</a> or write to ${site.legalName}, ${site.contact.addressLine1}, ${site.contact.addressLine2}.`,
       'We aim to respond to any privacy or data request within 30 days. If you are in the EEA or the UK and you are not satisfied with our response, you have the right to complain to your national data protection authority.',
-      `<strong>Last updated:</strong> ${UPDATED}. We will update this page when our practices change and will revise the date above.`
+      `<strong>Last updated:</strong> ${PRIVACY_UPDATED}. We will update this page when our practices change and will revise the date above.`
     ]
   });
 }
@@ -105,7 +111,8 @@ function legalFooterContact() {
 /* Drafting note for whoever deploys the site — an HTML comment, never rendered. */
 const REVIEW_NOTE =
   '<!-- DRAFT FOR LEGAL REVIEW. Describes the actual data flows of this website: ' +
-  'enquiry forms, optional file uploads, Google Analytics 4. Have a qualified lawyer ' +
+  'enquiry forms, the country inferred from the visitor\'s IP address at the network ' +
+  'edge, optional file uploads, and Google Analytics 4. Have a qualified lawyer ' +
   'confirm it against the jurisdictions you sell into before publishing. -->';
 
 const FAQ_GROUPS = [
@@ -307,7 +314,8 @@ ${relatedSection([
         heading: 'What we collect',
         paras: ['We only collect what we need to answer your enquiry and, if it goes ahead, to manufacture and ship your order. In practice that means:'],
         list: [
-          '<strong>Contact and company details</strong> you type into a form: your name, company name, business email address, country or region, and where relevant a phone or WhatsApp number.',
+          '<strong>Your email address</strong> — the only contact detail our forms ask for. We deliberately do not ask for a name, company name, postal address or telephone number, so those are only ever in our records if you choose to put them in the notes yourself.',
+          '<strong>An approximate country</strong>, derived from the address your browser connects from and attached to the form automatically. We use it to know which market an enquiry comes from and to prepare the right shipping, labelling and compliance information. The address itself is not retained: the country is resolved at the network edge and only the country travels with the enquiry.',
           '<strong>Project details</strong> you choose to give us: packaging structure, estimated quantity, product or box dimensions, required timeline, destination market, and any notes you write.',
           '<strong>Files you upload</strong> with an enquiry: artwork, dielines, reference images, specifications or a ZIP of any of these.',
           '<strong>Correspondence</strong> — the emails, messages and drawings exchanged while quoting, sampling and producing your order.',
@@ -452,7 +460,7 @@ ${relatedSection([
 
 <h1>Privacy Policy</h1>
 
-<p>How ${site.legalName} collects, uses and protects personal information. Last updated ${UPDATED}.</p>
+<p>How ${site.legalName} collects, uses and protects personal information. Last updated ${PRIVACY_UPDATED}.</p>
 
 </div>
 

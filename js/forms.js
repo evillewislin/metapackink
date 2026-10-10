@@ -85,7 +85,9 @@
       if (String(value).trim()) lines.push(key + ': ' + value);
     });
 
-    var subject = 'Packaging enquiry — ' + (data.get('company') || data.get('name') || 'website');
+    /* The forms no longer ask for a name or a company, so the email address is
+       the only thing left that identifies the sender. */
+    var subject = 'Packaging enquiry — ' + (data.get('email') || 'website');
     var href =
       'mailto:' + FALLBACK_EMAIL +
       '?subject=' + encodeURIComponent(subject) +
@@ -103,6 +105,72 @@
     if (flag === 'false') return false;
     var action = form.getAttribute('action') || '';
     return !!action && action.indexOf('YOUR_FORM_ID') === -1;
+  }
+
+  /* ------------------------------------------------------------------
+     Country, resolved from the visitor's IP rather than asked for.
+
+     Cloudflare publishes the country of every request at its own
+     /cdn-cgi/trace endpoint. That is same-origin, so this needs no third-party
+     call, no API key, and no request to a domain the visitor was never told
+     about — the platform already knew the answer, this only reads it back.
+
+     Three things it deliberately does not do:
+
+       - It never reads or submits the IP address itself. The country is all
+         the business needs; keeping every enquirer's address would be a
+         liability with nothing to show for it.
+       - It never blocks a submission. If the lookup fails, is blocked by an
+         extension, or the visitor is offline, the fields stay empty and the
+         form posts exactly as it would have.
+       - It never guesses. Cloudflare answers `loc=XX` when it cannot place the
+         address and `loc=T1` for a Tor exit node. Neither is a country, and
+         writing one into the submission would be worse than writing nothing.
+     ------------------------------------------------------------------ */
+  var COUNTRY_KEY = 'mpk_country';
+
+  /* ISO 3166-1 alpha-2 -> English name, without shipping a 250-entry table.
+     Intl is present in every browser this site supports; the raw code is a
+     perfectly good fallback for the ones where it is not. */
+  function countryName(code) {
+    try {
+      var names = new Intl.DisplayNames(['en'], { type: 'region' });
+      var name = names.of(code);
+      if (name && name !== code) return name;
+    } catch (e) { /* no Intl.DisplayNames — the code still travels */ }
+    return code;
+  }
+
+  function fillCountry(code) {
+    var name = countryName(code);
+    document.querySelectorAll('[data-country-auto]').forEach(function (input) {
+      input.value = input.name === 'country_code' ? code : name;
+    });
+  }
+
+  function detectCountry() {
+    /* Only pages that actually carry a form pay for this. */
+    if (!document.querySelector('[data-country-auto]')) return;
+
+    /* One lookup per session: the visitor's country does not change between
+       pages, and a second request would be pure waste. */
+    try {
+      var stored = sessionStorage.getItem(COUNTRY_KEY);
+      if (stored) { fillCountry(stored); return; }
+    } catch (e) { /* storage disabled — fall through and ask once */ }
+
+    fetch('/cdn-cgi/trace', { cache: 'no-store' })
+      .then(function (res) { return res.ok ? res.text() : ''; })
+      .then(function (text) {
+        /* Cloudflare emits exactly "loc=GB" on its own line. The optional
+           whitespace is slack for the day that stops being true. */
+        var m = /^\s*loc=([A-Z]{2})\s*$/m.exec(text || '');
+        if (!m) return;
+        if (m[1] === 'XX' || m[1] === 'T1') return;
+        try { sessionStorage.setItem(COUNTRY_KEY, m[1]); } catch (e) {}
+        fillCountry(m[1]);
+      })
+      .catch(function () { /* not behind Cloudflare, offline, or blocked */ });
   }
 
   function initForm(form) {
@@ -203,6 +271,7 @@
 
   function init() {
     document.querySelectorAll('form[data-rfq]').forEach(initForm);
+    detectCountry();
 
     /* language memory: the switcher in main.js is session-only, so the site
        forgets the choice on the next page. This is what the cookie policy

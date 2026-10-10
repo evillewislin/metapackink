@@ -54,6 +54,27 @@ ${o.hint ? `<span class="hint">${o.hint}</span>` : ''}
 const FORM_ENDPOINT = site.formAction + site.formId;
 const FORM_CONFIGURED = site.formId !== 'YOUR_FORM_ID';
 
+/* Country, derived rather than asked for.
+ *
+ * Both inputs are filled in by js/forms.js from the visitor's IP. Cloudflare
+ * already reports the country of every request at its own same-origin
+ * /cdn-cgi/trace endpoint, so asking the visitor to type it means asking them
+ * to retype something the platform told us as the page loaded.
+ *
+ * Two fields because they have two readers: `country` is the name a person
+ * wants in the inbox, `country_code` is the ISO code a spreadsheet can group
+ * on. Both are plain hidden inputs rather than script-created ones, so the
+ * field order in the submission is stable and a failed lookup leaves them
+ * visible in the payload as empty rather than missing.
+ *
+ * Deliberately absent: the IP address itself. The country is all we need, and
+ * storing the address of every enquirer would be a liability with no use. */
+function countryFields() {
+  return `<!-- Country comes from the visitor's IP; see js/forms.js. -->
+<input type="hidden" name="country" value="" data-country-auto>
+<input type="hidden" name="country_code" value="" data-country-auto>`;
+}
+
 /**
  * Full RFQ form. This is the site's primary conversion asset; before this
  * rebuild the site had no <form> anywhere and every "Get a Quote" button led
@@ -73,10 +94,8 @@ function rfqForm(page) {
 <p class="section-intro">The more detail you share, the more specific our recommendation and quotation will be. Only the fields marked with an asterisk are required.</p>
 
 <div class="form-grid">
-${field({ name: 'name', label: 'Your name', required: true, placeholder: 'Jane Doe' })}
-${field({ name: 'company', label: 'Company', required: true, placeholder: 'Acme Beauty Ltd' })}
+${countryFields()}
 ${field({ name: 'email', label: 'Business email', type: 'email', required: true, placeholder: 'jane@company.com' })}
-${field({ name: 'country', label: 'Country / region', required: true, placeholder: 'United Kingdom' })}
 ${field({ name: 'structure', label: 'Packaging structure', type: 'select', required: true, options: STRUCTURE_OPTIONS })}
 ${field({ name: 'quantity', label: 'Estimated quantity', type: 'select', required: true, options: QUANTITY_OPTIONS })}
 ${field({ name: 'dimensions', label: 'Product or box dimensions', placeholder: 'e.g. 120 x 80 x 45 mm, or "fits a 50 ml bottle"' })}
@@ -158,10 +177,8 @@ function sampleForm(page) {
 <p class="section-intro">Not ready to commit to a full specification? Send us your product type and we will advise what to sample first.</p>
 
 <div class="form-grid">
-${field({ name: 'name', label: 'Your name', required: true, placeholder: 'Jane Doe' })}
+${countryFields()}
 ${field({ name: 'email', label: 'Business email', type: 'email', required: true, placeholder: 'jane@company.com' })}
-${field({ name: 'country', label: 'Country / region', required: true, placeholder: 'Germany' })}
-${field({ name: 'company', label: 'Company', placeholder: 'Acme Beauty Ltd' })}
 ${field({ name: 'structure', label: 'What would you like to sample?', type: 'select', required: true, options: STRUCTURE_OPTIONS.concat(['Material swatch book only', 'Existing stock sample']) })}
 ${field({ name: 'sample_type', label: 'Sample type', type: 'select', required: true, options: ['Custom sample of my product', 'Stock sample of a similar structure', 'Material and finishing swatch book'] })}
 ${field({ name: 'notes', label: 'Product details', type: 'textarea', rows: 4, full: true, placeholder: 'Product type, approximate dimensions, and what you would like to evaluate (structure, material, finish, product fit).' })}
@@ -217,10 +234,8 @@ function contactForm(page) {
       action="${FORM_ENDPOINT}" method="POST"
       data-thank-you="${navHref('/thank-you/', u)}" novalidate>
 <div class="form-grid">
-${field({ name: 'name', label: 'Your name', required: true })}
+${countryFields()}
 ${field({ name: 'email', label: 'Business email', type: 'email', required: true })}
-${field({ name: 'company', label: 'Company', placeholder: 'Optional' })}
-${field({ name: 'country', label: 'Country / region', required: true })}
 ${field({ name: 'subject', label: 'Subject', type: 'select', required: true, options: ['New packaging project', 'Existing order or production question', 'Sample follow-up', 'Quality or after-sales', 'Supplier and partnership enquiry', 'Something else'] })}
 ${field({ name: 'message', label: 'Message', type: 'textarea', required: true, full: true, rows: 5 })}
 <div class="form-row full">
