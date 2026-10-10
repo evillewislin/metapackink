@@ -1257,3 +1257,71 @@ summary:focus-visible {
   .article-layout { grid-template-columns: 1fr; gap: 0; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .8em; color: #666; }
 }
+
+/* ------------------------------------------------------------------ *
+ * About — the factory proof module
+ * ------------------------------------------------------------------ *
+ * Everything in here comes off the real production floor, so the
+ * styling stays out of the way: full-bleed media, the page's own
+ * radius and greys, and nothing that could be mistaken for a stock
+ * photo treatment. The video is click-to-play with preload="none" —
+ * the poster frame is what the layout reserves space for, and the
+ * width/height attributes on the <video> keep that reservation exact
+ * before the CSS arrives. */
+.factory-proof .factory-lead { max-width: 68ch; }
+.factory-video { margin: 26px 0 0; }
+.factory-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 3px;
+  background: var(--black);
+}
+.factory-video figcaption { margin-top: 10px; font-size: .88rem; color: var(--gray); }
+.factory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+}
+.factory-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 3px;
+  background: var(--light);
+}
+/* .legacy-page .mp-section p is (0,2,1) and paints every paragraph grey;
+   matching its specificity and loading later is what wins these back. */
+.factory-proof .factory-figure p {
+  margin: 8px 0 0;
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--black);
+}
+.factory-proof .factory-more { margin: 22px 0 0; font-size: .92rem; }
+.factory-proof .factory-more a { color: var(--orange); }
+@media (max-width: 900px) {
+  .factory-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .factory-grid { grid-template-columns: 1fr; gap: 18px; }
+}
+@media print {
+  .factory-video { display: none; }
+}
+
+/* One-line bridge from the process steps to the film on /about/. Three
+   compounds so it out-ranks `.legacy-page .mp-section p` (0,2,1). */
+.legacy-page .mp-section .mp-film-link { max-width: 68ch; color: var(--gray); }
+.legacy-page .mp-section .mp-film-link a { color: var(--orange); }
+
+/* One-line bridge from the process steps to the film on /about/. Three
+   compounds so it out-ranks `.legacy-page .mp-section p` (0,2,1). */
+.legacy-page .mp-section .mp-film-link { max-width: 68ch; color: var(--gray); }
+.legacy-page .mp-section .mp-film-link a { color: var(--orange); }

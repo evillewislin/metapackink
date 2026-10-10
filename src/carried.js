@@ -94,12 +94,15 @@ function rewriteClassNames(html) {
   return out;
 }
 
-/* Rewrite every href/src/srcset so it resolves from the page's own URL.
+/* Rewrite every href/src/poster/srcset so it resolves from the page's own URL.
    Before this, carried bodies emitted bare paths like `img/hero-box.webp`,
-   which resolve from `/` but break from `/products/` and deeper. */
+   which resolve from `/` but break from `/products/` and deeper. `poster` is
+   on the list because a <video> poster that misses resolves to an empty box
+   in front of the player — the one asset a typo can break silently, since
+   nothing else about the element fails. */
 function rewriteAssets(html, url, asset) {
-  /* src / href on their own */
-  let out = html.replace(/(\s(?:src|href)\s*=\s*")([^"]+)(")/g, (m, pre, v, post) => {
+  /* src / href / poster on their own */
+  let out = html.replace(/(\s(?:src|href|poster)\s*=\s*")([^"]+)(")/g, (m, pre, v, post) => {
     if (/^(https?:|mailto:|tel:|data:|javascript:|#|\/\/|\/)/i.test(v)) return m;
     if (!/^(\.\.?\/)?(img|css|js)\//.test(v)) return m;
     const clean = v.replace(/^(\.\.?\/)+/, '');

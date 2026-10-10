@@ -924,7 +924,9 @@ function internalTargets(pageUrl, html) {
   const base = depth === 0 ? '/' : pageUrl.replace(/[^/]*$/, '');
   const out = [];
 
-  for (const m of html.matchAll(/\s(?:href|src)\s*=\s*"([^"]+)"/g)) {
+  /* poster is checked as well as href/src: a <video> whose poster misses
+     renders as an empty box in front of the player and reports nothing. */
+  for (const m of html.matchAll(/\s(?:href|src|poster)\s*=\s*"([^"]+)"/g)) {
     const v = m[1];
     if (/^(https?:|mailto:|tel:|data:|javascript:|#|\/\/)/i.test(v)) continue;
     const clean = v.split('#')[0].split('?')[0];
