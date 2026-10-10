@@ -110,6 +110,136 @@ module.exports = [
     category: 'Sourcing',
     date: '2026-12-09',
     planned: true
+  },
+
+  {
+    slug: 'rigid-box-for-a-chocolate-brand',
+    title: 'A Rigid Box for a Chocolate Brand: Keeping Tempered Bars Solid Inside a Wrapped Shell',
+    metaTitle: 'Case Study: Rigid Box for a Chocolate Brand | Metapackink',
+    metaDesc:
+      'A chocolate bar that softens above 28 degrees, a box that sits in a shop window, and the board and insert decisions that kept the two apart.',
+    excerpt:
+      'Nothing about the box was unusual. The constraint was the product: tempered chocolate loses its snap well below the temperature a shop window reaches, and every decision followed from that.',
+    category: 'Confectionery',
+    date: '2026-12-23',
+    planned: true
+  },
+
+  {
+    slug: 'subscription-box-for-a-coffee-roaster',
+    title: 'A Subscription Box for a Coffee Roaster: Holding Its Shape Through the Post, Every Month',
+    metaTitle: 'Case Study: Subscription Box for a Coffee Roaster | Metapackink',
+    metaDesc:
+      'A monthly box carrying a kilo of beans: repeated cost, repeated handling, and why a structure that survives one month of shipping often fails on the twelfth.',
+    excerpt:
+      'Subscription packaging is not one box shipped once. It is the same box shipped every month, so the things that wear — the closure, the corners, the print — become the specification.',
+    category: 'Food & Beverage',
+    date: '2027-01-06',
+    planned: true
+  },
+
+  {
+    slug: 'magnetic-box-for-an-electronics-accessory-brand',
+    title: 'A Magnetic Box for an Electronics Accessory Brand: Protecting Without Wrapping Everything in Foam',
+    metaTitle: 'Case Study: Magnetic Box for an Electronics Accessory Brand | Metapackink',
+    metaDesc:
+      'A small electronics accessory that had to arrive unmarked, presented without a foam lining, and what replaces foam once it is off the table.',
+    excerpt:
+      'Foam solves protection and quietly damages the unboxing. Removing it meant solving the same problem with paper — and accepting a slightly larger cavity to do it.',
+    category: 'Electronics',
+    date: '2027-01-20',
+    planned: true
+  },
+
+  {
+    slug: 'candle-box-for-a-home-fragrance-label',
+    title: 'A Candle Box for a Home Fragrance Label: Insulating a Vessel That Generates Its Own Heat',
+    metaTitle: 'Case Study: Candle Box for a Home Fragrance Label | Metapackink',
+    metaDesc:
+      'A glass candle vessel, a wax that softens in transit, and the insert geometry that stopped the product carrying load through its own weakest part.',
+    excerpt:
+      'Glass is strong in compression and useless in point loading. Most candle boxes fail by loading the rim, which is the one place glass cannot take it.',
+    category: 'Home Fragrance',
+    date: '2027-02-03',
+    planned: true
+  },
+
+  {
+    slug: 'treatment-set-for-a-skincare-clinic',
+    title: "A Skincare Clinic's Treatment Set: One Insert for Six Different Product Heights",
+    metaTitle: 'Case Study: Skincare Clinic Treatment Set | Metapackink',
+    metaDesc:
+      'Six products of different heights in one presentation box, and the stepped cradle that held them all without a moulded tool.',
+    excerpt:
+      'The obvious answer is a moulded insert sized for the tallest item. The one that shipped was stepped, cheaper, and did not need tooling at all.',
+    category: 'Cosmetics',
+    date: '2027-02-17',
+    planned: true
+  },
+
+  {
+    slug: 'gift-box-for-a-fashion-label',
+    title: 'A Gift Box for a Fashion Label: Holding a Folded Garment Without a Crease Along the Fold',
+    metaTitle: 'Case Study: Gift Box for a Fashion Label | Metapackink',
+    metaDesc:
+      'A folded garment in a presentation box, the tissue-and-board assembly that replaced a pleat, and what arrives creased when neither is used.',
+    excerpt:
+      'Garments crease along the fold, not from being boxed. Stopping that is a question of what supports the fold, and paperboard does it better than foam.',
+    category: 'Apparel',
+    date: '2027-03-03',
+    planned: true
+  },
+
+  {
+    slug: 'supplement-box-for-a-wellness-brand',
+    title: 'A Supplement Box for a Wellness Brand: Meeting Labelling Rules Without Redesigning the Print',
+    metaTitle: 'Case Study: Supplement Box for a Wellness Brand | Metapackink',
+    metaDesc:
+      'Supplement labelling rules that arrived after the artwork was approved, and the structural change that made room for them without a reprint.',
+    excerpt:
+      'Regulatory text grows after approval more often than before it. A structure that assumes it will fit nowhere is a structure that gets redesigned mid-run.',
+    category: 'Health & Supplements',
+    date: '2027-03-17',
+    planned: true
+  },
+
+  {
+    slug: 'print-box-for-an-illustrator',
+    title: 'A Print Box for an Illustrator: Protecting a Flat Sheet From Corner Damage',
+    metaTitle: 'Case Study: Print Box for an Illustrator | Metapackink',
+    metaDesc:
+      'An art print that has to arrive flat and unmarked, and how corner construction and interior padding solved it without a tube.',
+    excerpt:
+      'A print has one failure mode: a creased corner. Everything about the box exists to keep a flat object flat while something heavy is stacked on top of it.',
+    category: 'Stationery & Print',
+    date: '2027-03-31',
+    planned: true
+  },
+
+  {
+    slug: 'gift-box-for-a-distillery',
+    title: 'A Gift Box for a Distillery: Carrying a Heavy Bottle Without Adding a Handle',
+    metaTitle: 'Case Study: Gift Box for a Distillery | Metapackink',
+    metaDesc:
+      'A heavy glass bottle in a presentation box, why the handle most briefs ask for is usually the wrong answer, and what carries the load instead.',
+    excerpt:
+      'A handle moves the whole load into one panel of board. There is a better way to make a heavy box easy to carry, and it costs less than a handle does.',
+    category: 'Spirits',
+    date: '2027-04-14',
+    planned: true
+  },
+
+  {
+    slug: 'pet-care-box-for-a-premium-brand',
+    title: 'A Premium Pet Care Box: Making a Large, Light Package Survive Being Stacked',
+    metaTitle: 'Case Study: Premium Pet Care Box | Metapackink',
+    metaDesc:
+      'A large box carrying very little weight, which is the worst possible case for stacking, and the board specification that stopped it collapsing from the bottom.',
+    excerpt:
+      'Heavy and small is easy. Large and light is the hard one: nothing is stabilising the panels, and the first pallet is what usually finds that out.',
+    category: 'Pet Care',
+    date: '2027-04-28',
+    planned: true
   }
 
 ];

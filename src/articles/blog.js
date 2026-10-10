@@ -201,6 +201,58 @@ module.exports = [
     category: 'Sourcing',
     date: '2026-12-24',
     planned: true
+  },
+
+  {
+    slug: 'insert-options-for-rigid-boxes',
+    title: 'Rigid Box Inserts: Foam, Board and Moulded Pulp, and What Each One Costs You',
+    metaTitle: 'Rigid Box Insert Options Compared | Foam, Board, Pulp | Metapackink',
+    metaDesc:
+      'How to choose between foam, die-cut paperboard and moulded pulp inserts for a rigid box, and what each one does to interior clearance, assembly time, freight volume and unit cost.',
+    excerpt:
+      'The insert decides whether the product arrives centred, how long the line takes to pack it, and how much air you end up shipping. It is also the part most often specified by habit rather than by calculation.',
+    category: 'Structures',
+    date: '2026-12-31',
+    planned: true
+  },
+
+  {
+    slug: 'packaging-print-file-setup',
+    title: 'Print Files for Packaging: What Has to Be Right Before You Send Them',
+    metaTitle: 'Packaging Print File Setup | Dieline, Bleed, Spot Colour | Metapackink',
+    metaDesc:
+      'What a packaging printer needs from a design file — dieline layer, bleed, spot colours, trapping and proofing — and which mistakes are expensive to discover at press.',
+    excerpt:
+      'Most problems blamed on the printing are decided before the file arrives: missing bleed, a gap in the dieline, a spot colour nobody specified. They are all cheap to fix at this stage and none are cheap to fix after it.',
+    category: 'Artwork',
+    date: '2027-01-07',
+    planned: true
+  },
+
+  {
+    slug: 'moq-and-unit-cost-in-packaging',
+    title: 'Why Packaging Unit Cost Falls With Quantity, and Where It Stops',
+    metaTitle: 'Packaging MOQ and Unit Cost Explained | Metapackink',
+    metaDesc:
+      'How minimum order quantities, tooling and machine setup spread across a run, why unit cost drops steeply and then flattens, and how to choose a quantity that is not a false economy.',
+    excerpt:
+      'The unit cost curve falls steeply and then flattens. Knowing where the flat part starts is the difference between buying for the year and paying rent on inventory nobody has sold yet.',
+    category: 'Cost & Pricing',
+    date: '2027-01-14',
+    planned: true
+  },
+
+  {
+    slug: 'shipping-and-export-packaging',
+    title: 'Export Packing for Custom Packaging: Cartons, Pallets and the Cost of Damage',
+    metaTitle: 'Export Packing for Custom Packaging | Cartons & Pallets | Metapackink',
+    metaDesc:
+      'How finished boxes are cartoned, palletised and shipped, what sea, air and express each do to a rigid box in transit, and where damage actually comes from.',
+    excerpt:
+      'Boxes that survived ninety days in a container get crushed in the last mile. Export packing is mostly about compression and humidity, and both are decisions made long before anything is loaded.',
+    category: 'Logistics',
+    date: '2027-01-21',
+    planned: true
   }
 
 ];
