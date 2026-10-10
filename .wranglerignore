@@ -1,0 +1,28 @@
+# Keep build tooling and repository metadata out of any upload.
+#
+# wrangler.toml points [assets] at ./dist, so these should never be reachable.
+# This file is a second line of defence in case the directory is ever changed
+# back to "." — it costs nothing and prevents republishing the source tree.
+#
+# wrangler honours .wranglerignore for `wrangler deploy` asset uploads.
+
+.git/
+.github/
+.wrangler/
+node_modules/
+
+src/
+tools/
+scripts/
+
+README.md
+README-DEPLOY.md
+.wranglerignore
+.gitignore
+wrangler.toml
+package.json
+package-lock.json
+
+*.md
+.DS_Store
+Thumbs.db

@@ -24,6 +24,7 @@ the pages and conversion paths the site was missing.
 | **Broken in-page anchors** | `products.html#gift-packaging` and footer `#rigid-boxes` resolved to nothing | 7 product anchors became 7 real product pages |
 | **No 404 page** | Default host error | Branded `/404` with recovery links, served for every unmatched path |
 | **Site unreachable — redirect loop** | `_redirects` used an apex→`www` rule that Cloudflare Pages read as a path pattern (it cannot match hostnames), so every request answered `Location: /` → `ERR_TOO_MANY_REDIRECTS` | Rule removed; no `.html` rules either, since Cloudflare handles those itself. Build fails if either returns. See §3 |
+| **Whole source tree published** | `[assets] directory = "."` uploaded the repo: `/src/config.js`, `/tools/build.js`, `/README-DEPLOY.md` and **`/.git/HEAD`** were all downloadable | Deploy `./dist`; build fails if `src/`, `tools/`, `.git/`, `.wrangler/` or any `.md`/`.toml` reaches it. See §3 |
 
 ### Added
 
@@ -46,28 +47,63 @@ the pages and conversion paths the site was missing.
 
 ---
 
-## 2. Before you deploy — three required steps
+## 2. Before you deploy — two remaining steps
 
-### 2.1 Set your form endpoint
+The form endpoint is already configured (§2.1, for reference). Two things still
+need a human:
 
-All four forms post to a placeholder. **Until you change it, forms fall back to
-opening the visitor's email client** (see `js/forms.js`) rather than silently
-claiming success — so no enquiry is lost — but you should configure a real
-endpoint.
+### 2.1 Set your form endpoint ✓
 
-1. Create a free form at [Formspree](https://formspree.io) or [Web3Forms](https://web3forms.com).
-2. Open `src/partials.js` and replace the placeholder:
+**Already done** — `site.formId` in `src/config.js` is set to `mbgdydjj`, and
+all 12 forms post to `https://formspree.io/f/mbgdydjj`.
+
+To change it, edit one line:
 
 ```js
-const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+// src/config.js
+formId: 'mbgdydjj',
 ```
 
-3. Rebuild (`node tools/build.js`) — or, if you are editing `dist/` directly,
-   find-and-replace `https://formspree.io/f/YOUR_FORM_ID` across all `*.html`.
+then rebuild. The endpoint is composed as `site.formAction + site.formId`, so
+there is no second place to update.
 
-The forms are ordinary HTML `POST` forms, so they also work **without
-JavaScript**. `js/forms.js` only adds inline validation, a status message, a GA4
-`generate_lead` event and the email fallback.
+#### Why forms used to open your email client
+
+`js/forms.js` refuses to show a success message for a submission that went
+nowhere. While the endpoint was still the placeholder, every submit was
+intercepted and turned into a `mailto:` with the answers pre-filled — which is
+why the form appeared to "open the local mailbox" instead of submitting.
+
+That was the intended safety behaviour, but it was a poor experience, because a
+`mailto:` depends on the visitor having a mail client wired up. On a phone with
+no mail app — or a locked-down browser — nothing happens at all, and the visitor
+is left thinking the form ignored them.
+
+Two things now prevent that:
+
+- The build prints a **loud warning** if you ship the placeholder, and the form
+  itself says *"This form is not connected yet — opening your email app…"* with
+  the address to copy, instead of navigating away without explanation.
+- `data-endpoint-configured` is written into every form, so the script and the
+  markup can never disagree about whether the endpoint is live.
+
+#### Verifying it works
+
+```bash
+curl -s -X POST https://formspree.io/f/mbgdydjj \
+  -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","message":"test"}'
+# {"next":"/thanks","ok":true}
+```
+
+The forms are ordinary HTML `POST` forms and work **without JavaScript** — a
+no-JS visitor gets a normal POST and lands on `/thank-you/`. `js/forms.js` only
+adds inline validation, a status message, a GA4 `generate_lead` event and the
+email fallback.
+
+> **Formspree free tier is 50 submissions/month.** Check the dashboard if you
+> start running paid traffic; a full mailbox fails silently from the visitor's
+> side.
 
 ### 2.2 Have the legal pages reviewed
 
@@ -91,25 +127,54 @@ and rebuild.
 
 ## 3. Deploying to Cloudflare Pages
 
-`wrangler.toml` is already present and points at this directory
-(`[assets] directory = "."`).
+Build first, then deploy **`dist/`** — never the repository root.
 
 ```bash
-# preview locally first
-npx wrangler pages dev .
-
-# deploy
-npx wrangler pages deploy .
+node tools/build.js            # regenerate dist/
+npx wrangler pages deploy dist # deploy ONLY the build output
 ```
 
-Or connect the Git repository in the Cloudflare dashboard:
-build command **none**, output directory **`/`** (the files are pre-built and committed).
+`wrangler.toml` already sets `[assets] directory = "./dist"`, so a bare
+`npx wrangler deploy` also does the right thing. Preview with:
 
-> **Upload the whole directory, and delete what was there before.** The
-> previous deploy went out with a broken `_redirects` still sitting next to
-> the files; if you upload on top of an existing deployment, make sure the
-> old files are gone. Cloudflare Pages replaces the deployment atomically on
-> `wrangler pages deploy`, so a fresh deploy is enough — do not merge folders.
+```bash
+node tools/build.js --serve          # http://127.0.0.1:4173
+```
+
+> ### Never deploy `.`
+>
+> The previous configuration had `[assets] directory = "."`, and that
+> published the **entire repository**. These were all downloadable over
+> HTTPS at the time of writing:
+>
+> ```
+> https://www.metapackink.com/src/config.js        -> 200
+> https://www.metapackink.com/tools/build.js       -> 200
+> https://www.metapackink.com/README-DEPLOY.md     -> 200
+> https://www.metapackink.com/.git/HEAD            -> 200
+> ```
+>
+> `.git/` being public is the worst of these: the full history, every past
+> commit, and any credential ever committed. Two things now prevent it —
+> `wrangler.toml` points at `./dist`, and `tools/build.js` **fails the build**
+> if anything from `src/`, `tools/`, `scripts/`, `.git/`, `.wrangler/` or any
+> `.md`/`.toml` file appears in `dist/`. `.wranglerignore` is a third layer.
+
+### Connecting the Git repository instead
+
+If you deploy through the Cloudflare dashboard Git integration rather than
+from your machine, the settings matter more, because the build runs inside a
+clone of the repo:
+
+| Setting | Value |
+|---|---|
+| Build command | `node tools/build.js` |
+| Output directory | `dist` |
+| Root directory | `/` (leave default) |
+
+The build command you had — `node scripts/inject-ga.js` — is from the **old**
+WordPress/Elementor setup and does nothing on this codebase (`共注入 0 个
+HTML 文件` in your log). It also left `scripts/` in the upload. Replace it.
 
 ### How the routing works
 
@@ -187,28 +252,46 @@ The site is generated by a small Node script with **no dependencies** — no
 framework, no bundler, no `node_modules`.
 
 ```bash
-node tools/build.js          # regenerate every page in place
+node tools/build.js          # regenerate dist/
 node tools/build.js --check  # build, then verify links, redirects and JSON-LD
 node tools/build.js --serve  # build, then preview at http://127.0.0.1:4173
 ```
 
 `--check` **fails the build** on any unresolvable internal link, unparseable
-JSON-LD, or redirect rule that could loop, so the guards run on every build
-rather than being something you remember to do.
+JSON-LD, a redirect rule that could loop, or a source file that has leaked
+into `dist/` — so the guards run on every build rather than being something
+you remember to do.
 
-### This directory is both the source and the deploy root
+### Source and output are separate
 
-There is no `dist/` to upload. `tools/build.js` writes each page straight to
-its final path — `src/pages/10-existing.js` becomes `about/index.html` right
-here in this directory. `dist/` is a scratch directory only; you never copy
-from it.
+`tools/build.js` reads from `src/`, `css/`, `js/`, `img/` and the three
+hand-maintained files `style.css`, `main.js`, `llms.txt` — then writes 64
+files into `dist/`. **Only `dist/` is ever deployed.**
 
-`wrangler.toml` points at `.`, so `npx wrangler pages deploy .` publishes
-exactly what you see here.
+```
+repo root                 dist/  (the only deployed directory)
+──────────                ────────────────────────────────────
+src/          ──build──▶  about/index.html
+css/                      products/rigid-boxes/index.html
+js/                       sitemap.xml, _redirects, _headers …
+img/                      css/, js/, img/
+style.css                 style.css
+main.js                   main.js
+llms.txt                  llms.txt
+wrangler.toml             (config, not uploaded)
+```
 
-Three files are read at build time and stood next to the output:
-`style.css`, `main.js` and `llms.txt`. They are both source and output —
-edit them directly.
+**There must be no rendered `*.html` at the repo root.** If you see an
+`index.html` or an `about/` folder sitting next to `src/`, they are stale
+output from an earlier build and should be deleted — the build no longer
+writes there, so they will silently go out of date. This bit us once: a stale
+`contact/index.html` still carried the placeholder form endpoint after the
+real one had been configured, so a deployment from the root would have
+brought the broken form back.
+
+`dist/` is disposable: it is deleted and regenerated on every build, so never
+edit files inside it — your changes are lost on the next run. Edit the
+sources, then rebuild.
 
 ### Where things live
 

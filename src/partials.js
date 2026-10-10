@@ -47,9 +47,12 @@ ${o.hint ? `<span class="hint">${o.hint}</span>` : ''}
 </div>`;
 }
 
-/* The endpoint is set in one place. Replace the placeholder with your own
-   Formspree / Web3Forms form id — see README-DEPLOY.md. */
-const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+/* The endpoint comes from src/config.js, so there is exactly one place to
+   set it. FORM_CONFIGURED travels into the markup as a data attribute, so
+   js/forms.js does not have to re-derive it from the URL, and the build can
+   refuse to ship a placeholder endpoint to production. */
+const FORM_ENDPOINT = site.formAction + site.formId;
+const FORM_CONFIGURED = site.formId !== 'YOUR_FORM_ID';
 
 /**
  * Full RFQ form. This is the site's primary conversion asset; before this
@@ -63,6 +66,7 @@ function rfqForm(page) {
 <div class="form-layout">
 
 <form class="form-card" data-rfq data-form-name="rfq"
+      data-endpoint-configured="${FORM_CONFIGURED}"
       action="${FORM_ENDPOINT}" method="POST"
       data-thank-you="${navHref('/thank-you/', u)}" novalidate>
 <h2>Tell us about your packaging project</h2>
@@ -147,6 +151,7 @@ function sampleForm(page) {
 <div class="form-layout">
 
 <form class="form-card" data-rfq data-form-name="sample"
+      data-endpoint-configured="${FORM_CONFIGURED}"
       action="${FORM_ENDPOINT}" method="POST"
       data-thank-you="${navHref('/thank-you/', u)}" novalidate>
 <h2>Request a sample or swatch book</h2>
@@ -208,6 +213,7 @@ function contactForm(page) {
 <h2>Send us a message</h2>
 <p class="section-intro">For quotations with specifications, the <a href="${navHref('/request-a-quote/', u)}">request a quote</a> form collects everything we need in one go. Use this form for everything else.</p>
 <form data-rfq data-form-name="contact"
+      data-endpoint-configured="${FORM_CONFIGURED}"
       action="${FORM_ENDPOINT}" method="POST"
       data-thank-you="${navHref('/thank-you/', u)}" novalidate>
 <div class="form-grid">
@@ -281,6 +287,6 @@ ${items
 
 module.exports = {
   rfqForm, sampleForm, contactForm, darkCta, relatedSection,
-  field, options, FORM_ENDPOINT,
+  field, options, FORM_ENDPOINT, FORM_CONFIGURED,
   STRUCTURE_OPTIONS, QUANTITY_OPTIONS, TIMELINE_OPTIONS
 };

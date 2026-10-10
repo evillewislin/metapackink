@@ -24,6 +24,7 @@ const path = require('path');
 
 const { site, redirects } = require('../src/config');
 const { renderPage } = require('../src/layout');
+const { FORM_CONFIGURED } = require('../src/partials');
 
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
@@ -206,9 +207,107 @@ function buildRoutesJson() {
  * verification
  * ------------------------------------------------------------------ */
 
-/* A redirect rule whose source equals its destination is an infinite loop.
-   The visitor gets ERR_TOO_MANY_REDIRECTS and the whole site is unreachable,
-   so this is a hard build failure, not a warning — it has happened once. */
+/* Refuse to publish anything that is not a website file.
+ *
+ * This exists because of a real incident: wrangler.toml had
+ * `[assets] directory = "."`, so `npx wrangler deploy` uploaded the entire
+ * repository. /src/config.js, /tools/build.js, /README-DEPLOY.md and
+ * /.git/HEAD were all publicly downloadable. The directory setting is fixed,
+ * but a single edit could undo that, so the build now checks the output. */
+const SOURCE_MARKERS = [
+  { test: /^\.git\//, what: 'git metadata' },
+  { test: /^\.wrangler\//, what: 'wrangler scratch files' },
+  { test: /^src\//, what: 'build sources' },
+  { test: /^tools\//, what: 'build tooling' },
+  { test: /^scripts\//, what: 'build scripts' },
+  { test: /^node_modules\//, what: 'dependencies' },
+  { test: /^README(-DEPLOY)?\.md$/, what: 'internal documentation' },
+  { test: /^wrangler\.toml$/, what: 'deployment config' },
+  { test: /^package(-lock)?\.json$/, what: 'build manifest' },
+  { test: /\.(md|toml)$/, what: 'non-web file' }
+];
+
+function checkDistIsClean() {
+  const leaked = [];
+  const walk = (dir, rel) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const abs = path.join(dir, e.name);
+      const r = rel ? rel + '/' + e.name : e.name;
+      if (e.isDirectory()) { walk(abs, r); continue; }
+      for (const m of SOURCE_MARKERS) {
+        if (m.test.test(r)) { leaked.push(`${r}  (${m.what})`); break; }
+      }
+    }
+  };
+  if (fs.existsSync(DIST)) walk(DIST, '');
+
+  if (leaked.length) {
+    throw new Error(
+      `dist/ contains files that must never be public:\n    - ` +
+      leaked.join('\n    - ') +
+      `\n  Check what is being copied into dist/ — this is how the source tree ` +
+      `ended up downloadable.`
+    );
+  }
+}
+
+/* Warn about rendered HTML sitting outside dist/.
+ *
+ * The build only writes to dist/, so any generated page found next to the
+ * sources is stale output from an earlier layout. It is dangerous rather than
+ * merely untidy: a stale contact/index.html kept the placeholder form endpoint
+ * after the real one had been configured, so deploying from the wrong
+ * directory would have brought the broken form back. Warn loudly; do not fail,
+ * because a deliberate /404.html or /thank-you.html at the root is legitimate.
+ *
+ * "Legitimate" here means exactly the three files Cloudflare looks up by
+ * convention rather than by a URL we chose: the site root, the not-found page,
+ * and the form thank-you page. Everything else the generator emits lives under
+ * a directory. If FLAT / urlToFile() above ever changes, this list changes too. */
+const ROOT_FLAT_ALLOWED = new Set(['index.html', '404.html', 'thank-you.html']);
+
+function warnAboutStaleRootHtml() {
+  const skip = new Set([
+    'dist', 'src', 'node_modules', '.git', '.wrangler', 'tools', 'scripts',
+    'css', 'js', 'img', 'images', 'fonts', 'assets'
+  ]);
+  const stale = [];
+  for (const e of fs.readdirSync(ROOT, { withFileTypes: true })) {
+    if (skip.has(e.name) || e.name.startsWith('.') || e.name.startsWith('_')) continue;
+    /* Only things the build could have emitted: a flat .html, or a directory
+       holding an index.html. */
+    const rel = e.isDirectory()
+      ? (fs.existsSync(path.join(ROOT, e.name, 'index.html')) ? e.name + '/index.html' : null)
+      : (e.name.endsWith('.html') ? e.name : null);
+    if (!rel) continue;
+    /* The three conventional flat files stay. */
+    if (ROOT_FLAT_ALLOWED.has(rel)) continue;
+    /* Does this build actually write that same path into dist/? If so it is a
+       duplicate artifact. The size comparison only enriches the message: equal
+       means "exact copy, safe to delete", differing means "older than the
+       build", which is the case worth shouting about. */
+    const twin = path.join(DIST, rel);
+    const identical = fs.existsSync(twin) &&
+      fs.statSync(path.join(ROOT, rel)).size === fs.statSync(twin).size;
+    stale.push({ rel, identical });
+  }
+  if (stale.length) {
+    console.log('  ' + '!'.repeat(48));
+    console.log('  !!  STALE RENDERED HTML IN THE REPO ROOT');
+    console.log('  !!');
+    console.log('  !!  Only dist/ is deployed, so these are ignored — but they');
+    console.log('  !!  are out of date and will confuse anyone who deploys the');
+    console.log('  !!  root by mistake. Delete them:');
+    stale.slice(0, 10).forEach((s) =>
+      console.log('  !!    ' + s.rel + (s.identical ? '' : '   (older than the build)')));
+    if (stale.length > 10) console.log(`  !!    … and ${stale.length - 10} more`);
+    console.log('  !!');
+    console.log(`  !!  ${stale.length} rendered file(s) found next to the sources.`);
+    console.log('  !!  Delete them; `node tools/build.js` regenerates dist/.');
+    console.log('  ' + '!'.repeat(48) + '\n');
+  }
+}
+
 function checkRedirects(pages) {
   const pageUrls = new Set(pages.map((p) => p.url));
   pageUrls.add('/');
@@ -374,10 +473,12 @@ function build() {
   const llms = path.join(ROOT, 'llms.txt');
   if (fs.existsSync(llms)) fs.copyFileSync(llms, path.join(DIST, 'llms.txt'));
 
+  checkDistIsClean();
   checkRedirects(pages);
   checkLegacyHtmlRules(pages);
   checkLinks(pages);
   checkSchema(pages);
+  warnAboutStaleRootHtml();
 
   const bySection = {};
   for (const p of pages) {
@@ -396,6 +497,20 @@ function build() {
   Object.entries(bySection).sort((a, b) => b[1] - a[1])
     .forEach(([k, v]) => console.log(`  ${k.padEnd(22)}${v}`));
   console.log(`\n  output -> ${path.relative(process.cwd(), DIST)}\n`);
+
+  /* Loud, because a placeholder endpoint means every enquiry falls back to
+     the visitor's mail client — which silently does nothing on a device with
+     no mail app configured. Easy to forget, expensive to miss. */
+  if (!FORM_CONFIGURED) {
+    console.log('  ' + '!'.repeat(48));
+    console.log('  !!  FORM ENDPOINT IS STILL THE PLACEHOLDER');
+    console.log('  !!');
+    console.log('  !!  Forms will open the visitor\'s mail client instead of');
+    console.log('  !!  submitting. On phones with no mail app that fails silently.');
+    console.log('  !!');
+    console.log('  !!  Set site.formId in src/config.js before taking traffic.');
+    console.log('  ' + '!'.repeat(48) + '\n');
+  }
 
   return pages;
 }

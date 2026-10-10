@@ -28,6 +28,27 @@ const site = {
   /* One GA4 property, not two. See README-DEPLOY.md. */
   ga4: 'G-G4VHR7QHGD',
 
+  /* ------------------------------------------------------------------ *
+   * Form submission
+   *
+   * Paste the form id from your form provider here (Formspree dashboard ->
+   * your form -> Integration). It is the last path segment of the endpoint:
+   *   https://formspree.io/f/mbgdydjj   ->   formId: 'mbgdydjj'
+   *
+   * While this is left as the placeholder, every form on the site refuses to
+   * pretend it submitted: js/forms.js detects the placeholder and opens the
+   * visitor's mail client pre-filled instead, so no enquiry is silently lost.
+   * The trade-off is that a mailto: needs the visitor to actually press Send,
+   * and on a phone with no mail app configured it does nothing at all — so
+   * set a real id before you take traffic.
+   * ------------------------------------------------------------------ */
+  formId: 'mbgdydjj',
+  formAction: 'https://formspree.io/f/',
+
+  /* Where a failed submission should go instead. Shown as a link in the
+     inline error, so a visitor who hits a network problem still has a route. */
+  fallbackEmail: 'sales@metapackink.com',
+
   social: [
     { name: 'Facebook', icon: 'facebook.png', url: 'https://www.facebook.com/people/Guyin-Packaging/' },
     { name: 'Instagram', icon: 'instagram.png', url: 'https://www.instagram.com/gooinpack_guyin/' },

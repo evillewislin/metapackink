@@ -1,5 +1,12 @@
 name = "metapackink"
 compatibility_date = "2024-09-23"
 
+# Deploy the BUILD OUTPUT, never the repository root.
+#
+# `directory = "."` published the whole repo: /src/config.js, /tools/build.js,
+# /README-DEPLOY.md and even /.git/HEAD were all downloadable over HTTPS.
+# Pointing at ./dist means only generated files are ever uploaded.
+#
+# Run `node tools/build.js` before deploying, so dist/ is current.
 [assets]
-directory = "." 
+directory = "./dist"

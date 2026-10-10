@@ -11,12 +11,16 @@
      - GA4 generate_lead event on a successful submit
      - a readable filename list for the artwork upload
 
-   Endpoint configuration lives in src/partials.js (FORM_ENDPOINT).
+   Endpoint configuration lives in src/config.js (site.formId). While that is
+   still the placeholder, submitting opens the visitor's mail client instead
+   of posting anywhere — see mailtoFallback() below for why that is the safer
+   default, and README-DEPLOY.md for how to switch it on.
    ------------------------------------------------------------------ */
 (function () {
   'use strict';
 
   var GA_ID = 'G-G4VHR7QHGD';
+  var FALLBACK_EMAIL = 'sales@metapackink.com';
 
   function markError(row, on) {
     if (row) row.classList.toggle('has-error', on);
@@ -61,6 +65,13 @@
   /**
    * Fallback used when the form endpoint has not been configured, or the
    * request fails. Builds a mailto: so the enquiry is never silently lost.
+   *
+   * This is a last resort, not the normal path. A mailto: only works if the
+   * visitor has a mail client wired up — on a phone or a locked-down desktop
+   * it does nothing at all, and the visitor is left staring at a page that
+   * appears to have ignored them. That is why the form says so out loud
+   * before navigating away, and why the build refuses to ship a placeholder
+   * endpoint silently.
    */
   function mailtoFallback(form) {
     var data = new FormData(form);
@@ -76,17 +87,28 @@
 
     var subject = 'Packaging enquiry — ' + (data.get('company') || data.get('name') || 'website');
     var href =
-      'mailto:sales@metapackink.com' +
+      'mailto:' + FALLBACK_EMAIL +
       '?subject=' + encodeURIComponent(subject) +
       '&body=' + encodeURIComponent(lines.join('\n'));
 
     window.location.href = href;
+    return href;
+  }
+
+  /* Read from the same attribute the markup carries, so the two can never
+     disagree. Falls back to inspecting the URL for older cached HTML. */
+  function endpointConfigured(form) {
+    var flag = form.getAttribute('data-endpoint-configured');
+    if (flag === 'true') return true;
+    if (flag === 'false') return false;
+    var action = form.getAttribute('action') || '';
+    return !!action && action.indexOf('YOUR_FORM_ID') === -1;
   }
 
   function initForm(form) {
     var status = form.querySelector('.form-status');
     var endpoint = form.getAttribute('action') || '';
-    var configured = endpoint && endpoint.indexOf('YOUR_FORM_ID') === -1;
+    var configured = endpointConfigured(form);
 
     /* clear the error state as soon as the visitor corrects a field */
     form.addEventListener('input', function (e) {
@@ -131,12 +153,18 @@
         status.textContent = 'Sending…';
       }
 
-      /* No endpoint configured: hand the enquiry to the visitor's mail client
-         rather than showing a success message for something that went nowhere. */
+      /* No endpoint configured. Rather than bounce the visitor straight into
+         a mail client they may not have — which looks like the form doing
+         nothing at all — tell them what is about to happen and give them the
+         address to copy as well. */
       if (!configured) {
         e.preventDefault();
         if (status) {
-          status.textContent = 'Opening your email client…';
+          status.classList.remove('is-error');
+          status.innerHTML =
+            'This form is not connected yet — opening your email app with the ' +
+            'message pre-filled. If nothing happens, email <a href="mailto:' +
+            FALLBACK_EMAIL + '">' + FALLBACK_EMAIL + '</a> directly.';
         }
         mailtoFallback(form);
         return;

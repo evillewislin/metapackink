@@ -1,0 +1,15 @@
+# Node build tooling — not part of the published site.
+node_modules/
+dist/
+.wrangler/
+
+# Nothing below should ever be committed to the deployed branch, but the
+# authoritative guard is wrangler.toml's `directory = "./dist"`.
+.DS_Store
+Thumbs.db
+
+# Editor / OS
+*.swp
+*~
+.idea/
+.vscode/
