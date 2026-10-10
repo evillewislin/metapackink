@@ -1,12 +1,25 @@
+Allow search engines to crawl public website content.
+
 User-agent: *
 Allow: /
+
+Exclude internal confirmation pages
+
 Disallow: /thank-you/
 
-# Block low-value duplicate-parameter URLs
-Disallow: /*?utm_
-Disallow: /*?ref=
+Exclude tracking parameter URLs
 
-# AI crawlers are welcome to read and cite this site.
+Disallow: /?utm_
+Disallow: /&utm_
+Disallow: /?ref=
+Disallow: /&ref=
+
+XML Sitemap
+
+Sitemap: https://www.metapackink.com/sitemap.xml
+
+AI crawlers
+
 User-agent: GPTBot
 Allow: /
 
@@ -18,6 +31,3 @@ Allow: /
 
 User-agent: Google-Extended
 Allow: /
-
-# XML Sitemap
-Sitemap: https://www.metapackink.com/sitemap.xml
