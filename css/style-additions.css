@@ -1325,3 +1325,47 @@ summary:focus-visible {
    compounds so it out-ranks `.legacy-page .mp-section p` (0,2,1). */
 .legacy-page .mp-section .mp-film-link { max-width: 68ch; color: var(--gray); }
 .legacy-page .mp-section .mp-film-link a { color: var(--orange); }
+
+/* ---------- lists inside the carried pages ---------- *
+ * Every carried page was written as short paragraphs, so no list had ever
+ * appeared in one — and the global `* { margin:0; padding:0 }` reset zeroes
+ * the padding a <ul> needs for its markers. Without this, a bulleted list
+ * renders flush to the container edge with the markers outside it.
+ * padding-inline-start rather than padding-left, so the RTL dictionaries
+ * get the same result without a mirrored rule. */
+.legacy-page .mp-section ul,
+.legacy-page .mp-card ul {
+  margin: .9rem 0 0;
+  padding-inline-start: 1.25rem;
+}
+.legacy-page .mp-section ul li,
+.legacy-page .mp-card ul li {
+  margin: .5rem 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--gray);
+}
+.legacy-page .mp-section ul li strong,
+.legacy-page .mp-card ul li strong { color: var(--black); }
+
+/* ---------- lists inside the carried pages ---------- *
+ * Every carried page was written as short paragraphs, so no list had ever
+ * appeared in one — and the global `* { margin:0; padding:0 }` reset zeroes
+ * the padding a <ul> needs for its markers. Without this, a bulleted list
+ * renders flush to the container edge with the markers outside it.
+ * padding-inline-start rather than padding-left, so the RTL dictionaries
+ * get the same result without a mirrored rule. */
+.legacy-page .mp-section ul,
+.legacy-page .mp-card ul {
+  margin: .9rem 0 0;
+  padding-inline-start: 1.25rem;
+}
+.legacy-page .mp-section ul li,
+.legacy-page .mp-card ul li {
+  margin: .5rem 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--gray);
+}
+.legacy-page .mp-section ul li strong,
+.legacy-page .mp-card ul li strong { color: var(--black); }
