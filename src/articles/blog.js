@@ -69,8 +69,32 @@ module.exports = [
     excerpt:
       'Thickness is usually copied from the last project rather than calculated from the current one. Here is what actually drives it — product weight, box size, stack height and how the box is opened — and what fails when you go too thin or too thick.',
     category: 'Materials',
-    date: '2026-10-15',
-    planned: true
+    date: '2026-10-11',
+    imgAlt: 'Three rigid box greyboard sheets of different thicknesses next to a finished rigid box',
+    img: 'blog-rigid-box-board-thickness.webp',
+    body: 'rigid-box-board-thickness',
+    faq: [
+      {
+        q: 'What board thickness should I specify for my rigid box?',
+        a: 'Work through four inputs in order: what the box carries, the longest unsupported panel dimension, how many boxes will be stacked on it, and how the customer opens it. Under half a kilo with a panel under 250 mm and parcel shipping, 2 mm is genuinely right. A panel over 250 mm should treat 2 mm as the floor whatever the product weighs, and a palletised carton stack moves the number further than the product does.'
+      },
+      {
+        q: 'Does thicker board simply mean a stronger box?',
+        a: 'It means a much stiffer one, which is not the same thing — panel stiffness rises with roughly the cube of thickness, so 3 mm board is about eight times stiffer than 1.5 mm. But over-specifying adds exterior volume and that volume is what freight is charged on, so the return stops well before the thickness range does.'
+      },
+      {
+        q: 'Can the lid and the base be made from different board?',
+        a: 'Yes, and it is usually the better specification. The base carries the product and whatever is stacked above it; the lid only has to hold its own shape and close flat. Putting the thicker board in the base and the lighter board in the lid puts material where it works and takes weight off the part the customer lifts.'
+      },
+      {
+        q: 'What should I check on the sample to confirm the board?',
+        a: 'Measure it with a calliper at a corner and at the middle of a panel, because board is sometimes thinner at the fold than at the face. Then compare the exterior dimensions against what was quoted — the exterior is what you pay to ship, and it grows by 1 mm in each of length and width for every 0.5 mm of board.'
+      },
+      {
+        q: 'Can I change the board thickness after the sample is made?',
+        a: `Yes, and a revised sample takes ${trade.sampleLead} from the change being agreed. The cost is not the sampling time but the dieline: corner allowance, lid clearance and the wrap turn over the top edge are all set by the board, so they all move with it. That is the reason to settle thickness before the structure is drawn rather than after.`
+      }
+    ]
   },
 
   {
@@ -82,8 +106,32 @@ module.exports = [
     excerpt:
       'A magnetic box that opens too easily and one that fights the customer are the same specification error in opposite directions. Magnet grade, count and position are chosen together, and the only reliable test is a physical sample.',
     category: 'Structures',
-    date: '2026-10-22',
-    planned: true
+    date: '2026-10-12',
+    imgAlt: 'A magnetic closure rigid box with the lid lifted, showing two recessed magnets in the front skirt and the steel plates in the lid',
+    img: 'blog-magnetic-box-magnet-specification.webp',
+    body: 'magnetic-box-magnet-specification',
+    faq: [
+      {
+        q: 'How strong should the magnets in a magnetic closure box be?',
+        a: 'Specify the performance rather than the part: the box must hold shut when inverted and when carried by the base, must open one-handed without being put down, and must still do both after a drop test if it ships direct. Given that, plus the lid dimensions and the board, the grade, size, count and position can be engineered and then proved on a physical sample. Naming N42 in a brief does not tell anyone what the box has to do.'
+      },
+      {
+        q: 'Why does the lid lift at the corners when the box is carried by the base?',
+        a: 'Because the closure is resisting a rotation about the back edge, not a straight pull, and the load is applied at exactly the point where the magnet is. Two magnets spaced out towards the corners hold better than one of the same total area placed centrally, for the same reason. It is also the check that catches an undersized closure almost every time, so approve the sample by carrying it loaded rather than by pressing it shut on a table.'
+      },
+      {
+        q: 'Is a higher magnet grade worth specifying for a premium box?',
+        a: 'Usually not. N38 to N42 covers nearly every rigid box, and the force gained by moving to N52 is smaller than the force lost to half a millimetre of extra material between the magnet and its counterpart. Grade is the last variable to reach for — geometry, count, position and the air gap are all decided in the dieline and all do more work.'
+      },
+      {
+        q: 'What does the magnet close against?',
+        a: 'Normally a mild steel plate recessed into the lid skirt to match. It is cheaper, it has no polarity to get wrong, and the magnet holds anywhere on it. A second magnet roughly doubles the force available in the same space and self-locates, but every unit has to be assembled with the polarity right, which makes it the part most likely to go wrong on a line. We quote steel unless there is a reason not to.'
+      },
+      {
+        q: 'Can the magnet specification be changed after the first sample?',
+        a: `Yes, and a revised sample takes ${trade.sampleLead} from the change being agreed. What matters is that the fix is usually not the magnet: if the magnets were recessed too deep, or the lid and base skirts are not registering flush, no grade will recover the force. Those are dieline dimensions, so the closure is worth settling before the structure is drawn rather than after.`
+      }
+    ]
   },
 
   {

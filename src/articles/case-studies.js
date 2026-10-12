@@ -12,6 +12,8 @@
  * not — those are the parts a buyer can actually reuse, and they are the parts
  * a supplier is normally vague about. */
 
+const { trade } = require('../config');
+
 module.exports = [
 
   {
@@ -56,8 +58,32 @@ module.exports = [
     excerpt:
       'A full 100 ml bottle is a heavy, hard, fragile object in a thin-walled box. Everything about this structure follows from taking the bottle weight seriously at the start rather than discovering it at the drop test.',
     category: 'Perfume',
-    date: '2026-10-14',
-    planned: true
+    date: '2026-10-11',
+    imgAlt: 'A two-piece rigid perfume coffret with the lid lifted, showing a glass bottle held by a die-cut shoulder insert',
+    img: 'case-perfume-coffret-for-a-fragrance-house.webp',
+    body: 'perfume-coffret-for-a-fragrance-house',
+    faq: [
+      {
+        q: 'Why does it matter which part of the bottle carries the load?',
+        a: 'Glass is strongest in compression through the foot, where the section is thickest, and weakest at the neck, where the wall is thin and the thread concentrates stress. An insert that grips the bottle along its length — a foam silhouette, for instance — can end up hanging the bottle from its shoulder, and a shoulder hang is what cracks in a drop. We specify that the foot rests on the base panel and everything above it only locates.'
+      },
+      {
+        q: 'How is the aperture in the shoulder shelf sized?',
+        a: 'It has two limits, both readable off the bottle drawing before anything is cut. It must be larger than the widest part that passes through it — here the 28 mm cap, so 36 mm gives 8 mm of freedom — and smaller than the shoulder it has to catch, here 48 mm. The shoulder is a slope rather than a step, so the contact is a ring, which makes the fit tolerant of batch variation in the glass.'
+      },
+      {
+        q: 'Why let the cap sit inside the lid instead of making the base taller?',
+        a: 'Because deepening the base to hide the cap adds exterior height for no benefit and makes the bottle harder to lift out. Letting the top 25 mm of the bottle occupy the lid costs nothing structurally and keeps the box smaller — and exterior height is freight, paid once per carton and again per pallet.'
+      },
+      {
+        q: 'Why is 5 mm of clearance above the cap needed rather than 2 mm?',
+        a: 'Two millimetres is a static measurement and a drop is not static: the lid panel deflects downward on impact, and at 2 mm the cap marked the interior of the lid. The better fix is not a deeper lid but a board stiffener under the lid panel, because that removes the deflection rather than simply moving the lid further away from it.'
+      },
+      {
+        q: 'Could the same coffret have been made with a moulded pulp insert?',
+        a: `Yes, and a second sample in moulded pulp was quoted alongside it at ${trade.sampleLead}. It would have held the bottle just as well. It was not chosen because a moulded cavity needs wall thickness to hold its own shape, and on a single-bottle box that thickness is paid for in exterior volume for no gain — a die-cut board insert with a shelf does the same job in less space, with no tooling beyond a cutting die.`
+      }
+    ]
   },
 
   {
@@ -69,8 +95,32 @@ module.exports = [
     excerpt:
       'The drawer has to slide, which means it cannot touch. Every millimetre of that clearance comes out of somewhere, and if it comes out of the cushion the watch moves instead of the tray.',
     category: 'Structures',
-    date: '2026-10-28',
-    planned: true
+    date: '2026-10-12',
+    imgAlt: 'A wrapped drawer box with the tray pulled halfway out of the sleeve, ribbon pull visible and a fabric cushion form seated in the tray cavity',
+    img: 'case-drawer-box-for-a-watch-brand.webp',
+    body: 'drawer-box-for-a-watch-brand',
+    faq: [
+      {
+        q: 'Why should the slide clearance come out of the sleeve rather than the tray?',
+        a: 'Because the tray\'s exterior sets its interior, the interior sets the cavity, and the cavity sets the fitment that holds the product. Shrinking the tray to make it slide takes the clearance out of the one part that cannot afford to give — the watch ends up on a smaller cushion with less grip. Growing the sleeve interior instead leaves the tray, the cavity and the product at the size they need, and on a box this size the extra exterior volume is negligible against the freight.'
+      },
+      {
+        q: 'How tight does the fitment need to be inside the drawer?',
+        a: 'Tighter than the slide clearance. A drawer converts a pull on the ribbon into movement of everything in it, and that only works if the cushion grips the cavity harder than the tray resists the sleeve — otherwise the tray comes out and the product stays where it was, arriving at the back of its own box. We cut the cavity 2 mm undersize per side so the EVA compresses to seat, which is an interference fit rather than a friction one and does not change as the fabric wears.'
+      },
+      {
+        q: 'Why did the first sample\'s ribbon pull off?',
+        a: 'It was glued to the outer face of the tray, so the pull load went through the adhesive bond to a coated paper surface and it released at roughly 3 kg. The fix was not a stronger glue but a different load path: a slot is cut through the tray board, the ribbon end passes through it and is trapped under the wrap, so the load goes into the board. The failure moves from the glue line to the ribbon itself.'
+      },
+      {
+        q: 'Why did some drawers bind only after shipping by sea?',
+        a: 'Not because the clearance shrank but because the board grew. Paperboard absorbs moisture and swells more across the grain than with it, and at 0.5 mm per side that is enough to close the gap on the units whose grain ran the wrong way. The clearance was opened to 0.8 mm per side and the wrap specified with a matte lamination, which seals the board against moisture uptake and lowers the sliding friction at the same time.'
+      },
+      {
+        q: 'What is the one check that prevents a drawer from jamming in production?',
+        a: 'Gauge the sleeve interior rather than measuring it. The defect that causes binding is not a sleeve that is too small overall — it is a sleeve whose corners were formed slightly proud, so the interior is correct across the middle of each panel and tight at the four corners, which is exactly where the tray corners travel. A go/no-go gauge cut to the minimum interior dimension finds it in a second, and no amount of specification review will.'
+      }
+    ]
   },
 
   {

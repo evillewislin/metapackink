@@ -52,8 +52,16 @@ MAP = {
     "gift-packaging": "gift-packaging-detail.webp",
     "blog-custom-rigid-box-manufacturing-process":
         "blog-custom-rigid-box-manufacturing-process.webp",
+    "blog-rigid-box-board-thickness":
+        "blog-rigid-box-board-thickness.webp",
     "case-magnetic-gift-set-for-a-skincare-brand":
         "case-magnetic-gift-set-for-a-skincare-brand.webp",
+    "case-perfume-coffret-for-a-fragrance-house":
+        "case-perfume-coffret-for-a-fragrance-house.webp",
+    "blog-magnetic-box-magnet-specification":
+        "blog-magnetic-box-magnet-specification.webp",
+    "case-drawer-box-for-a-watch-brand":
+        "case-drawer-box-for-a-watch-brand.webp",
 }
 
 
