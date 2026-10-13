@@ -25,4 +25,12 @@ Published day 2 of 15:
 
 Actions mirror day 1: bodies written, 5 FAQs each, `planned: true` removed and `date` set to `2026-10-12`, two thumbnails generated one at a time and renamed, MAP in `tools/prepare-images.py` extended, `img`/`imgAlt` added after the WebPs were confirmed on disk, `node tools/build.js --check` → `verification PASS`.
 
-Next up: blog `two-piece-vs-magnetic-rigid-box`, case study `cosmetic-mailer-for-a-dtc-colour-brand`.
+## 2026-10-13
+
+Published day 3 of 15:
+- Blog: "Two-Piece or Magnetic Rigid Box? A Decision You Should Make Before Artwork" (`two-piece-vs-magnetic-rigid-box`)
+- Case study: "A DTC Mailer for a Colour Cosmetics Brand: Surviving the Post Without Losing the Unboxing" (`cosmetic-mailer-for-a-dtc-colour-brand`)
+
+Same routine as days 1–2: bodies written, 5 FAQs each, `planned: true` removed and `date` set to 2026-10-13, two thumbnails generated one at a time and renamed immediately, MAP extended, `img`/`imgAlt` added after the WebPs were confirmed on disk, `--check` → verification PASS, full build run. `check-live.js` listed both new URLs as not live yet.
+
+Next up: blog `drawer-box-vs-lid-and-base`, case study `two-piece-rigid-box-for-a-jewellery-label`.

@@ -132,8 +132,32 @@ module.exports = [
     excerpt:
       'Pressed powder breaks and liquid leaks, and the customer opens the parcel before they open the product. A mailer has to absorb both the postal network and the unboxing, which usually means one compromise stated openly.',
     category: 'Cosmetics',
-    date: '2026-11-11',
-    planned: true
+    date: '2026-10-13',
+    imgAlt: 'An open printed corrugated mailer with a die-cut paperboard tray holding a palette face down and a glass foundation bottle beside a paperboard collar',
+    img: 'case-cosmetic-mailer-for-a-dtc-colour-brand.webp',
+    body: 'cosmetic-mailer-for-a-dtc-colour-brand',
+    faq: [
+      {
+        q: 'Why is the palette shipped lid-down rather than lid-up?',
+        a: 'Because the mirror is bonded at its edges and unsupported across the middle, so a load on the compact lid flexes the glass and glass flexed across an unsupported span cracks — two of five units crazed in the first drop test. Lid-down, the mirror rests flat on the tray floor and is supported across its whole area, and the load path runs through the compact base instead of its lid. It also keeps the friction catch closed: vibration opens those catches, and lid-down means any powder that escapes stays inside the compact rather than dusting the interior the customer is about to film.'
+      },
+      {
+        q: 'Why was the foam insert rejected when it protected the products better?',
+        a: 'It protected them perfectly and failed on everything else — the unboxing read as industrial, and the brand claimed kerbside recyclability that a foam block contradicts in the customer\'s hands rather than in a specification. Replacing it with paperboard gave back real protection, and that protection then had to be recovered by geometry rather than by material: the lid-down orientation and the shoulder collar. That is the trade in full — paperboard cushions less per millimetre, so with paperboard the fitment has to be the part that is engineered.'
+      },
+      {
+        q: 'Why wasn\'t 4 mm of clearance above the pump enough to stop the leak?',
+        a: 'Because clearance only works while the top panel stays where it is, and a courier stack pushes the top panel down. The sample held on the bench and one unit leaked in the compression test. The fix is not more clearance but a different load path: a folded paperboard collar sits over the bottle shoulder, taller than the pump head by about 3 mm, so any downward load lands on the collar and goes into the shoulder instead of actuating the pump. The same collar doubles as the divider between the two wells.'
+      },
+      {
+        q: 'Will E-flute survive being stacked, or should the mailer be B-flute?',
+        a: 'E-flute survived it here, because the crush requirement was met by the fitment rather than by the board. B-flute resists crushing and cushions better, but it is roughly twice the thickness, it shows flute lines through solid areas of print, and 3 mm on every face is exterior volume paid for twice — in the carton and in the parcel. The order we recommend is to buy the print surface you want and make the interior carry the load, and only go up a flute if the fitment cannot get there.'
+      },
+      {
+        q: 'When is a rigid box the right answer instead of a mailer?',
+        a: 'When the box is handled, opened and re-closed by strangers rather than opened once by the buyer — retail, gifting, anything where the box is part of the product. On this project a two-piece rigid box in a corrugated shipper was quoted alongside the mailer at roughly three times the unit cost and enough extra weight per parcel to move the shipping band, and we advised against it: the rigid version is a better object, but it is bought once, filmed once and then sits on a shelf. One practical note if you do go rigid — a rigid box is not a shipping container, so it needs an outer shipper, which the mailer does not.'
+      }
+    ]
   },
 
   {

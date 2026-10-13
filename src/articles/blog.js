@@ -143,8 +143,32 @@ module.exports = [
     excerpt:
       'Both are rigid boxes with the same board and the same wrap. They differ in one mechanism, and that one difference changes the opening experience, the freight cost and the failure mode.',
     category: 'Structures',
-    date: '2026-10-29',
-    planned: true
+    date: '2026-10-13',
+    imgAlt: 'A two-piece rigid box with its lid lifted off beside a magnetic closure box with the lid hinged open at the spine',
+    img: 'blog-two-piece-vs-magnetic-rigid-box.webp',
+    body: 'two-piece-vs-magnetic-rigid-box',
+    faq: [
+      {
+        q: 'Which structure should I choose — two-piece or magnetic?',
+        a: 'Answer it from the journey rather than from the product. If the box travels on its own — shipped direct, carried by a courier, picked up by the base — the closure earns its cost, because a lid arriving off is the complaint you otherwise get. If it travels inside a retail carton or an outer shipper with the lid never moving, the two-piece is better value and the money reads better on the wrap or the interior print. The exception is retail shelving, where shoppers lift lids and re-seat them badly: a hinged lid always looks right on a shelf.'
+      },
+      {
+        q: 'Why is my two-piece lid either too tight or too loose?',
+        a: 'Because it is held by friction alone, and friction has a window — tight enough not to fall off when the box is tilted, loose enough to lift one-handed. That window is measured in fractions of a millimetre and it is set in the dieline. Approve a two-piece sample by lifting the lid with one hand: if it needs two hands or a wiggle, the window is wrong on every unit rather than on the sample.'
+      },
+      {
+        q: 'How much more does a magnetic closure actually cost?',
+        a: 'Not in the board or the wrap, which are the same in both structures — it is the hardware and the operations. Magnets and steel plates are bought components, the skirt board has to be recessed, the two halves have to register, and the spine has to be wrapped and folded. In our experience that puts the magnetic structure somewhere in the region of a fifth to a half above the equivalent two-piece box at the same size, board and finish, and the gap does not scale down at low quantities because the magnet minimum order and the setup are fixed.'
+      },
+      {
+        q: 'Can I switch from one structure to the other after the artwork is finished?',
+        a: `You can, and a revised sample takes ${trade.sampleLead} from the change being agreed — but the artwork does not survive it. The lid depth, the skirt, the board recesses and the back panel all move, so every panel the artwork was laid out against moves with them, and a design that crosses the spine has to allow for the fold or it breaks in half. It is also a re-quote. Settle the structure before the dieline rather than after the design.`
+      },
+      {
+        q: 'How long will the hinge on a magnetic box last?',
+        a: 'Longer than most products, if the wrap is chosen for it. A spine in a coated paper takes several hundred openings; a heavy textured stock cracks at the fold much sooner; a fabric or a reinforced construction outlasts the box. If the box is meant to be kept and reopened, the wrap is no longer a free choice — it is chosen against the hinge. One caveat: if the box has to be recycled in a single stream, say so before the closure is chosen, because the magnets and steel plates have to come out first.'
+      }
+    ]
   },
 
   {

@@ -62,6 +62,10 @@ MAP = {
         "blog-magnetic-box-magnet-specification.webp",
     "case-drawer-box-for-a-watch-brand":
         "case-drawer-box-for-a-watch-brand.webp",
+    "blog-two-piece-vs-magnetic-rigid-box":
+        "blog-two-piece-vs-magnetic-rigid-box.webp",
+    "case-cosmetic-mailer-for-a-dtc-colour-brand":
+        "case-cosmetic-mailer-for-a-dtc-colour-brand.webp",
 }
 
 
