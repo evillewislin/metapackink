@@ -33,4 +33,12 @@ Published day 3 of 15:
 
 Same routine as days 1–2: bodies written, 5 FAQs each, `planned: true` removed and `date` set to 2026-10-13, two thumbnails generated one at a time and renamed immediately, MAP extended, `img`/`imgAlt` added after the WebPs were confirmed on disk, `--check` → verification PASS, full build run. `check-live.js` listed both new URLs as not live yet.
 
-Next up: blog `drawer-box-vs-lid-and-base`, case study `two-piece-rigid-box-for-a-jewellery-label`.
+## 2026-10-14
+
+Published day 4 of 15:
+- Blog: "Drawer Boxes vs Lid-and-Base: What the Opening Sequence Costs You" (`drawer-box-vs-lid-and-base`)
+- Case study: "A Two-Piece Rigid Box for a Jewellery Label: Sizing Around a Ring That Moves" (`two-piece-rigid-box-for-a-jewellery-label`)
+
+Same routine as days 1–3: bodies written, 5 FAQs each, `planned: true` removed and `date` set to 2026-10-14, two thumbnails generated one at a time, renamed in `img-staging/`, MAP extended, `img`/`imgAlt` added after the WebPs were confirmed on disk. `--check` → verification PASS; full build run; `check-live.js` lists both new URLs as not live yet (local 39, live 37).
+
+Next up: blog `perfume-box-structure-guide`, case study `gift-presentation-set-for-a-tea-brand`.

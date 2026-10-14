@@ -169,8 +169,32 @@ module.exports = [
     excerpt:
       'One box for a range of sizes is a fitting problem, not a packaging problem. The answer was a compliant insert that holds the smallest item as firmly as the largest, with a lid depth set by the tallest.',
     category: 'Structures',
-    date: '2026-11-25',
-    planned: true
+    date: '2026-10-14',
+    imgAlt: 'A small two-piece rigid jewellery box with the lid lifted off, a gold ring standing in a single slit cut into a suedette-wrapped pad',
+    img: 'case-two-piece-rigid-box-for-a-jewellery-label.webp',
+    body: 'two-piece-rigid-box-for-a-jewellery-label',
+    faq: [
+      {
+        q: 'How does one slit hold a ring when the sizes in the range are different?',
+        a: 'It is a wedge, not a fit. A ring pushed band-first into a slit is held by the slit\'s ends, at the depth where the width of the ring equals the length of the slit — and that can only happen if the slit is shorter than the ring. A larger ring wedges at a shallower depth and stands taller; a smaller one sinks deeper. Here a 16 mm slit wedged the smallest ring at 5.8 mm deep and the largest at 3.8 mm, both held by the same two contact points, with the 10 mm floor below the slit there only so nothing can ever drop through.'
+      },
+      {
+        q: 'Why is the slit sized from the smallest ring rather than the largest?',
+        a: 'Because a slit long enough to admit the largest ring will also admit the smallest, and the smallest then never reaches a width that wedges — it falls straight through to the floor of the slot. That is what the first sample did: a 20 mm slit, cut to the largest ring, dropped the smallest ring the full 12 mm so that it stood less than 5 mm proud of the pad and had to be dug out with a fingernail. It looked fine in a photograph, which is why it is measured rather than looked at.'
+      },
+      {
+        q: 'How is the lid depth chosen when one box has to hold a whole range?',
+        a: 'From the tallest configuration in the range, which is often not the item that looks tallest. Here a size R ring with an 8 mm setting stood 24.8 mm above the pad, and with the pad top 12 mm below the rim that put its top 12.8 mm above the rim — beating the tallest pendant by 0.8 mm. The lid interior was set to 18 mm, leaving just over 5 mm above it. Two millimetres would not have been enough: a lid panel deflects downward on impact, and at 2 mm the setting marks the interior.'
+      },
+      {
+        q: 'Why EVA for the pad instead of die-cut paperboard?',
+        a: 'Two reasons, both material properties rather than preferences. EVA is compliant, so the same slit grips a 2 mm solitaire band and a 6 mm wide band without the grip collapsing on the thin one, and it accepts an undercut: the chain channel is 5 mm wide and 7 mm deep with its mouth narrower than its body, so the chain presses in at assembly speed and does not come back out in transit. A slot in board is the same width all the way down, so it cannot do that. The tooling is also one steel-rule die per pad rather than a mould per SKU.'
+      },
+      {
+        q: 'Can the slit be changed after the first sample?',
+        a: `Yes, and a revised sample takes ${trade.sampleLead} from the change being agreed. The pad itself is the cheap part — it is one steel-rule die — but the slit length sets how high every ring in the range stands, so changing it can move the lid depth that was chosen off the tallest configuration. That is the reason to fix the slit against the smallest item before the box height is settled rather than after.`
+      }
+    ]
   },
 
   {

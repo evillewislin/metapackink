@@ -180,8 +180,32 @@ module.exports = [
     excerpt:
       'A drawer box adds a sliding tolerance that a lid-and-base box does not have, and that tolerance has to come from somewhere. Understanding where it goes prevents the ribbon pulling loose and the tray jamming.',
     category: 'Structures',
-    date: '2026-11-05',
-    planned: true
+    date: '2026-10-14',
+    imgAlt: 'A matte black drawer box with its tray pulled out on a ribbon pull, beside a two-piece rigid box with its lid lifted off',
+    img: 'blog-drawer-box-vs-lid-and-base.webp',
+    body: 'drawer-box-vs-lid-and-base',
+    faq: [
+      {
+        q: 'Which structure should I choose — a drawer box or a lid-and-base box?',
+        a: 'Answer it from the journey and from the product. A lid-and-base box is the better value whenever the box travels inside something else, because the lid never moves in transit and the money reads better on the wrap or the interior print. A drawer box earns its cost when the box is opened on a table, one-handed, and looked down into, and when the tray staying attached matters — it cannot be lost or put down somewhere. It is the wrong choice when the box ships direct with no outer and no band, or when the product is heavy enough to press the tray onto the sleeve floor, because that turns a slide into a bind exactly when the customer pulls.'
+      },
+      {
+        q: 'How much clearance does a drawer need, and where should it come from?',
+        a: 'Between 0.5 mm and 0.8 mm per side, in both width and height, and it comes out of the sleeve — never out of the tray. The tray\'s exterior sets its interior, the interior sets the cavity, and the cavity sets the fitment holding the product, so shrinking the tray to make it slide takes the dimension out of the one part that cannot afford to give, and the product ends up loose in its own box. Growing the sleeve interior instead costs exterior volume, which on a box under about 200 mm is worth less than the grip is.'
+      },
+      {
+        q: 'Why does the ribbon pull off the drawer?',
+        a: 'Because it is usually glued to the outer face of the tray, so the pull load runs through the adhesive bond into a coated or laminated paper surface and releases — often at well under the force a customer applies to a drawer that sticks. The fix is not a stronger adhesive but a different load path: a slot is cut through the tray\'s front board, the ribbon end passes through it and is trapped under the wrap, so the load goes into the board and the failure moves to the ribbon itself. Test it by pulling hard with the box held by the sleeve; the ribbon should fail first.'
+      },
+      {
+        q: 'Why did my drawers bind after shipping by sea when they were fine in the factory?',
+        a: 'Not because the clearance shrank but because the board grew. Paperboard absorbs moisture and swells more across the grain than with it, and at half a millimetre per side that is enough to close the gap on the units whose grain ran the wrong way. The other cause is a sleeve whose corners were formed slightly proud, so the interior is correct across the middle of each panel and tight at the four corners — exactly where the tray corners travel. Specify a matte lamination on the sleeve\'s inner face, which seals the board and lowers the sliding friction, and gauge the sleeve interior with a go/no-go gauge rather than measuring across a panel.'
+      },
+      {
+        q: 'Can I switch from one structure to the other after the first sample?',
+        a: `Yes, and a revised sample takes ${trade.sampleLead} from the change being agreed. What does not survive it is the artwork and the insert: the usable interior changes because a drawer box has no lid volume to borrow, a tall product has to be laid down or the tray deepened, and every panel the artwork was laid out against moves with it. It is also a re-quote, because the operations are priced differently even though a drawer box uses slightly less board than the lid-and-base it replaces.`
+      }
+    ]
   },
 
   {

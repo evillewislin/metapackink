@@ -66,6 +66,10 @@ MAP = {
         "blog-two-piece-vs-magnetic-rigid-box.webp",
     "case-cosmetic-mailer-for-a-dtc-colour-brand":
         "case-cosmetic-mailer-for-a-dtc-colour-brand.webp",
+    "blog-drawer-box-vs-lid-and-base":
+        "blog-drawer-box-vs-lid-and-base.webp",
+    "case-two-piece-rigid-box-for-a-jewellery-label":
+        "case-two-piece-rigid-box-for-a-jewellery-label.webp",
 }
 
 
