@@ -70,6 +70,10 @@ MAP = {
         "blog-drawer-box-vs-lid-and-base.webp",
     "case-two-piece-rigid-box-for-a-jewellery-label":
         "case-two-piece-rigid-box-for-a-jewellery-label.webp",
+    "blog-perfume-box-structure-guide":
+        "blog-perfume-box-structure-guide.webp",
+    "case-gift-presentation-set-for-a-tea-brand":
+        "case-gift-presentation-set-for-a-tea-brand.webp",
 }
 
 

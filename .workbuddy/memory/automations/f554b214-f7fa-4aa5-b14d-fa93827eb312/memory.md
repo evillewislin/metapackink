@@ -42,3 +42,15 @@ Published day 4 of 15:
 Same routine as days 1–3: bodies written, 5 FAQs each, `planned: true` removed and `date` set to 2026-10-14, two thumbnails generated one at a time, renamed in `img-staging/`, MAP extended, `img`/`imgAlt` added after the WebPs were confirmed on disk. `--check` → verification PASS; full build run; `check-live.js` lists both new URLs as not live yet (local 39, live 37).
 
 Next up: blog `perfume-box-structure-guide`, case study `gift-presentation-set-for-a-tea-brand`.
+
+## 2026-10-15
+
+Published day 5 of 15:
+- Blog: "Perfume Box Structures: Cradles, Cap Clearance and the Weight of Glass" (`perfume-box-structure-guide`, Perfume)
+- Case study: "A Gift Presentation Set for a Tea Brand: When the Carton Is the Right Answer" (`gift-presentation-set-for-a-tea-brand`, Sourcing)
+
+Same routine as days 1–4: bodies written, 5 FAQs each, `planned: true` removed and `date` set to 2026-10-15, two 1600x900 thumbnails generated one at a time, renamed in `img-staging/`, MAP extended in `tools/prepare-images.py`, WebPs confirmed in `img/`, `img`/`imgAlt` added. `--check` → verification PASS (41 pages); full build run; `check-live.js` lists both new URLs as not live yet (local 41, live 39). Nothing committed or deployed.
+
+Environment: `prepare-images.py` needs the hermes venv python (Pillow 12.3.0); the managed 3.13 has no PIL.
+
+Next up: blog `cosmetic-packaging-leak-paths`, case study `rigid-box-for-a-chocolate-brand`.

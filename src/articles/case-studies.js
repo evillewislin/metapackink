@@ -206,8 +206,32 @@ module.exports = [
     excerpt:
       'The brief asked for a rigid box. The right answer was a carton, and saying so cost us the larger order. The reasoning is worth writing down because it applies to a whole class of products.',
     category: 'Sourcing',
-    date: '2026-12-09',
-    planned: true
+    date: '2026-10-15',
+    imgAlt: 'A matte black telescoping carton gift set with its slipcase lid lifted off, three aluminium tea caddies standing through a die-cut board platform',
+    img: 'case-gift-presentation-set-for-a-tea-brand.webp',
+    body: 'gift-presentation-set-for-a-tea-brand',
+    faq: [
+      {
+        q: 'When is a folding carton the better answer than a rigid box?',
+        a: 'When none of the four things a rigid box buys is load-bearing in your project. Those four are load-carrying, crush resistance, a structure that survives being kept, and an edge quality a fold cannot give you. Loose-leaf tea in metal caddies needed none of them: 555 g spread across three rigid cylinders on a flat panel is not a load problem, board is strong in compression along a vertical wall so a carton stacks as well, and the caddies are what gets kept while the box is recycled the week the tea is opened. The carton loses on the fourth — a crease at each corner where a rigid box has a wrapped edge — and that is a decision to make deliberately rather than discover.'
+      },
+      {
+        q: 'How much freight volume does an assembled rigid box really add?',
+        a: 'Against flat carton blanks, roughly thirteen to one. At 236 × 92 × 76 mm packed 24 to a shipper, 12,000 rigid boxes is about 16 m³; the same quantity of cartons shipped flat is about 1.2 m³. On a sea leg that is a rounding error, but on an air freight leg to hit a launch date it is the difference between a freight line and a freight problem — and it is charged twice, because the brand\'s warehouse stores those 16 m³ of empty boxes until they are used.'
+      },
+      {
+        q: 'How do you hold three round tins in a board box without foam?',
+        a: 'With a window platform: a die-cut board sheet with three circular holes sitting 18 mm above the base floor on four folded flaps, so each caddy passes through its own hole and stands on the floor beneath it. The alternative — letting the tins hold each other in a row — accumulates tolerance, and the middle tin, held only by two loose neighbours, is the one that rattles. Give each item its own hole and no tolerance accumulates. Specify the hole clearance against the hole\'s depth rather than as an absolute: 1.2 mm of play limits a caddy to about 4° of tilt in an 18 mm deep hole, and would rattle in a 6 mm one.'
+      },
+      {
+        q: 'What does the carton give up compared with the rigid box?',
+        a: 'About 230 g of heft, a crease at each corner, and emboss depth. A 450 gsm board cannot hold the deep deboss a 1.5 mm greyboard takes, so a logo drawn for one has to be reduced to a shallow blind emboss and paired with foil. There is a second-order version of that limitation worth knowing: an emboss raised on the outside of a slipcase raises a matching ridge on the inside, and the inside is the face that slides over the tray, so raised finishes stay above the line the tray\'s top edge travels.'
+      },
+      {
+        q: 'Can we switch from a rigid box to a carton after the first sample?',
+        a: `Yes, and it is cheaper to do than the reverse — a revised sample takes ${trade.sampleLead} from the change being agreed, and the tooling is a steel-rule die rather than a wrapping setup. What does not carry over is the artwork: the exterior dimensions shrink by roughly 5 mm in each direction because 0.6 mm of board replaces 1.5 mm of greyboard plus a wrap, so every panel the artwork was laid out against moves. Settle the structure before the artwork is finalised, not after.`
+      }
+    ]
   },
 
   {

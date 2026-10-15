@@ -217,8 +217,32 @@ module.exports = [
     excerpt:
       'In perfume packaging the bottle is not a component inside the box, it is the load the box exists to carry. That reframing settles cradle design, board thickness and where the box has to be reinforced.',
     category: 'Perfume',
-    date: '2026-11-12',
-    planned: true
+    date: '2026-10-15',
+    imgAlt: 'A matte black two-piece rigid perfume box with the lid lifted off, a glass bottle standing in a foam cradle with clear air above its cap',
+    img: 'blog-perfume-box-structure-guide.webp',
+    body: 'perfume-box-structure-guide',
+    faq: [
+      {
+        q: 'Should the lid and the base of a perfume box use the same board thickness?',
+        a: 'No — the lid carries nothing but its own panel, so it does not need to match the base. On a 100 ml box we specify 2.0 mm greyboard on the base and 1.5 mm on the lid; on a 50 ml box 1.5 mm throughout. Specifying the heavier board on both adds material cost and exterior volume to the one part with no load in it. The other half of the answer is a doubler: a second layer of board glued under the cradle footprint inside the base, which is the cheapest thing that stops a base floor splitting at the crease on a corner drop.'
+      },
+      {
+        q: 'Where should the cradle grip the bottle?',
+        a: 'On the body, over 25 to 30 mm of contact height, with the cradle\'s top edge kept below the shoulder — and never on the neck. Glass is strong in compression along its axis and useless against a side load at the neck, which is the thinnest section on the bottle. Two drawing errors follow from getting this wrong: cutting the cavity to the bottle\'s widest point, which lets a tapered bottle sink through until it is lower than designed and unsupported; and letting the cradle rise past the shoulder, which grips a curved section that was never meant to take load.'
+      },
+      {
+        q: 'How much clearance does a perfume cap need inside the box?',
+        a: 'Two clearances, and both are usually left to the sampling stage to discover. Radially, 1.0 to 1.5 mm around the cap — not zero, because a cap touching the cavity wall on one side is a cap being pushed, and on a friction-fit cap that push works it loose in transit. Vertically, 4 to 6 mm between the top of the cap and the lid\'s interior face. That one is not about impact: a lid slides down over the base skirt on the way on, and if the cap is within a millimetre or two of the lid interior the lid catches it, tilts, and marks the foil the first time the box is closed.'
+      },
+      {
+        q: 'EVA foam or paperboard for a perfume box insert?',
+        a: 'Decide on odour first, because a box that opens with a chemical smell is a defect in this category before it is anything else — the customer\'s first act is to smell the contents. EVA is fine once fully cured and aired, and we specify low-VOC grade and hold it before assembly; some polyurethane and recycled-content foams are not fine. Board is odour-safe and recyclable in the same stream, but it has almost no compliance, so it locates rather than grips. The tie-breaker is the product: if the bottle has a screw or pour neck with any history of seepage, board absorbs the leak and keeps the smell permanently, which argues for foam despite the recyclability cost.'
+      },
+      {
+        q: 'Can the cradle be changed after the first sample?',
+        a: `Yes, and a revised sample takes ${trade.sampleLead} from the change being agreed. What tends not to survive it is the box height: a deeper cradle lifts the bottle, and the vertical clearance above the cap is the dimension that has to absorb that. Change the cradle contact height or the cavity diameter and re-check the 4 to 6 mm above the cap before assuming the lid still fits. Test the revised sample with the heaviest bottle in the range rather than a representative one — the worst case is not the average one.`
+      }
+    ]
   },
 
   {
