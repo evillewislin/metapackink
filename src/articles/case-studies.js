@@ -243,8 +243,32 @@ module.exports = [
     excerpt:
       'Nothing about the box was unusual. The constraint was the product: tempered chocolate loses its snap well below the temperature a shop window reaches, and every decision followed from that.',
     category: 'Confectionery',
-    date: '2026-12-23',
-    planned: true
+    date: '2026-10-16',
+    imgAlt: 'A matte black two-piece rigid box with the lid off, four foil-wrapped chocolate bars lying flat on a raised paperboard platform inside the base',
+    img: 'case-rigid-box-for-a-chocolate-brand.webp',
+    body: 'rigid-box-for-a-chocolate-brand',
+    faq: [
+      {
+        q: 'Why not use foam, when it insulates better than an air gap?',
+        a: 'Because insulation was not the failure that was going to happen. A cavity cut to the bar profile grips the bar on both faces, and above roughly 28 °C tempered chocolate is plastic — a plastic bar held in a cavity takes the shape of the cavity and then sets that way, so the customer unwraps a bar that is no longer flat. On top of that, closed empty for twenty-four hours at 40 °C, the foam sample had a distinct adhesive and foam note, and cocoa butter picks up volatiles at levels a person cannot smell in a room but can taste in a fat. Foam buys time; this product was going to fail by deformation and odour first.'
+      },
+      {
+        q: 'How much difference does a 6 mm standoff actually make?',
+        a: 'Two to three hours of margin over a box where the bars sit in contact with the board, which on a shop-window afternoon is the difference between a bar that survives and one that does not. The reason a gap outperforms a material here is that heat reaches the chocolate through what it is touching: still air conducts at about 0.026 W/m·K, paperboard at roughly 0.05 to 0.07, and a direct contact path between two solids conducts far better than either because there is no interface resistance in it. That is also why the standoff is four folded flaps rather than a solid rim — the flaps are the four bridges left in an otherwise unbroken air layer, and a solid rim would put the conduction path straight back.'
+      },
+      {
+        q: 'Does the colour of the wrap really matter that much?',
+        a: 'It measured as a sixteen-degree difference at the surface from nothing but the colour of the paper. Two identical samples in a south-facing window in July: matte black reached 61 °C on its exterior and stone reached 45 °C, with interior air at 41 °C against 33 °C after three hours. The bars in the black box softened and the bars in the stone box did not. The brand kept matte black, which is a defensible shelf decision — what came out of the measurement was display guidance in the retail pack and a recommendation that the box not be the item left in direct sun. No box keeps chocolate solid indefinitely in a window that reaches 45 °C; the point of measuring is that the trade-off is made with the number in hand.'
+      },
+      {
+        q: 'How do I stop a chocolate box from smelling?',
+        a: 'Run the empty-box test, because it is the only check that catches odour transfer before production and it costs nothing: close the finished empty box, leave it twenty-four hours at 40 °C, open it and smell the interior. A box that has a smell will give it to the chocolate. Three specifications follow. Water-based adhesive rather than solvent-based, and fully cured, because water-based adhesives still off-gas while curing. No foam anywhere in the assembly, including under the platform. And UV-cured ink held and aired before assembly rather than going straight from the press into a box, since a sharp print note dissipates on an open shelf and not at all in a sealed one.'
+      },
+      {
+        q: 'Why can the bars not be stacked in two layers to keep the box smaller?',
+        a: 'Because at 34 °C the top row loads the bottom row, and it loads it at the two points where the bars overlap, so the bottom bar sags between those points and sets sagging. A bowed bar tastes identical and looks wrong on the plate. Going to a single layer took the exterior from 180 × 130 × 52 mm to 246 × 132 × 46 mm — 66 mm wider and 6 mm shallower, which is the better shape for a shelf anyway, since it presents the bars rather than stacking them. If you do want to revisit the layout, a revised sample takes ' + trade.sampleLead + ' from the change being agreed, and the artwork does not survive it: every panel moves when the footprint does.'
+      }
+    ]
   },
 
   {

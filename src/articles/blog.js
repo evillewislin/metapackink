@@ -254,8 +254,32 @@ module.exports = [
     excerpt:
       'Leaks are rarely a bottle fault. They are a tolerance between the container and the insert that lets the container move during transit, and that tolerance is chosen at the design stage.',
     category: 'Cosmetics',
-    date: '2026-11-19',
-    planned: true
+    date: '2026-10-16',
+    imgAlt: 'An open rigid cosmetic gift box with a die-cut paperboard insert holding four containers upright, a folded shoulder collar standing above one pump',
+    img: 'blog-cosmetic-packaging-leak-paths.webp',
+    body: 'cosmetic-packaging-leak-paths',
+    faq: [
+      {
+        q: 'How much clearance should an insert have around a cosmetic bottle?',
+        a: 'Two different numbers, used on two different parts. To locate a rigid container in a paperboard cavity, 0.5 to 1.0 mm per side — below about 0.5 mm the cavity will not release the container at assembly speed and the line starts forcing units in. To stop a container rotating or moving at all, 0.2 to 0.5 mm of interference per side in a compliant material such as EVA, which compresses to seat and does not change as the material wears. Clearance goes around the thing that has to release, interference around the thing that must not move: a dropper bulb gets clearance, a jar wall gets interference.'
+      },
+      {
+        q: 'Why did my pump bottle leak when there was clearance above the actuator?',
+        a: 'Because clearance only holds while the top panel stays where it was measured, and the load case that matters is the one where it does not. A courier stack, or a heavy parcel dropped onto the box, pushes the lid panel down by more than a few millimetres of allowance, and the actuator is the highest point inside, so it is what gets touched. The fix is a different load path rather than more space: a folded paperboard collar over the bottle shoulder, standing 2 to 3 mm taller than the actuator, so the load lands on the shoulder instead. Also worth asking whether the pump ships locked down, and checking that the insert is not occluding the pump vent.'
+      },
+      {
+        q: 'How do I stop a screw-top jar backing off in transit?',
+        a: 'Stop it rotating, because back-off is rotation rather than a failed seal. Vibration gives the jar a small oscillating torque, the lid is held by friction against the box interior, and the jar turns under it — a quarter turn is enough to take the liner out of compression. Grip the jar wall with an interference fit in a compliant material; pressure on the lid from above does nothing, because the load is not coming from above. Check it by applying torque to the jar with the box closed: if the lid turns with the jar, the grip is on the lid and the relative rotation you were trying to prevent is still there.'
+      },
+      {
+        q: 'Should I use foam to protect a product that might leak?',
+        a: 'Foam is the wrong choice for containing a leak, which is a different question from cushioning one. Closed-cell EVA absorbs nothing, so a leak stays liquid, pools in the cavity and is visible the moment the product is lifted out. Paperboard wicks, so a small seep becomes a large mark; moulded pulp absorbs quietly and reads as a shadow rather than a defect. If the container has a known seep path — a screw neck on an oil-based product, a pump that weeps after a hot leg — the honest fix is a barrier between the container and the insert. A two per cent leak rate on a 20,000-unit run is 400 replacements and 400 reviews; a bag costs cents.'
+      },
+      {
+        q: 'How do I test a cosmetic fitment before production?',
+        a: 'Four tests on the loaded, closed sample: twenty-four hours inverted at 40 °C for the pressure and viscosity case; one metre onto each corner for the lid-panel deflection that reaches the actuator; the real carton stack load applied to the top face for an hour; and weighing the container before and after to 0.1 g, because a seep that leaves no visible mark still loses mass. Run them with the real filled product and never with water — a surfactant formulation has a lower surface tension and finds paths water does not. Measure the closure torque before and after as well; a lid that has lost torque has backed off whether or not it has leaked yet. A revised sample after any change takes ' + trade.sampleLead + ' from the change being agreed.'
+      }
+    ]
   },
 
   {

@@ -53,4 +53,14 @@ Same routine as days 1–4: bodies written, 5 FAQs each, `planned: true` removed
 
 Environment: `prepare-images.py` needs the hermes venv python (Pillow 12.3.0); the managed 3.13 has no PIL.
 
-Next up: blog `cosmetic-packaging-leak-paths`, case study `rigid-box-for-a-chocolate-brand`.
+## 2026-10-16
+
+Published day 6 of 15:
+- Blog: "Where Cosmetic Packaging Leaks, and How the Insert Prevents It" (`cosmetic-packaging-leak-paths`, Cosmetics)
+- Case study: "A Rigid Box for a Chocolate Brand: Keeping Tempered Bars Solid Inside a Wrapped Shell" (`rigid-box-for-a-chocolate-brand`, Confectionery)
+
+Same routine as days 1–5: bodies written (12 `<h2 id>` sections each), 5 grounded FAQs each with `trade.sampleLead` interpolated, `planned: true` removed and `date` set to 2026-10-16, two 1600x900 thumbnails generated one at a time, renamed in `img-staging/`, MAP extended, WebPs confirmed in `img/`, `img`/`imgAlt` added. `--check` → verification PASS (blog 8, case-studies 8); full build run; `check-live.js` lists both new URLs as not live yet (local 43, live 41). Nothing committed or deployed.
+
+Environment note: the documented managed python (`C:/Users/guyin/.workbuddy/binaries/python/envs/default/Scripts/python.exe`) ran `tools/prepare-images.py` successfully — no need to fall back to the hermes venv.
+
+Next up: blog `packaging-sampling-process`, case study `subscription-box-for-a-coffee-roaster`.

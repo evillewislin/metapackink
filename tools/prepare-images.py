@@ -74,6 +74,10 @@ MAP = {
         "blog-perfume-box-structure-guide.webp",
     "case-gift-presentation-set-for-a-tea-brand":
         "case-gift-presentation-set-for-a-tea-brand.webp",
+    "blog-cosmetic-packaging-leak-paths":
+        "blog-cosmetic-packaging-leak-paths.webp",
+    "case-rigid-box-for-a-chocolate-brand":
+        "case-rigid-box-for-a-chocolate-brand.webp",
 }
 
 
