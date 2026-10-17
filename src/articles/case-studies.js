@@ -280,8 +280,32 @@ module.exports = [
     excerpt:
       'Subscription packaging is not one box shipped once. It is the same box shipped every month, so the things that wear — the closure, the corners, the print — become the specification.',
     category: 'Food & Beverage',
-    date: '2027-01-06',
-    planned: true
+    date: '2026-10-17',
+    imgAlt: 'A matte black two-piece rigid subscription box with its lid lifted, two valved kraft coffee bags held apart by a folded paperboard divider and a printed belly band slid over the box',
+    img: 'case-subscription-box-for-a-coffee-roaster.webp',
+    body: 'subscription-box-for-a-coffee-roaster',
+    faq: [
+      {
+        q: 'Why a paper band instead of a magnetic closure?',
+        a: 'Three reasons, and the third is the one that decided it. A magnetic closure is a genuine answer to the problem — a two-piece lid held by friction came off on the second drop test, because friction positions a lid and a drop rotates it — but it came back around thirty per cent above the equivalent two-piece box once the skirt is recessed and the halves have to register. Second, a band does four jobs at once: positive closure, tamper evidence, the artwork that changes each month, and a surface that takes the courier label and is then thrown away. Third, and decisively: a subscriber bins twelve of these a year, and a box with magnets and steel plates in it is not kerbside recyclable without a disassembly step nobody will do.'
+      },
+      {
+        q: 'How much headroom does a bag of coffee need inside the box?',
+        a: 'Size it against the largest the bag will be, not the size it is when packed. Coffee degasses for about a fortnight, mostly in the first three days, and the one-way valve lets CO₂ out without letting the bag burst — but the bag still changes shape. A gusseted 500 g bag measured 62 mm across its flat face settled and 72 mm at its most inflated forty-eight hours after packing. The first sample had a 70 mm base interior, which read as 8 mm of clearance at packing time and was 2 mm of interference two days later, lifting the lid from the inside. The interior went to 78 mm, and packing moved to forty-eight hours after roast so most of the degassing happens in a tray rather than in a closed box.'
+      },
+      {
+        q: 'Why is there no insert holding the bags in place?',
+        a: 'Because a cavity is a fixed volume and a bag of coffee is not. Cut the cavity to the settled bag and an inflated one will not seat; cut it to the inflated bag and a settled one rattles, and a bag that moves inside a box arrives at one end of it. The box gives the bags a plain volume with clearance, and one folded paperboard divider across the middle stops both bags migrating to the same end over a journey — a box with all its mass at one end drops onto one corner with the whole load behind it. The divider is deliberately shorter than the bags: it separates rather than captures, because a captured bag has to be lifted out over a wall on every unit of a monthly run.'
+      },
+      {
+        q: 'How do I stop a coffee box from smelling of print or adhesive?',
+        a: 'Treat odour as a specification rather than a hope, because coffee beans are literally sold as odour absorbers — a box that smells of anything will hand that smell to the product. Three specifications: water-based adhesive, fully cured before assembly, since it off-gasses while curing and the box is closed while it does; no foam anywhere in the assembly; and an unprinted interior face on the wrap, because a heavy solid of ink on the inside of a sealed box is a print note that dissipates on an open shelf and not at all in a closed one. Then run the test that catches it: close the empty finished box, leave it twenty-four hours somewhere warm, open it and smell it.'
+      },
+      {
+        q: 'Can the artwork change every month without retooling?',
+        a: 'Yes, if the variable artwork goes on the band rather than on the box. The structure is identical in month one and month twelve, so the cutting die is charged on the first order and not on the eleven that follow — the twelfth month\'s box is cheaper per unit than the first even though nothing about it changed, which is worth modelling when you forecast subscription unit economics. What changes each month is the band print: a CMYK run of the month\'s origin, roast date and tasting note. If you do want to change the box itself rather than the band, a revised sample takes ' + trade.sampleLead + ' from the change being agreed, and every dimension downstream moves with it.'
+      }
+    ]
   },
 
   {

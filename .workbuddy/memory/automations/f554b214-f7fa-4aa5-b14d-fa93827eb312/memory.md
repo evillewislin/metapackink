@@ -63,4 +63,12 @@ Same routine as days 1–5: bodies written (12 `<h2 id>` sections each), 5 groun
 
 Environment note: the documented managed python (`C:/Users/guyin/.workbuddy/binaries/python/envs/default/Scripts/python.exe`) ran `tools/prepare-images.py` successfully — no need to fall back to the hermes venv.
 
-Next up: blog `packaging-sampling-process`, case study `subscription-box-for-a-coffee-roaster`.
+## 2026-10-17
+
+Published day 7 of 15:
+- Blog: "What Actually Happens During Packaging Sampling, and What It Costs" (`packaging-sampling-process`, Manufacturing)
+- Case study: "A Subscription Box for a Coffee Roaster: Holding Its Shape Through the Post, Every Month" (`subscription-box-for-a-coffee-roaster`, Food & Beverage)
+
+Same routine as days 1–6: bodies written (13 and 12 `<h2 id>` sections), 5 grounded FAQs each with `trade.sampleLead` interpolated, `planned: true` removed and `date` set to 2026-10-17, two 1600x900 thumbnails generated one at a time, renamed in `img-staging/`, MAP extended, WebPs confirmed in `img/`, `img`/`imgAlt` added. `--check` → verification PASS (47 pages; blog 9, case-studies 9); full build run; `check-live.js` lists both new URLs as not live yet (local 45, live 43). Nothing committed or deployed.
+
+Next up: blog `packaging-dieline-and-tooling`, case study `magnetic-box-for-an-electronics-accessory-brand`.

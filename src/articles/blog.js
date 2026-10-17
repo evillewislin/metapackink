@@ -291,8 +291,32 @@ module.exports = [
     excerpt:
       'The sample fee is not a deposit and it is not a profit centre. Knowing what it actually pays for makes the approval decision — and the question of whether to sample twice — much less of a guess.',
     category: 'Manufacturing',
-    date: '2026-11-26',
-    planned: true
+    date: '2026-10-17',
+    imgAlt: 'Three custom packaging samples on a workshop bench — an unprinted white dummy, a matte black two-piece box with its insert, and a printed sample — measured with a ruler and calliper',
+    img: 'blog-packaging-sampling-process.webp',
+    body: 'packaging-sampling-process',
+    faq: [
+      {
+        q: 'What does a packaging sample fee actually cover?',
+        a: 'Four things, none of which is profit: machine setup, because a press costs nearly as much to print one sheet as five hundred; tooling, because a cutting die has to be made before anything can be cut; materials bought at their minimum, which for a stock that is not on the shelf is a ream or a mill minimum rather than one box worth; and the engineering time to turn a description into a dieline. That is also why a free sample is worth less than it looks — it is built to be cheap, which in practice means a stock structure in a shelf material, hand-finished by the best person on the floor rather than made by the line that would make your run.'
+      },
+      {
+        q: 'Is the sample fee refundable if I do not go ahead?',
+        a: 'No, and the difference between "credited" and "refundable" is worth pinning down before you pay. Most suppliers, including us, credit the fee against the first production order, so in the normal case it ends up costing nothing. But it is spent rather than held: the die exists, the material minimum has been bought and the press has been set up, so if the project stops there is nothing to hand back. Also ask whether the credit survives a change of structure — moving from a two-piece to a drawer box is new tooling, and the fee is usually not credited twice.'
+      },
+      {
+        q: 'Can I approve a sample from a photograph?',
+        a: 'You can approve the appearance from a photograph and nothing else. Four things do not show up in an image: fit, because a lid with the right clearance and one with too much look identical; force, because a magnet that holds under a base carry and one that does not are the same magnet in the same position; odour, which no image carries; and stiffness, because whether a 250 mm panel flexes when you pick the box up loaded is the most common complaint about a box that looked right in every picture. If the courier wait matters, ask for video of the specific checks instead — the lid lifted one-handed, the box inverted, the product lifted out of its cavity.'
+      },
+      {
+        q: 'When is a second round of sampling worth paying for?',
+        a: 'When the change is a dimension, when the product has changed, or when the first sample failed a physical test — a lid that lifted, a magnet that let go, foil that flaked under tape, a drawer that bound. Those are defects, not preferences, and only a revised sample resolves them. It is not worth it when the change is in the artwork, which a print proof settles faster and cheaper, or when the brief itself is unresolved: "make it feel more premium" is not a specification, and a second box will feel wrong for reasons nobody can name. By a third round the problem is almost never the box — go back to the brief instead.'
+      },
+      {
+        q: 'What does the sampling time actually run from?',
+        a: `From approved artwork, not from the enquiry — which is why schedules slip in ways nobody's lead time accounts for. The weeks of email before the file is signed off are part of the project but not part of the clock. Once it has started, three things move it, and all three are yours to control: whether the structure is new or one we have cut before, whether the wrap material is on the shelf or has to be bought in, and how many finishes are involved, since each one that needs its own block, screen or plate adds a setup. Sampling runs ${trade.sampleLead} from approved artwork.`
+      }
+    ]
   },
 
   {

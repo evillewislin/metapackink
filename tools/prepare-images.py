@@ -78,6 +78,10 @@ MAP = {
         "blog-cosmetic-packaging-leak-paths.webp",
     "case-rigid-box-for-a-chocolate-brand":
         "case-rigid-box-for-a-chocolate-brand.webp",
+    "blog-packaging-sampling-process":
+        "blog-packaging-sampling-process.webp",
+    "case-subscription-box-for-a-coffee-roaster":
+        "case-subscription-box-for-a-coffee-roaster.webp",
 }
 
 
